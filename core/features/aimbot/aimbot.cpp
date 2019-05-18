@@ -224,7 +224,7 @@ void c_aimbot::run(c_usercmd* user_cmd) noexcept {
 				return;
 
 			//weapon check
-			if (is_knife(weapon) || is_grenade(weapon))
+			if (is_knife(weapon) || is_grenade(weapon)|| is_bomb(weapon))
 				return;
 
 			//scope check
