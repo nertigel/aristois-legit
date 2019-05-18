@@ -75,6 +75,16 @@ public:
 		static const std::vector<int> v = { WEAPON_FRAG_GRENADE, WEAPON_HEGRENADE, WEAPON_INCGRENADE, WEAPON_SMOKEGRENADE, WEAPON_TAGRENADE, WEAPON_MOLOTOV };
 		return (std::find(v.begin(), v.end(), id) != v.end());
 	}
+	
+	bool is_bomb(void* weapon) {
+		if (weapon == nullptr)
+			return false;
+
+		auto current_weapon = (weapon_t*)weapon;
+		int id = current_weapon->item_definition_index();
+		static const std::vector<int> v = { WEAPON_C4 };
+		return (std::find(v.begin(), v.end(), id) != v.end());
+	}
 
 	bool is_rifle(void* weapon) {
 		if (weapon == nullptr)
