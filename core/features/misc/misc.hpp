@@ -5,6 +5,7 @@ class c_misc {
 public:
 	void remove_smoke() noexcept;
 	void remove_flash() noexcept;
+	void rank_reveal() noexcept;
 	void remove_scope() noexcept;
 	void spectators() noexcept;
 	void watermark() noexcept;
