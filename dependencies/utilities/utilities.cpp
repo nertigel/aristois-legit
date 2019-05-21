@@ -1,6 +1,7 @@
 #include "utilities.hpp"
 #include "../common_includes.hpp"
 #include <psapi.h>
+ServerRankRevealAll2 utilities::ServerRankRevealAllEx;
 
 void utilities::change_name(const char* name_to_change) {
 	auto name = interfaces::console->get_convar("name");
@@ -56,6 +57,7 @@ static T* utilities::find_hud_element(const char* name) {
 	return (T*)find_hud_element(fn, name);
 }
 
+
 void utilities::force_update() {
 	static auto fn = reinterpret_cast<std::int32_t(__thiscall*)(void*, std::int32_t)>(utilities::pattern_scan(GetModuleHandleA("client_panorama.dll"), ("55 8B EC 51 53 56 8B 75 08 8B D9 57 6B FE 2C")));
 
@@ -85,6 +87,20 @@ void utilities::console_warning(const char* msg, ...) {
 	vsprintf(buffer, msg, list);
 	va_end(list);
 	fn(buffer, list);
+}
+
+extern void utilities::ServerRankRevealAll()
+{
+		using ServerRankRevealAll2 = bool(__cdecl*)(int*);
+
+		static uint8_t* fnServerRankRevealAll;
+
+		if (!fnServerRankRevealAll)
+			fnServerRankRevealAll = utilities::pattern_scan(GetModuleHandleW(L"client_panorama.dll"),
+				"55 8B EC 8B 0D ? ? ? ? 85 C9 75 28 A1 ? ? ? ? 68 ? ? ? ? 8B 08 8B 01 FF 50 04 85 C0 74 0B 8B C8 E8 ? ? ? ? 8B C8 EB 02 33 C9 89 0D ? ? ? ? 8B 45 08");
+
+		int v[3] = { 0,0,0 };
+		reinterpret_cast<ServerRankRevealAll2>(fnServerRankRevealAll)(v);
 }
 
 const char* utilities::hitgroup_name(int hitgroup) {
