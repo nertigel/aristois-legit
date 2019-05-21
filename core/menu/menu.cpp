@@ -80,7 +80,6 @@ namespace ImGui {
 }
 
 void c_menu::run() {
-	ImGui::GetIO().MouseDrawCursor = opened;
 	static int page = 0;
 
 	if (opened) {
