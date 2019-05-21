@@ -19,7 +19,7 @@ struct esp_info_s {
 	color f_color;
 };
 
-class c_menu : public singleton<c_menu> {
+class c_menu {
 public:
 	void run_popup();
 	void run();
@@ -173,3 +173,5 @@ private:
 	ImDrawData _drawData;
 	DWORD dwOld_D3DRS_COLORWRITEENABLE;
 };
+
+extern c_menu menu;

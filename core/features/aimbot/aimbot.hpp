@@ -1,8 +1,7 @@
 #pragma once
 #include "../../../dependencies/common_includes.hpp"
-#include "../../../dependencies/utilities/singleton.hpp"
 
-class c_aimbot : public singleton< c_aimbot > {
+class c_aimbot {
 private:
 	int find_target(c_usercmd * user_cmd) noexcept;
 	int get_nearest_bone(player_t * entity, c_usercmd* user_cmd) noexcept;
@@ -96,3 +95,5 @@ public:
 		return (std::find(v.begin(), v.end(), id) != v.end());
 	}
 };
+
+extern c_aimbot aimbot;

@@ -1,7 +1,9 @@
 #include "misc.hpp"
 
+c_misc misc;
+
 void c_misc::remove_smoke() noexcept {
-	if (!c_config::get().remove_smoke || !c_config::get().visuals_enabled)
+	if (!config_system.remove_smoke || !config_system.visuals_enabled)
 		return;
 
 	if (!interfaces::engine->is_connected() && !interfaces::engine->is_in_game())
@@ -26,7 +28,7 @@ void c_misc::remove_smoke() noexcept {
 }
 
 void c_misc::remove_flash() noexcept {
-	if (!c_config::get().reduce_flash || !c_config::get().visuals_enabled)
+	if (!config_system.reduce_flash || !config_system.visuals_enabled)
 		return;
 
 	if (!interfaces::engine->is_connected() && !interfaces::engine->is_in_game())
@@ -39,7 +41,7 @@ void c_misc::remove_flash() noexcept {
 }
 
 void c_misc::remove_scope() noexcept {
-	if (!c_config::get().remove_scope || !c_config::get().visuals_enabled)
+	if (!config_system.remove_scope || !config_system.visuals_enabled)
 		return;
 
 	if (!interfaces::engine->is_connected() && !interfaces::engine->is_in_game())
@@ -58,7 +60,7 @@ void c_misc::remove_scope() noexcept {
 }
 
 void c_misc::spectators() noexcept {
-	if (!c_config::get().spectators_list || !c_config::get().misc_enabled)
+	if (!config_system.spectators_list || !config_system.misc_enabled)
 		return;
 
 	if (!interfaces::engine->is_connected() && !interfaces::engine->is_in_game())
@@ -68,7 +70,7 @@ void c_misc::spectators() noexcept {
 	int width, height;
 	interfaces::engine->get_screen_size(width, height);
 
-	render::get().draw_text(width - 80, height / 2 - 10, render::get().name_font, "spectators", true, color(255, 255, 255));
+	render.draw_text(width - 80, height / 2 - 10, render.name_font, "spectators", true, color(255, 255, 255));
 	for (int i = 0; i < interfaces::entity_list->get_highest_index(); i++) {
 		auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 		auto entity = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(i));
@@ -85,7 +87,7 @@ void c_misc::spectators() noexcept {
 						std::transform(player_name.begin(), player_name.end(), player_name.begin(), ::tolower);
 						player_info_t spectator_info;
 						interfaces::engine->get_player_info(i, &spectator_info);
-						render::get().draw_text(width - 80, height / 2 + (10 * spectator_index), render::get().name_font, player_name.c_str(), true, color(255, 255, 255));
+						render.draw_text(width - 80, height / 2 + (10 * spectator_index), render.name_font, player_name.c_str(), true, color(255, 255, 255));
 						spectator_index++;
 					}
 				}
@@ -95,7 +97,7 @@ void c_misc::spectators() noexcept {
 }
 
 void c_misc::watermark() noexcept {
-	if (!c_config::get().watermark || !c_config::get().misc_enabled)
+	if (!config_system.watermark || !config_system.misc_enabled)
 		return;
 
 	int width, height;
@@ -116,13 +118,13 @@ void c_misc::watermark() noexcept {
 
 	ss << "aristois.me | fps: " << fps << " | incoming: " << incoming.c_str() << "ms" << " | outgoing: " << outgoing.c_str() << "ms";
 
-	render::get().draw_filled_rect(width - 275, 4, 260, 20, color(33, 35, 47, 255));
-	render::get().draw_outline(width - 275, 4, 260, 20, color(30, 30, 41, 255));
-	render::get().draw_text(width - 270, 7, render::get().watermark_font, ss.str().c_str(), false, color(255, 255, 255, 255));
+	render.draw_filled_rect(width - 275, 4, 260, 20, color(33, 35, 47, 255));
+	render.draw_outline(width - 275, 4, 260, 20, color(30, 30, 41, 255));
+	render.draw_text(width - 270, 7, render.watermark_font, ss.str().c_str(), false, color(255, 255, 255, 255));
 }
 
 void c_misc::clantag_spammer() noexcept {
-	if (!c_config::get().clan_tag || !c_config::get().misc_enabled)
+	if (!config_system.clan_tag || !config_system.misc_enabled)
 		return;
 
 	static std::string tag = "aristois.me ";
@@ -140,38 +142,38 @@ void c_misc::clantag_spammer() noexcept {
 }
 
 void c_misc::viewmodel_offset() noexcept {
-	if (!c_config::get().viewmodel_offset || !c_config::get().misc_enabled)
+	if (!config_system.viewmodel_offset || !config_system.misc_enabled)
 		return;
 
-	interfaces::console->get_convar("viewmodel_offset_x")->set_value(c_config::get().viewmodel_x);
-	interfaces::console->get_convar("viewmodel_offset_y")->set_value(c_config::get().viewmodel_y);
-	interfaces::console->get_convar("viewmodel_offset_z")->set_value(c_config::get().viewmodel_z);
+	interfaces::console->get_convar("viewmodel_offset_x")->set_value(config_system.viewmodel_x);
+	interfaces::console->get_convar("viewmodel_offset_y")->set_value(config_system.viewmodel_y);
+	interfaces::console->get_convar("viewmodel_offset_z")->set_value(config_system.viewmodel_z);
 }
 
 void c_misc::disable_post_processing() noexcept {
-	if (!c_config::get().misc_enabled)
+	if (!config_system.misc_enabled)
 		return;
 
 	static auto mat_postprocess_enable = interfaces::console->get_convar("mat_postprocess_enable");
-	mat_postprocess_enable->set_value(c_config::get().disable_post_processing ? 0 : 1);
+	mat_postprocess_enable->set_value(config_system.disable_post_processing ? 0 : 1);
 }
 
 void c_misc::recoil_crosshair() noexcept {
-	if (!c_config::get().misc_enabled)
+	if (!config_system.misc_enabled)
 		return;
 
 	static auto cl_crosshair_recoil = interfaces::console->get_convar("cl_crosshair_recoil");
-	cl_crosshair_recoil->set_value(c_config::get().recoil_crosshair ? 1 : 0);
+	cl_crosshair_recoil->set_value(config_system.recoil_crosshair ? 1 : 0);
 }
 
 void c_misc::force_crosshair() noexcept {
-	if (!c_config::get().misc_enabled)
+	if (!config_system.misc_enabled)
 		return;
 
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 	static auto weapon_debug_spread_show = interfaces::console->get_convar("weapon_debug_spread_show");
 
 	if (local_player && local_player->health() > 0) {
-		weapon_debug_spread_show->set_value(local_player->is_scoped() || !c_config::get().force_crosshair ? 0 : 3);
+		weapon_debug_spread_show->set_value(local_player->is_scoped() || !config_system.force_crosshair ? 0 : 3);
 	}
 }

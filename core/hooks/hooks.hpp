@@ -1,6 +1,5 @@
 #pragma once
-enum ClientFrameStage_t
-{
+enum ClientFrameStage_t {
 	FRAME_UNDEFINED = -1,			// (haven't run any frames yet)
 	FRAME_START,
 

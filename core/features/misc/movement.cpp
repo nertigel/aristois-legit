@@ -1,9 +1,12 @@
 #include "../../../dependencies/common_includes.hpp"
 #include "movement.hpp"
+
+c_movement movement;
+
 auto flags_backup = 0;
 
 void c_movement::bunnyhop(c_usercmd* user_cmd) noexcept {
-	if (!c_config::get().bunny_hop || !c_config::get().misc_enabled)
+	if (!config_system.bunny_hop || !config_system.misc_enabled)
 		return;
 
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
@@ -28,16 +31,16 @@ void c_movement::bunnyhop(c_usercmd* user_cmd) noexcept {
 			fake_jump = true;
 		}
 		else {
-			if (c_config::get().bunny_hop_humanize && c_config::get().bunny_hop_minimum && (actual_jump > c_config::get().bunny_hop_minimum_value) && (rand() % 100 > c_config::get().bunny_hop_hitchance))
+			if (config_system.bunny_hop_humanize && config_system.bunny_hop_minimum && (actual_jump > config_system.bunny_hop_minimum_value) && (rand() % 100 > config_system.bunny_hop_hitchance))
 				return;
 
-			if (c_config::get().bunny_hop_humanize && !c_config::get().bunny_hop_minimum && (rand() % 100 > c_config::get().bunny_hop_hitchance))
+			if (config_system.bunny_hop_humanize && !config_system.bunny_hop_minimum && (rand() % 100 > config_system.bunny_hop_hitchance))
 				return;
 
-			if (c_config::get().bunny_hop_minimum && !c_config::get().bunny_hop_humanize && (actual_jump > c_config::get().bunny_hop_minimum_value))
+			if (config_system.bunny_hop_minimum && !config_system.bunny_hop_humanize && (actual_jump > config_system.bunny_hop_minimum_value))
 				return;
 
-			if (c_config::get().bunny_hop_maximum && (actual_jump > c_config::get().bunny_hop_maximum_value))
+			if (config_system.bunny_hop_maximum && (actual_jump > config_system.bunny_hop_maximum_value))
 				return;
 
 			user_cmd->buttons &= ~in_jump;
@@ -54,10 +57,10 @@ void c_movement::bunnyhop(c_usercmd* user_cmd) noexcept {
 void c_movement::edge_jump_pre_prediction(c_usercmd* user_cmd) noexcept {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 
-	if (!c_config::get().edge_jump)
+	if (!config_system.edge_jump)
 		return;
 
-	if (!GetAsyncKeyState(c_config::get().edge_jump_key))
+	if (!GetAsyncKeyState(config_system.edge_jump_key))
 		return;
 
 	if (!local_player)
@@ -72,10 +75,10 @@ void c_movement::edge_jump_pre_prediction(c_usercmd* user_cmd) noexcept {
 void c_movement::edge_jump_post_prediction(c_usercmd* user_cmd) noexcept {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 
-	if (!c_config::get().edge_jump)
+	if (!config_system.edge_jump)
 		return;
 
-	if (!GetAsyncKeyState(c_config::get().edge_jump_key))
+	if (!GetAsyncKeyState(config_system.edge_jump_key))
 		return;
 
 	if (!local_player)
@@ -87,6 +90,6 @@ void c_movement::edge_jump_post_prediction(c_usercmd* user_cmd) noexcept {
 	if (flags_backup & fl_onground && !(local_player->flags() & fl_onground))
 		user_cmd->buttons |= in_jump;
 
-	if (!(local_player->flags() & fl_onground) && c_config::get().edge_jump_duck_in_air)
+	if (!(local_player->flags() & fl_onground) && config_system.edge_jump_duck_in_air)
 		user_cmd->buttons |= in_duck;
 }

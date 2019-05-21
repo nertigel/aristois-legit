@@ -1,4 +1,6 @@
 #include "skinchanger.hpp"
+c_skinchanger skin_changer;
+
 #define INVALID_EHANDLE_INDEX 0xFFFFFFFF
 
 inline bool c_skinchanger::apply_knife_model(attributable_item_t* weapon, const char* model) noexcept {
@@ -33,7 +35,7 @@ void c_skinchanger::run() noexcept {
 	if (!interfaces::engine->is_connected() && !interfaces::engine->is_in_game())
 		return;
 
-	if (!c_config::get().skinchanger_enable)
+	if (!config_system.skinchanger_enable)
 		return;
 
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
@@ -75,7 +77,7 @@ void c_skinchanger::run() noexcept {
 
 		//knife conditions
 		float wear = 0.f;
-		switch (c_config::get().knife_wear) {
+		switch (config_system.knife_wear) {
 		case 0:
 			wear = 0.001f;
 			break;
@@ -95,7 +97,7 @@ void c_skinchanger::run() noexcept {
 
 		//apply knife model
 		if (active_weapon->client_class()->class_id == class_ids::cknife) {
-			switch (c_config::get().knife_model) {
+			switch (config_system.knife_model) {
 			case 0:
 				break;
 			case 1:
@@ -145,50 +147,50 @@ void c_skinchanger::run() noexcept {
 
 		//apply knife skins
 		if (weapon->client_class()->class_id == class_ids::cknife) {
-			switch (c_config::get().knife_model) {
+			switch (config_system.knife_model) {
 			case 0:
 				break;
 			case 1:
-				apply_knife_skin(weapon, WEAPON_BAYONET, c_config::get().paint_kit_index_knife, index_bayonet, 3, wear);
+				apply_knife_skin(weapon, WEAPON_BAYONET, config_system.paint_kit_index_knife, index_bayonet, 3, wear);
 				break;
 			case 2:
-				apply_knife_skin(weapon, WEAPON_KNIFE_M9_BAYONET, c_config::get().paint_kit_index_knife, index_m9, 3, wear);
+				apply_knife_skin(weapon, WEAPON_KNIFE_M9_BAYONET, config_system.paint_kit_index_knife, index_m9, 3, wear);
 				break;
 			case 3:
-				apply_knife_skin(weapon, WEAPON_KNIFE_KARAMBIT, c_config::get().paint_kit_index_knife, index_karambit, 3, wear);
+				apply_knife_skin(weapon, WEAPON_KNIFE_KARAMBIT, config_system.paint_kit_index_knife, index_karambit, 3, wear);
 				break;
 			case 4:
-				apply_knife_skin(weapon, WEAPON_KNIFE_SURVIVAL_BOWIE, c_config::get().paint_kit_index_knife, index_bowie, 3, wear);
+				apply_knife_skin(weapon, WEAPON_KNIFE_SURVIVAL_BOWIE, config_system.paint_kit_index_knife, index_bowie, 3, wear);
 				break;
 			case 5:
-				apply_knife_skin(weapon, WEAPON_KNIFE_BUTTERFLY, c_config::get().paint_kit_index_knife, index_butterfly, 3, wear);
+				apply_knife_skin(weapon, WEAPON_KNIFE_BUTTERFLY, config_system.paint_kit_index_knife, index_butterfly, 3, wear);
 				break;
 			case 6:
-				apply_knife_skin(weapon, WEAPON_KNIFE_FALCHION, c_config::get().paint_kit_index_knife, index_falchion, 3, wear);
+				apply_knife_skin(weapon, WEAPON_KNIFE_FALCHION, config_system.paint_kit_index_knife, index_falchion, 3, wear);
 				break;
 			case 7:
-				apply_knife_skin(weapon, WEAPON_KNIFE_FLIP, c_config::get().paint_kit_index_knife, index_flip, 3, wear);
+				apply_knife_skin(weapon, WEAPON_KNIFE_FLIP, config_system.paint_kit_index_knife, index_flip, 3, wear);
 				break;
 			case 8:
-				apply_knife_skin(weapon, WEAPON_KNIFE_GUT, c_config::get().paint_kit_index_knife, index_gut, 3, wear);
+				apply_knife_skin(weapon, WEAPON_KNIFE_GUT, config_system.paint_kit_index_knife, index_gut, 3, wear);
 				break;
 			case 9:
-				apply_knife_skin(weapon, WEAPON_KNIFE_TACTICAL, c_config::get().paint_kit_index_knife, index_huntsman, 3, wear);
+				apply_knife_skin(weapon, WEAPON_KNIFE_TACTICAL, config_system.paint_kit_index_knife, index_huntsman, 3, wear);
 				break;
 			case 10:
-				apply_knife_skin(weapon, WEAPON_KNIFE_PUSH, c_config::get().paint_kit_index_knife, index_shadow_daggers, 3, wear);
+				apply_knife_skin(weapon, WEAPON_KNIFE_PUSH, config_system.paint_kit_index_knife, index_shadow_daggers, 3, wear);
 				break;
 			case 11:
-				apply_knife_skin(weapon, WEAPON_KNIFE_GYPSY_JACKKNIFE, c_config::get().paint_kit_index_knife, index_navaja, 3, wear);
+				apply_knife_skin(weapon, WEAPON_KNIFE_GYPSY_JACKKNIFE, config_system.paint_kit_index_knife, index_navaja, 3, wear);
 				break;
 			case 12:
-				apply_knife_skin(weapon, WEAPON_KNIFE_STILETTO, c_config::get().paint_kit_index_knife, index_stiletto, 3, wear);
+				apply_knife_skin(weapon, WEAPON_KNIFE_STILETTO, config_system.paint_kit_index_knife, index_stiletto, 3, wear);
 				break;
 			case 13:
-				apply_knife_skin(weapon, WEAPON_KNIFE_WIDOWMAKER, c_config::get().paint_kit_index_knife, index_talon, 3, wear);
+				apply_knife_skin(weapon, WEAPON_KNIFE_WIDOWMAKER, config_system.paint_kit_index_knife, index_talon, 3, wear);
 				break;
 			case 14:
-				apply_knife_skin(weapon, WEAPON_KNIFE_URSUS, c_config::get().paint_kit_index_knife, index_ursus, 3, wear);
+				apply_knife_skin(weapon, WEAPON_KNIFE_URSUS, config_system.paint_kit_index_knife, index_ursus, 3, wear);
 				break;
 			}
 		}
@@ -196,67 +198,67 @@ void c_skinchanger::run() noexcept {
 		//weapons
 		switch (weapon->item_definition_index()) {
 		case WEAPON_USP_SILENCER:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_usp;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_usp;
 			break;
 		case WEAPON_HKP2000:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_p2000;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_p2000;
 			break;
 		case WEAPON_GLOCK:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_glock;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_glock;
 			break;
 		case WEAPON_P250:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_p250;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_p250;
 			break;
 		case WEAPON_FIVESEVEN:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_fiveseven;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_fiveseven;
 			break;
 		case WEAPON_TEC9:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_tec;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_tec;
 			break;
 		case WEAPON_CZ75A:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_cz;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_cz;
 			break;
 		case WEAPON_ELITE:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_duals;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_duals;
 			break;
 		case WEAPON_DEAGLE:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_deagle;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_deagle;
 			break;
 		case WEAPON_REVOLVER:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_revolver;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_revolver;
 			break;
 		case WEAPON_FAMAS:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_famas;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_famas;
 			break;
 		case WEAPON_GALILAR:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_galil;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_galil;
 			break;
 		case WEAPON_M4A1:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_m4a4;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_m4a4;
 			break;
 		case WEAPON_M4A1_SILENCER:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_m4a1;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_m4a1;
 			break;
 		case WEAPON_AK47:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_ak47;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_ak47;
 			break;
 		case WEAPON_SG556:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_sg553;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_sg553;
 			break;
 		case WEAPON_AUG:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_aug;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_aug;
 			break;
 		case WEAPON_SSG08:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_ssg08;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_ssg08;
 			break;
 		case WEAPON_AWP:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_awp;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_awp;
 			break;
 		case WEAPON_SCAR20:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_scar;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_scar;
 			break;
 		case WEAPON_G3SG1:
-			weapon->fallback_paint_kit() = c_config::get().paint_kit_index_g3sg1;
+			weapon->fallback_paint_kit() = config_system.paint_kit_index_g3sg1;
 			break;
 		}
 

@@ -6,6 +6,8 @@
 #include "../../../dependencies/common_includes.hpp"
 #include "../../features/backtrack/backtrack.hpp"
 
+c_aimbot aimbot;
+
 int c_aimbot::get_nearest_bone(player_t* entity, c_usercmd* user_cmd) noexcept {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 	float best_dist = 360.f;
@@ -50,7 +52,7 @@ void c_aimbot::weapon_settings(weapon_t* weapon) noexcept {
 		return;
 
 	if (is_pistol(weapon)) {
-		switch (c_config::get().aim_bone_pistol) {
+		switch (config_system.aim_bone_pistol) {
 		case 0:
 			hitbox_id = hitbox_head;
 			break;
@@ -68,13 +70,13 @@ void c_aimbot::weapon_settings(weapon_t* weapon) noexcept {
 			break;
 		}
 
-		aim_smooth = c_config::get().aim_smooth_pistol;
-		aim_fov = c_config::get().aim_fov_pistol;
-		rcs_x = c_config::get().rcs_x_pistol;
-		rcs_y = c_config::get().rcs_y_pistol;
+		aim_smooth = config_system.aim_smooth_pistol;
+		aim_fov = config_system.aim_fov_pistol;
+		rcs_x = config_system.rcs_x_pistol;
+		rcs_y = config_system.rcs_y_pistol;
 	}
 	else if (is_rifle(weapon)) {
-		switch (c_config::get().aim_bone_rifle) {
+		switch (config_system.aim_bone_rifle) {
 		case 0:
 			hitbox_id = hitbox_head;
 			break;
@@ -92,13 +94,13 @@ void c_aimbot::weapon_settings(weapon_t* weapon) noexcept {
 			break;
 		}
 
-		aim_smooth = c_config::get().aim_smooth_rifle;
-		aim_fov = c_config::get().aim_fov_rifle;
-		rcs_x = c_config::get().rcs_x_rifle;
-		rcs_y = c_config::get().rcs_y_rifle;
+		aim_smooth = config_system.aim_smooth_rifle;
+		aim_fov = config_system.aim_fov_rifle;
+		rcs_x = config_system.rcs_x_rifle;
+		rcs_y = config_system.rcs_y_rifle;
 	}
 	else if (is_sniper(weapon)) {
-		switch (c_config::get().aim_bone_sniper) {
+		switch (config_system.aim_bone_sniper) {
 		case 0:
 			hitbox_id = hitbox_head;
 			break;
@@ -116,13 +118,13 @@ void c_aimbot::weapon_settings(weapon_t* weapon) noexcept {
 			break;
 		}
 
-		aim_smooth = c_config::get().aim_smooth_sniper;
-		aim_fov = c_config::get().aim_fov_sniper;
-		rcs_x = c_config::get().rcs_x_sniper;
-		rcs_y = c_config::get().rcs_y_sniper;
+		aim_smooth = config_system.aim_smooth_sniper;
+		aim_fov = config_system.aim_fov_sniper;
+		rcs_x = config_system.rcs_x_sniper;
+		rcs_y = config_system.rcs_y_sniper;
 	}
 	else if (is_heavy(weapon)) {
-		switch (c_config::get().aim_bone_heavy) {
+		switch (config_system.aim_bone_heavy) {
 		case 0:
 			hitbox_id = hitbox_head;
 			break;
@@ -140,13 +142,13 @@ void c_aimbot::weapon_settings(weapon_t* weapon) noexcept {
 			break;
 		}
 
-		aim_smooth = c_config::get().aim_smooth_heavy;
-		aim_fov = c_config::get().aim_fov_heavy;
-		rcs_x = c_config::get().rcs_x_heavy;
-		rcs_y = c_config::get().rcs_y_heavy;
+		aim_smooth = config_system.aim_smooth_heavy;
+		aim_fov = config_system.aim_fov_heavy;
+		rcs_x = config_system.rcs_x_heavy;
+		rcs_y = config_system.rcs_y_heavy;
 	}
 	else if (is_smg(weapon)) {
-		switch (c_config::get().aim_bone_smg) {
+		switch (config_system.aim_bone_smg) {
 		case 0:
 			hitbox_id = hitbox_head;
 			break;
@@ -164,10 +166,10 @@ void c_aimbot::weapon_settings(weapon_t* weapon) noexcept {
 			break;
 		}
 
-		aim_smooth = c_config::get().aim_smooth_smg;
-		aim_fov = c_config::get().aim_fov_smg;
-		rcs_x = c_config::get().rcs_x_smg;
-		rcs_y = c_config::get().rcs_y_smg;
+		aim_smooth = config_system.aim_smooth_smg;
+		aim_fov = config_system.aim_fov_smg;
+		rcs_x = config_system.rcs_x_smg;
+		rcs_y = config_system.rcs_y_smg;
 	}
 }
 
@@ -187,7 +189,7 @@ int c_aimbot::find_target(c_usercmd* user_cmd) noexcept {
 
 		//find nearest target to crosshair using nearest bone (this should fix nearest bone selection)
 		angle = c_math::get().calculate_angle(local_eye_pos, entity_bone_pos, user_cmd->viewangles);
-		auto fov = c_config::get().aim_distance_based_fov ? c_math::get().distance_based_fov(distance, c_math::get().calculate_angle_alternative(local_eye_pos, entity_bone_pos), user_cmd) : std::hypotf(angle.x, angle.y);
+		auto fov = config_system.aim_distance_based_fov ? c_math::get().distance_based_fov(distance, c_math::get().calculate_angle_alternative(local_eye_pos, entity_bone_pos), user_cmd) : std::hypotf(angle.x, angle.y);
 		if (fov < best_fov) {
 			best_fov = fov;
 			best_target = i;
@@ -204,7 +206,7 @@ void c_aimbot::run(c_usercmd* user_cmd) noexcept {
 	weapon_settings(weapon);
 
 	//run aimbot
-	if (c_config::get().aim_enabled && user_cmd->buttons & in_attack || GetAsyncKeyState(c_config::get().aim_key)) {
+	if (config_system.aim_enabled && user_cmd->buttons & in_attack || GetAsyncKeyState(config_system.aim_key)) {
 		if (auto target = find_target(user_cmd)) {
 			auto entity = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(target));
 
@@ -216,11 +218,11 @@ void c_aimbot::run(c_usercmd* user_cmd) noexcept {
 			if (!local_player->can_see_player_pos(entity, entity->get_eye_pos()))
 				return;
 
-			if (!c_config::get().aim_team_check && entity->is_in_local_team())
+			if (!config_system.aim_team_check && entity->is_in_local_team())
 				return;
 
 			//smoke check
-			if (!c_config::get().smoke_check && utilities::is_behind_smoke(local_player->get_eye_pos(), entity->get_hitbox_position(entity, hitbox_head)))
+			if (!config_system.smoke_check && utilities::is_behind_smoke(local_player->get_eye_pos(), entity->get_hitbox_position(entity, hitbox_head)))
 				return;
 
 			//weapon check
@@ -228,7 +230,7 @@ void c_aimbot::run(c_usercmd* user_cmd) noexcept {
 				return;
 
 			//scope check
-			if (is_sniper(weapon) && !local_player->is_scoped() && !c_config::get().scope_aim)
+			if (is_sniper(weapon) && !local_player->is_scoped() && !config_system.scope_aim)
 				return;
 
 			//basic rcs system
@@ -237,14 +239,14 @@ void c_aimbot::run(c_usercmd* user_cmd) noexcept {
 			aim_punch.x *= rcs_x;
 			aim_punch.y *= rcs_y;
 
-			if (c_config::get().aim_at_backtrack) {
+			if (config_system.aim_at_backtrack) {
 				auto record = &records[entity->index()];
-				if (record && record->size() && c_backtrack::get().valid_tick(record->front().simulation_time)) {
+				if (record && record->size() && backtrack.valid_tick(record->front().simulation_time)) {
 					angle = c_math::get().calculate_angle(local_player->get_eye_pos(), record->back().head, user_cmd->viewangles + aim_punch);
 				}
 			}
 			else {
-				switch (c_config::get().aim_mode) {
+				switch (config_system.aim_mode) {
 				case 0:
 					//hitbox
 					angle = c_math::get().calculate_angle(local_player->get_eye_pos(), entity->get_hitbox_position(entity, hitbox_id), user_cmd->viewangles + aim_punch);
@@ -259,7 +261,7 @@ void c_aimbot::run(c_usercmd* user_cmd) noexcept {
 			angle /= aim_smooth;
 			user_cmd->viewangles += angle;
 
-			if (!c_config::get().aim_silent) {
+			if (!config_system.aim_silent) {
 				interfaces::engine->set_view_angles(user_cmd->viewangles);
 			}
 		}

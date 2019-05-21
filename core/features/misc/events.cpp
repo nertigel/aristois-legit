@@ -5,21 +5,23 @@
 
 #pragma comment(lib, "Winmm.lib")
 
+c_hooked_events events;
+
 void c_hooked_events::fire_game_event(i_game_event* event) noexcept {
 	auto event_name = event->get_name();
 
 	if (!strcmp(event_name, "player_hurt")) {
-		c_hitmarker::get().event(event);
-		c_event_logs::get().event_player_hurt(event);
-		c_sound_esp::get().event_player_hurt(event);
+		hitmarker.event(event);
+		event_logs.event_player_hurt(event);
+		sound_esp.event_player_hurt(event);
 	}
 
 	else if (strstr(event->get_name(), "item_purchase")) {
-		c_event_logs::get().event_item_purchase(event);
+		event_logs.event_item_purchase(event);
 	}
 
 	else if (strstr(event->get_name(), "player_footstep")) {
-		c_sound_esp::get().event_player_footstep(event);
+		sound_esp.event_player_footstep(event);
 	}
 }
 

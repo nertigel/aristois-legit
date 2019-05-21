@@ -1,5 +1,7 @@
 #include "logs.hpp"
 
+c_event_logs event_logs;
+
 void c_event_logs::run() noexcept {
 	if (logs.empty())
 		return;
@@ -25,14 +27,14 @@ void c_event_logs::run() noexcept {
 		}
 
 		const auto text = log.message.c_str();
-		render::get().draw_text(log.x, last_y + log.y, render::get().name_font, text, false, color(255, 255, 255, 255));
+		render.draw_text(log.x, last_y + log.y, render.name_font, text, false, color(255, 255, 255, 255));
 
 		last_y += 14;
 	}
 }
 
 void c_event_logs::event_item_purchase(i_game_event* event) noexcept {
-	if (!c_config::get().logs_player_bought)
+	if (!config_system.logs_player_bought)
 		return;
 
 	auto userid = event->get_int("userid");
@@ -71,7 +73,7 @@ void c_event_logs::event_item_purchase(i_game_event* event) noexcept {
 }
 
 void c_event_logs::event_player_hurt(i_game_event* event) noexcept {
-	if (!c_config::get().logs_player_hurt)
+	if (!config_system.logs_player_hurt)
 		return;
 
 	if (!event) {
@@ -117,7 +119,7 @@ void c_event_logs::event_player_hurt(i_game_event* event) noexcept {
 
 		utilities::console_warning("[player hurt] ");
 		interfaces::console->console_printf("hit %s in the %s for %d damage (%d health remaining). \n", player_name.c_str(), hitgroup, damage, health);
-		c_event_logs::get().add(ss.str(), color(255, 255, 255, 255));
+		event_logs.add(ss.str(), color(255, 255, 255, 255));
 
 		//player info
 		utilities::console_warning("[player info] ");

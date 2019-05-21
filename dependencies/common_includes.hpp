@@ -28,5 +28,4 @@
 #include "../source-sdk/sdk.hpp"
 #include "../core/hooks/hooks.hpp"
 #include "../core/menu/config/config.hpp"
-#include "../dependencies/utilities/singleton.hpp"
 #include "../dependencies/math/math.hpp"

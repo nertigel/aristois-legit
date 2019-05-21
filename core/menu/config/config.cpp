@@ -1,6 +1,8 @@
 #include "config.hpp"
 #include <fstream>
 
+c_config config_system;
+
 bool c_config::save_config(std::string file_name) {
 	std::string file_path = "C:\\aristois\\" + file_name + ".cfg";
 	std::fstream file(file_path, std::ios::out | std::ios::in | std::ios::trunc);

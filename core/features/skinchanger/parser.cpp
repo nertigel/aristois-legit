@@ -1,5 +1,8 @@
 #include <algorithm>
 #include "parser.hpp"
+
+c_kit_parser kit_parser;
+
 std::vector<paint_kit> parser_skins;
 std::vector<paint_kit> parser_gloves;
 class CCStrike15ItemSchema;

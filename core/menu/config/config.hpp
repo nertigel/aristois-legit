@@ -1,9 +1,8 @@
 #include <Windows.h>
 #include <string>
 #include <vector>
-#include "../../../dependencies/utilities/singleton.hpp"
 
-class c_config : public singleton< c_config > {
+class c_config {
 public:
 	int counts;
 	bool save_config(std::string file_name);
@@ -187,3 +186,5 @@ public:
 	bool disable_post_processing = false;
 	bool recoil_crosshair = false;
 };
+
+extern c_config config_system;

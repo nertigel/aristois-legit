@@ -3,7 +3,7 @@
 #include <deque>
 #include "../../../dependencies/common_includes.hpp"
 
-class c_event_logs : public singleton<c_event_logs> {
+class c_event_logs {
 public:
 	void run() noexcept;
 	void event_item_purchase(i_game_event * event) noexcept;
@@ -29,3 +29,5 @@ private:
 
 	std::deque< loginfo_t > logs;
 };
+
+extern c_event_logs event_logs;

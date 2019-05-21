@@ -1,7 +1,7 @@
 #pragma once
 #include "../../../dependencies/common_includes.hpp"
 
-class c_visuals : public singleton< c_visuals > {
+class c_visuals {
 public:
 	void run() noexcept;
 	void entity_esp(player_t * entity) noexcept;
@@ -96,3 +96,5 @@ private:
 	void projectiles(player_t * entity) noexcept;
 	void bomb_esp(player_t * entity) noexcept;
 };
+
+extern c_visuals visuals;

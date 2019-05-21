@@ -9,3 +9,4 @@ public:
 	int get_event_debug_id(void) noexcept;
 };
 
+extern c_hooked_events events;

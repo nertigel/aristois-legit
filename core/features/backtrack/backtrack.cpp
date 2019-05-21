@@ -1,5 +1,7 @@
 #include "backtrack.hpp"
 
+c_backtrack backtrack;
+
 std::deque<stored_records> records[65];
 convars cvars;
 
@@ -23,7 +25,7 @@ bool c_backtrack::valid_tick(float simtime) noexcept {
 
 void c_backtrack::update() noexcept {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
-	if (!c_config::get().backtrack || !local_player || !local_player->is_alive()) {
+	if (!config_system.backtrack || !local_player || !local_player->is_alive()) {
 		if (!records->empty())
 			records->clear();
 
@@ -49,7 +51,7 @@ void c_backtrack::update() noexcept {
 		if (records[i].size() && (records[i].front().simulation_time == entity->simulation_time()))
 			continue;
 
-		while (records[i].size() > 3 && records[i].size() > static_cast<size_t>(time_to_ticks(static_cast<float>(c_config::get().backtrack_ms) / 1000.f)))
+		while (records[i].size() > 3 && records[i].size() > static_cast<size_t>(time_to_ticks(static_cast<float>(config_system.backtrack_ms) / 1000.f)))
 			records[i].pop_back();
 
 		auto var_map = reinterpret_cast<uintptr_t>(entity) + 0x24;
@@ -68,7 +70,7 @@ void c_backtrack::update() noexcept {
 }
 
 void c_backtrack::run(c_usercmd * cmd) noexcept {
-	if (!c_config::get().backtrack)
+	if (!config_system.backtrack)
 		return;
 
 	if (!(cmd->buttons & in_attack))

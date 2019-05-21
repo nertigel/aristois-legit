@@ -9,10 +9,11 @@ struct paint_kit {
 	}
 };
 
-class c_kit_parser : public singleton <c_kit_parser> {
+class c_kit_parser {
 public:
 	void setup() noexcept;
 };
 
 extern std::vector<paint_kit> parser_skins;
 extern std::vector<paint_kit> parser_gloves;
+extern c_kit_parser kit_parser;

@@ -21,7 +21,7 @@ struct convars {
 extern std::deque<stored_records> records[65];
 extern convars cvars;
 
-class c_backtrack : public singleton< c_backtrack > {
+class c_backtrack  {
 public:
 	void update() noexcept;
 	void run(c_usercmd*) noexcept;
@@ -40,3 +40,5 @@ public:
 		cvars.max_unlag = interfaces::console->get_convar("sv_maxunlag");
 	}
 };
+
+extern c_backtrack backtrack;

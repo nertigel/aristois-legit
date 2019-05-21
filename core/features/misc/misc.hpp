@@ -1,7 +1,7 @@
 #pragma once
 #include "../../../dependencies/common_includes.hpp"
 
-class c_misc : public singleton <c_misc> {
+class c_misc {
 public:
 	void remove_smoke() noexcept;
 	void remove_flash() noexcept;
@@ -15,3 +15,5 @@ public:
 	void force_crosshair() noexcept;
 private:
 };
+
+extern c_misc misc;

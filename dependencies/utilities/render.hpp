@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include "singleton.hpp"
 #include "../interfaces/interfaces.hpp"
 
 enum font_flags {
@@ -19,7 +18,7 @@ enum font_flags {
 	fontflag_bitmap = 0x800,
 };
 
-class render : public singleton<render> {
+class c_render {
 public:
 	DWORD watermark_font;
 	DWORD name_font;
@@ -111,3 +110,5 @@ public:
 		return area;
 	}
 };
+
+extern c_render render;

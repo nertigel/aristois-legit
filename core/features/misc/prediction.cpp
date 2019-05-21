@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 
+c_prediction engine_prediction;
+
 void c_prediction::start_prediction(c_usercmd* command) noexcept {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 

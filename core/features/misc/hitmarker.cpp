@@ -1,13 +1,16 @@
 #include "hitmarker.hpp"
 #include "../misc/logs.hpp"
+
+c_hitmarker hitmarker;
+
 int hitmarker_time = 0;
 
 void c_hitmarker::run() noexcept {
 	if (!interfaces::engine->is_connected() && !interfaces::engine->is_in_game())
 		return;
 
-	if (c_config::get().hitmarker || c_config::get().hitmarker_sound) {
-		c_hitmarker::get().draw();
+	if (config_system.hitmarker || config_system.hitmarker_sound) {
+		hitmarker.draw();
 	}
 }
 
@@ -21,7 +24,7 @@ void c_hitmarker::event(i_game_event* event) noexcept {
 	if (attacker == local_player) {
 		hitmarker_time = 255;
 
-		switch (c_config::get().hitmarker_sound) {
+		switch (config_system.hitmarker_sound) {
 		case 0:
 			break;
 		case 1:
@@ -38,7 +41,7 @@ void c_hitmarker::event(i_game_event* event) noexcept {
 }
 
 void c_hitmarker::draw() noexcept {
-	if (!c_config::get().hitmarker)
+	if (!config_system.hitmarker)
 		return;
 
 	int width, height;
@@ -49,10 +52,10 @@ void c_hitmarker::draw() noexcept {
 	if (hitmarker_time > 0) {
 		float alpha = hitmarker_time;
 
-		render::get().draw_line(width_mid + 6, height_mid + 6, width_mid + 3, height_mid + 3, color(255, 255, 255, alpha));
-		render::get().draw_line(width_mid - 6, height_mid + 6, width_mid - 3, height_mid + 3, color(255, 255, 255, alpha));
-		render::get().draw_line(width_mid + 6, height_mid - 6, width_mid + 3, height_mid - 3, color(255, 255, 255, alpha));
-		render::get().draw_line(width_mid - 6, height_mid - 6, width_mid - 3, height_mid - 3, color(255, 255, 255, alpha));
+		render.draw_line(width_mid + 6, height_mid + 6, width_mid + 3, height_mid + 3, color(255, 255, 255, alpha));
+		render.draw_line(width_mid - 6, height_mid + 6, width_mid - 3, height_mid + 3, color(255, 255, 255, alpha));
+		render.draw_line(width_mid + 6, height_mid - 6, width_mid + 3, height_mid - 3, color(255, 255, 255, alpha));
+		render.draw_line(width_mid - 6, height_mid - 6, width_mid - 3, height_mid - 3, color(255, 255, 255, alpha));
 
 		hitmarker_time -= 2;
 	}

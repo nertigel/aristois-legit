@@ -22,7 +22,6 @@ std::unique_ptr<vmt_hook> hooks::renderview_hook;
 std::unique_ptr<vmt_hook> hooks::surface_hook;
 std::unique_ptr<vmt_hook> hooks::modelrender_hook;
 
-c_hooked_events hooked_events;
 uint8_t* present_address;
 hooks::present_fn original_present;
 uint8_t* reset_address;
@@ -38,7 +37,7 @@ void hooks::initialize() {
 	surface_hook = std::make_unique<vmt_hook>();
 	modelrender_hook = std::make_unique<vmt_hook>();
 
-	render::get().setup_fonts();
+	render.setup_fonts();
 
 	client_hook->setup(interfaces::client);
 	client_hook->hook_index(37, reinterpret_cast<void*>(frame_stage_notify));
@@ -81,8 +80,8 @@ void hooks::initialize() {
 	interfaces::console->get_convar("viewmodel_offset_y")->callbacks.set_size(false);
 	interfaces::console->get_convar("viewmodel_offset_z")->callbacks.set_size(false);
 
-	hooked_events.setup();
-	c_kit_parser::get().setup();
+	events.setup();
+	kit_parser.setup();
 
 	printf("Hooks initialized!\n");
 }
@@ -96,7 +95,7 @@ void hooks::shutdown() {
 	surface_hook->release();
 	modelrender_hook->release();
 
-	hooked_events.release();
+	events.release();
 
 	**reinterpret_cast<void***>(present_address) = reinterpret_cast<void*>(original_present);
 	**reinterpret_cast<void***>(reset_address) = reinterpret_cast<void*>(original_reset);
@@ -108,7 +107,7 @@ float __stdcall hooks::viewmodel_fov() {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 
 	if (local_player && local_player->is_alive()) {
-		return 68.f + c_config::get().viewmodel_fov;
+		return 68.f + config_system.viewmodel_fov;
 	}
 	else {
 		return 68.f;
@@ -120,13 +119,13 @@ void __stdcall hooks::on_screen_size_changed(int old_width, int old_height) {
 
 	original_fn(interfaces::surface, old_width, old_height);
 
-	render::get().setup_fonts();
+	render.setup_fonts();
 }
 
 int __stdcall hooks::do_post_screen_effects(int value) {
 	static auto original_fn = reinterpret_cast<do_post_screen_effects_fn>(clientmode_hook->get_original(44));
 
-	c_visuals::get().glow();
+	visuals.glow();
 
 	return original_fn(interfaces::clientmode, value);
 }
@@ -146,26 +145,26 @@ bool __stdcall hooks::create_move(float frame_time, c_usercmd* user_cmd) {
 
 	if (interfaces::engine->is_connected() && interfaces::engine->is_in_game()) {
 		//misc
-		c_movement::get().bunnyhop(user_cmd);
-		c_misc::get().clantag_spammer();
-		c_misc::get().viewmodel_offset();
-		c_misc::get().disable_post_processing();
-		c_misc::get().recoil_crosshair();
-		c_misc::get().force_crosshair();
+		movement.bunnyhop(user_cmd);
+		misc.clantag_spammer();
+		misc.viewmodel_offset();
+		misc.disable_post_processing();
+		misc.recoil_crosshair();
+		misc.force_crosshair();
 
 		//legitbot and prediction stuff
-		c_movement::get().edge_jump_pre_prediction(user_cmd);
-		c_prediction::get().start_prediction(user_cmd); //small note for prediction, we need to run bhop before prediction otherwise it will be buggy
+		movement.edge_jump_pre_prediction(user_cmd);
+		engine_prediction.start_prediction(user_cmd); //small note for prediction, we need to run bhop before prediction otherwise it will be buggy
 
-		c_aimbot::get().run(user_cmd);
-		c_backtrack::get().run(user_cmd);
+		aimbot.run(user_cmd);
+		backtrack.run(user_cmd);
 
-		c_prediction::get().end_prediction();
-		c_movement::get().edge_jump_post_prediction(user_cmd);
+		engine_prediction.end_prediction();
+		movement.edge_jump_post_prediction(user_cmd);
 
-		c_nightmode::get().run();
+		night_mode.run();
 
-		// clamping movement
+		//clamping movement
 		auto forward = user_cmd->forwardmove;
 		auto right = user_cmd->sidemove;
 		auto up = user_cmd->upmove;
@@ -201,8 +200,8 @@ void __fastcall hooks::override_view(void* _this, void* _edx, c_viewsetup* setup
 	static auto original_fn = reinterpret_cast<override_view_fn>(clientmode_hook->get_original(18));
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 
-	if (local_player && !local_player->is_scoped() && c_config::get().fov > 0 && c_config::get().visuals_enabled) {
-		setup->fov = 90 + c_config::get().fov;
+	if (local_player && !local_player->is_scoped() && config_system.fov > 0 && config_system.visuals_enabled) {
+		setup->fov = 90 + config_system.fov;
 	}
 
 	original_fn(interfaces::clientmode, _this, setup);
@@ -218,14 +217,14 @@ void __stdcall hooks::draw_model_execute(IMatRenderContext * ctx, const draw_mod
 	material->increment_reference_count();
 
 	if (interfaces::engine->is_connected() && interfaces::engine->is_in_game()) {
-		if (c_config::get().backtrack_visualize && strstr(model_name, "models/player")) {
+		if (config_system.backtrack_visualize && strstr(model_name, "models/player")) {
 			if (entity) {
 				int i = entity->index();
 
 				if (entity && !entity->dormant()) {
 					if (local_player && entity->team() != local_player->team()) {
 						auto record = &records[info.entity_index];
-						if (record && record->size() && c_backtrack::get().valid_tick(record->front().simulation_time)) {
+						if (record && record->size() && backtrack.valid_tick(record->front().simulation_time)) {
 							original_fn(interfaces::model_render, ctx, state, info, record->back().matrix);
 						}
 					}
@@ -234,13 +233,13 @@ void __stdcall hooks::draw_model_execute(IMatRenderContext * ctx, const draw_mod
 		}
 
 		if (strstr(model_name, "sleeve")) {
-			if (c_config::get().remove_sleeves) {
+			if (config_system.remove_sleeves) {
 				interfaces::render_view->set_blend(0.f);
 			}
 		}
 
 		if (strstr(model_name, "arms")) {
-			if (c_config::get().remove_hands) {
+			if (config_system.remove_hands) {
 				interfaces::render_view->set_blend(0.f);
 			}
 		}
@@ -252,20 +251,20 @@ void __stdcall hooks::draw_model_execute(IMatRenderContext * ctx, const draw_mod
 void __stdcall hooks::frame_stage_notify(int frame_stage) {
 	reinterpret_cast<frame_stage_notify_fn>(client_hook->get_original(37))(interfaces::client, frame_stage);
 
-	static auto backtrack_init = (c_backtrack::get().init(), false);
+	static auto backtrack_init = (backtrack.init(), false);
 
 	if (frame_stage == FRAME_RENDER_START) {
-		c_misc::get().remove_smoke();
-		c_misc::get().remove_flash();
+		misc.remove_smoke();
+		misc.remove_flash();
 	}
 
 	else if (frame_stage == FRAME_NET_UPDATE_POSTDATAUPDATE_START) {
-		c_skinchanger::get().run();
+		skin_changer.run();
 	}
 
 	else if (frame_stage == FRAME_NET_UPDATE_START && interfaces::engine->is_in_game()) {
-		c_backtrack::get().update();
-		c_sound_esp::get().draw();
+		backtrack.update();
+		sound_esp.draw();
 	}
 }
 void __stdcall hooks::paint_traverse(unsigned int panel, bool force_repaint, bool allow_force) {
@@ -278,7 +277,7 @@ void __stdcall hooks::paint_traverse(unsigned int panel, bool force_repaint, boo
 	}
 
 	if (interfaces::engine->is_connected() && interfaces::engine->is_in_game()) {
-		if (c_config::get().remove_scope && panel == _hud_zoom_panel)
+		if (config_system.remove_scope && panel == _hud_zoom_panel)
 			return;
 	}
 
@@ -295,19 +294,19 @@ void __stdcall hooks::paint_traverse(unsigned int panel, bool force_repaint, boo
 	}
 
 	else if (_panel == panel) {
-		c_visuals::get().run();
-		c_hitmarker::get().run();
-		c_event_logs::get().run();
-		c_misc::get().remove_scope();
-		c_misc::get().watermark();
-		c_misc::get().spectators();
+		visuals.run();
+		hitmarker.run();
+		event_logs.run();
+		misc.remove_scope();
+		misc.watermark();
+		misc.spectators();
 	}
 }
 
 void __stdcall hooks::scene_end() {
 	auto original_fn = reinterpret_cast<scene_end_fn>(renderview_hook->get_original(9));
 
-	c_visuals::get().chams();
+	visuals.chams();
 
 	original_fn(interfaces::render_view);
 }
@@ -323,18 +322,18 @@ LRESULT __stdcall hooks::wndproc(HWND hwnd, UINT message, WPARAM wparam, LPARAM 
 	else if (pressed && !GetAsyncKeyState(VK_INSERT)) {
 		pressed = false;
 
-		c_menu::get().opened = !c_menu::get().opened;
+		menu.opened = !menu.opened;
 	}
 
-	if (c_menu::get().opened) {
+	if (menu.opened) {
 		interfaces::inputsystem->enable_input(false);
 
 	}
-	else if (!c_menu::get().opened) {
+	else if (!menu.opened) {
 		interfaces::inputsystem->enable_input(true);
 	}
 
-	if (c_menu::get().opened && ImGui_ImplDX9_WndProcHandler(hwnd, message, wparam, lparam))
+	if (menu.opened && ImGui_ImplDX9_WndProcHandler(hwnd, message, wparam, lparam))
 		return true;
 
 	return CallWindowProcA(wndproc_original, hwnd, message, wparam, lparam);
@@ -343,7 +342,7 @@ LRESULT __stdcall hooks::wndproc(HWND hwnd, UINT message, WPARAM wparam, LPARAM 
 void __stdcall hooks::lock_cursor() {
 	auto original_fn = reinterpret_cast<lock_cursor_fn>(surface_hook->get_original(67));
 
-	if (c_menu::get().opened) {
+	if (menu.opened) {
 		interfaces::surface->unlock_cursor();
 		return;
 	}
@@ -354,17 +353,17 @@ void __stdcall hooks::lock_cursor() {
 static bool initialized = false;
 long __stdcall hooks::present(IDirect3DDevice9* device, RECT* source_rect, RECT* dest_rect, HWND dest_window_override, RGNDATA* dirty_region) {
 	if (!initialized) {
-		c_menu::get().apply_fonts();
-		c_menu::get().setup_resent(device);
+		menu.apply_fonts();
+		menu.setup_resent(device);
 		initialized = true;
 	}
 	if (initialized) {
-		c_menu::get().pre_render(device);
-		c_menu::get().post_render();
+		menu.pre_render(device);
+		menu.post_render();
 
-		c_menu::get().run_popup();
-		c_menu::get().run();
-		c_menu::get().end_present(device);
+		menu.run_popup();
+		menu.run();
+		menu.end_present(device);
 	}
 
 	return original_present(device, source_rect, dest_rect, dest_window_override, dirty_region);
@@ -374,9 +373,9 @@ long __stdcall hooks::reset(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* pre
 	if (!initialized)
 		original_reset(device, present_parameters);
 
-	c_menu::get().invalidate_objects();
+	menu.invalidate_objects();
 	long hr = original_reset(device, present_parameters);
-	c_menu::get().create_objects(device);
+	menu.create_objects(device);
 
 	return hr;
 }
