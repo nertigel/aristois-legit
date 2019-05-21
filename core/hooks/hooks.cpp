@@ -326,6 +326,14 @@ LRESULT __stdcall hooks::wndproc(HWND hwnd, UINT message, WPARAM wparam, LPARAM 
 		c_menu::get().opened = !c_menu::get().opened;
 	}
 
+	if (c_menu::get().opened) {
+		interfaces::inputsystem->enable_input(false);
+
+	}
+	else if (!c_menu::get().opened) {
+		interfaces::inputsystem->enable_input(true);
+	}
+
 	if (c_menu::get().opened && ImGui_ImplDX9_WndProcHandler(hwnd, message, wparam, lparam))
 		return true;
 
