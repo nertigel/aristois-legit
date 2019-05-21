@@ -388,7 +388,7 @@ void c_menu::run() {
 					ImGui::Checkbox("watermark", &config_system.watermark);
 					ImGui::Checkbox("disable post processing", &config_system.disable_post_processing);
 					ImGui::Checkbox("recoil crosshair", &config_system.recoil_crosshair);
-					ImGui::Checkbox("rank reveal", &c_config::get().rank_reveal);
+					ImGui::Checkbox("rank reveal", &config_system.rank_reveal);
 
 					ImGui::Checkbox("viewmodel offset", &config_system.viewmodel_offset);
 					if (config_system.viewmodel_offset) {
