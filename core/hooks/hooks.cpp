@@ -151,6 +151,7 @@ bool __stdcall hooks::create_move(float frame_time, c_usercmd* user_cmd) {
 		misc.disable_post_processing();
 		misc.recoil_crosshair();
 		misc.force_crosshair();
+		misc.rank_reveal();
 
 		//legitbot and prediction stuff
 		movement.edge_jump_pre_prediction(user_cmd);
