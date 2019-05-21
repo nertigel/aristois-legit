@@ -40,6 +40,16 @@ void c_misc::remove_flash() noexcept {
 		local_player->flash_duration() = 0.0f;
 }
 
+void c_misc::rank_reveal() noexcept
+{
+	if (!c_config::get().rank_reveal || !c_config::get().misc_enabled)
+		return;
+	if (GetKeyState(VK_TAB))
+	{
+		utilities::ServerRankRevealAll();
+	}
+}
+
 void c_misc::remove_scope() noexcept {
 	if (!config_system.remove_scope || !config_system.visuals_enabled)
 		return;
