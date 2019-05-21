@@ -185,6 +185,7 @@ public:
 	bool vis_chams_smoke_check = false;
 	bool disable_post_processing = false;
 	bool recoil_crosshair = false;
+	bool rank_reveal = false;
 };
 
 extern c_config config_system;
