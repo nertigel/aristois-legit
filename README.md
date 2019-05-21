@@ -19,9 +19,11 @@ Press `INSERT` key.
 Press `END` key.
 
 ## Media
-![image](https://i.imgur.com/KBo4mzn.png)
-![image](https://i.imgur.com/2cmVKTJ.png)
-![image](https://i.imgur.com/KW4UKyo.png)
-![image](https://i.imgur.com/Wh5nY3b.png)
-![image](https://i.imgur.com/2cmVKTJ.png)
-
+![image](https://i.imgur.com/v6PVR1g.png)
+![image](https://i.imgur.com/ehQE2vj.png)
+![image](https://i.imgur.com/UD1e2nC.png)
+![image](https://i.imgur.com/YqwLLQI.png)
+![image](https://i.imgur.com/iqQeJnT.png)
+![image](https://i.imgur.com/lqMVEwv.png)
+![image](https://i.imgur.com/YiApUn5.png)
+![image](https://i.imgur.com/ETQ7RhW.png)
