@@ -1,4 +1,3 @@
-#define _USE_MATH_DEFINES
 #include <cmath>
 #include "aimbot.hpp"
 #include "../../../source-sdk/sdk.hpp"
@@ -187,7 +186,6 @@ int c_aimbot::find_target(c_usercmd* user_cmd) noexcept {
 		if (!entity || entity == local_player || entity->dormant() || !entity->is_alive() || entity->has_gun_game_immunity())
 			continue;
 
-		//find nearest target to crosshair using nearest bone (this should fix nearest bone selection)
 		angle = c_math::get().calculate_angle(local_eye_pos, entity_bone_pos, user_cmd->viewangles);
 		auto fov = config_system.aim_distance_based_fov ? c_math::get().distance_based_fov(distance, c_math::get().calculate_angle_alternative(local_eye_pos, entity_bone_pos), user_cmd) : std::hypotf(angle.x, angle.y);
 		if (fov < best_fov) {
@@ -202,38 +200,30 @@ void c_aimbot::run(c_usercmd* user_cmd) noexcept {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 	auto weapon = local_player->active_weapon();
 
-	//run misc aimbot stuff
 	weapon_settings(weapon);
 
-	//run aimbot
 	if (config_system.aim_enabled && user_cmd->buttons & in_attack || GetAsyncKeyState(config_system.aim_key)) {
 		if (auto target = find_target(user_cmd)) {
 			auto entity = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(target));
 
-			//we dont wanna aim without ammo in clip
 			if (!weapon || !weapon->clip1_count())
 				return;
 
-			//visible check
 			if (!local_player->can_see_player_pos(entity, entity->get_eye_pos()))
 				return;
 
 			if (!config_system.aim_team_check && entity->is_in_local_team())
 				return;
 
-			//smoke check
 			if (!config_system.smoke_check && utilities::is_behind_smoke(local_player->get_eye_pos(), entity->get_hitbox_position(entity, hitbox_head)))
 				return;
 
-			//weapon check
 			if (is_knife(weapon) || is_grenade(weapon)|| is_bomb(weapon))
 				return;
 
-			//scope check
 			if (is_sniper(weapon) && !local_player->is_scoped() && !config_system.scope_aim)
 				return;
 
-			//basic rcs system
 			auto recoil_scale = interfaces::console->get_convar("weapon_recoil_scale");
 			auto aim_punch = local_player->aim_punch_angle() * recoil_scale->get_float();
 			aim_punch.x *= rcs_x;
@@ -248,11 +238,9 @@ void c_aimbot::run(c_usercmd* user_cmd) noexcept {
 			else {
 				switch (config_system.aim_mode) {
 				case 0:
-					//hitbox
 					angle = c_math::get().calculate_angle(local_player->get_eye_pos(), entity->get_hitbox_position(entity, hitbox_id), user_cmd->viewangles + aim_punch);
 					break;
 				case 1:
-					//nearest
 					angle = c_math::get().calculate_angle(local_player->get_eye_pos(), entity->get_bone_position(get_nearest_bone(entity, user_cmd)), user_cmd->viewangles + aim_punch);
 					break;
 				}

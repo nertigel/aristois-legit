@@ -44,7 +44,7 @@ void c_misc::rank_reveal() noexcept {
 	if (!config_system.rank_reveal || !config_system.misc_enabled)
 		return;
 
-	if (GetKeyState(VK_TAB)) {
+	if (GetAsyncKeyState(VK_TAB)) {
 		utilities::server_rank_reveal();
 	}
 }

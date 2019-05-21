@@ -264,8 +264,11 @@ void __stdcall hooks::frame_stage_notify(int frame_stage) {
 	}
 
 	else if (frame_stage == FRAME_NET_UPDATE_START && interfaces::engine->is_in_game()) {
-		backtrack.update();
 		sound_esp.draw();
+	}
+
+	else if (frame_stage == FRAME_NET_UPDATE_END && interfaces::engine->is_in_game()) {
+		backtrack.update();
 	}
 }
 void __stdcall hooks::paint_traverse(unsigned int panel, bool force_repaint, bool allow_force) {

@@ -6,7 +6,7 @@ std::deque<stored_records> records[65];
 convars cvars;
 
 float c_backtrack::get_lerp_time() noexcept {
-	auto ratio = std::clamp(cvars.interp_ratio->get_float(), (cvars.min_interp_ratio->get_float() != 1.f) ? cvars.min_interp_ratio->get_float() : 1.f, cvars.max_interp_ratio->get_float());
+	auto ratio = std::clamp(cvars.interp_ratio->get_float(), cvars.min_interp_ratio->get_float(), cvars.max_interp_ratio->get_float());
 	return max(cvars.interp->get_float(), (ratio / ((cvars.max_update_rate) ? cvars.max_update_rate->get_float() : cvars.update_rate->get_float())));
 }
 
@@ -31,28 +31,16 @@ void c_backtrack::update() noexcept {
 
 		return;
 	}
+
 	for (int i = 1; i <= interfaces::globals->max_clients; i++) {
 		auto entity = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(i));
 		if (!entity || entity == local_player || entity->dormant() || !entity->is_alive() || !entity->is_enemy()) {
-			if (records[i].size() > 2)
-				records[i].clear();
-
+			records[i].clear();
 			continue;
-		}
-
-		auto& rec = records[i];
-		for (auto r = rec.begin(); r != rec.end();) {
-			if (!valid_tick(r->simulation_time))
-				r = rec.erase(r);
-			else
-				r++;
 		}
 
 		if (records[i].size() && (records[i].front().simulation_time == entity->simulation_time()))
 			continue;
-
-		while (records[i].size() > 3 && records[i].size() > static_cast<size_t>(time_to_ticks(static_cast<float>(config_system.backtrack_ms) / 1000.f)))
-			records[i].pop_back();
 
 		auto var_map = reinterpret_cast<uintptr_t>(entity) + 0x24;
 		auto vars_count = *reinterpret_cast<int*>(static_cast<uintptr_t>(var_map) + 0x14);
@@ -66,6 +54,12 @@ void c_backtrack::update() noexcept {
 		entity->setup_bones(record.matrix, 128, 0x7FF00, interfaces::globals->cur_time);
 
 		records[i].push_front(record);
+
+		while (records[i].size() > 3 && records[i].size() > static_cast<size_t>(time_to_ticks(static_cast<float>(config_system.backtrack_ms) / 1000.f)))
+			records[i].pop_back();
+
+		if (auto invalid = std::find_if(std::cbegin(records[i]), std::cend(records[i]), [](const stored_records & rec) { return !backtrack.valid_tick(rec.simulation_time); }); invalid != std::cend(records[i]))
+			records[i].erase(invalid, std::cend(records[i]));
 	}
 }
 
