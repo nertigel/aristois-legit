@@ -3,6 +3,7 @@
 #include "../../source-sdk/math/vector3d.hpp"
 
 #define M_PI 3.14159265358979323846
+using ServerRankRevealAll2 = char(__cdecl*)(int*);
 
 namespace utilities {
 	template<typename FuncType>
@@ -39,6 +40,7 @@ namespace utilities {
 	void dump_steam_id();
 
 	void force_update();
+	extern ServerRankRevealAll2 ServerRankRevealAllEx;
 	void console_warning(const char * msg, ...);
 	const char * hitgroup_name(int hitgroup);
 	float csgo_armor(float damage, int armor_value);
