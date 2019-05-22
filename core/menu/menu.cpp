@@ -415,12 +415,9 @@ void c_menu::run() {
 				ImGui::BeginChild("movement", ImVec2(279, 543), true); {
 					ImGui::Checkbox("bunny hop", &config_system.bunny_hop);
 					if (config_system.bunny_hop) {
-						ImGui::Checkbox("humanize hops", &config_system.bunny_hop_humanize);
-						ImGui::SliderInt("hit chance", &config_system.bunny_hop_hitchance, 0, 100);
-						ImGui::Checkbox("minimum hops", &config_system.bunny_hop_minimum);
-						ImGui::SliderInt("minimum value", &config_system.bunny_hop_minimum_value, 0, 20);
-						ImGui::Checkbox("maximum hops", &config_system.bunny_hop_maximum);
-						ImGui::SliderInt("maximum value", &config_system.bunny_hop_maximum_value, 0, 20);
+						ImGui::SliderInt("hitchance", &config_system.bunny_hop_hitchance, 0, 100);
+						ImGui::SliderInt("minimum hops", &config_system.bunny_hop_minimum_value, 0, 20);
+						ImGui::SliderInt("maximum hops", &config_system.bunny_hop_maximum_value, 0, 20);
 					}
 
 

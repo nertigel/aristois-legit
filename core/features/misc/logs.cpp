@@ -39,9 +39,8 @@ void c_event_logs::event_item_purchase(i_game_event* event) noexcept {
 
 	auto userid = event->get_int("userid");
 
-	if (!userid) {
+	if (!userid)
 		return;
-	}
 
 	auto engine_userid = interfaces::engine->get_player_for_user_id(userid);
 
@@ -51,13 +50,11 @@ void c_event_logs::event_item_purchase(i_game_event* event) noexcept {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 	auto entity = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(engine_userid));
 
-	if (!local_player || !entity) {
+	if (!local_player || !entity)
 		return;
-	}
 
-	if (entity->team() == local_player->team()) {
+	if (entity->team() == local_player->team())
 		return;
-	}
 
 	std::string player_name = info.name;
 	std::transform(player_name.begin(), player_name.end(), player_name.begin(), ::tolower);
@@ -76,9 +73,8 @@ void c_event_logs::event_player_hurt(i_game_event* event) noexcept {
 	if (!config_system.logs_player_hurt)
 		return;
 
-	if (!event) {
+	if (!event)
 		return;
-	}
 
 	auto victim = interfaces::engine->get_player_for_user_id(event->get_int("userid"));
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
@@ -94,19 +90,16 @@ void c_event_logs::event_player_hurt(i_game_event* event) noexcept {
 		interfaces::engine->get_player_info(entity->index(), &info);
 
 		auto hitbox = event->get_int("hitgroup");
-		if (!hitbox) {
+		if (!hitbox)
 			return;
-		}
 
 		auto damage = event->get_int("dmg_health");
-		if (!damage) {
+		if (!damage)
 			return;
-		}
 
 		auto health = event->get_int("health");
-		if (!health && health != 0) {
+		if (!health && health != 0)
 			return;
-		}
 
 		auto hitgroup = utilities::hitgroup_name(hitbox);
 		std::string player_name = info.name;
