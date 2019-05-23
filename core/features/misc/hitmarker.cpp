@@ -19,7 +19,14 @@ void c_hitmarker::event(i_game_event* event) noexcept {
 		return;
 
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
+
+	if (!local_player)
+		return;
+
 	auto attacker = interfaces::entity_list->get_client_entity(interfaces::engine->get_player_for_user_id(event->get_int("attacker")));
+
+	if (!attacker)
+		return;
 
 	if (attacker == local_player) {
 		hitmarker_time = 255;

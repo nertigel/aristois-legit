@@ -5,12 +5,20 @@ c_skinchanger skin_changer;
 
 inline bool c_skinchanger::apply_knife_model(attributable_item_t* weapon, const char* model) noexcept {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
+
+	if (!local_player)
+		return false;
+
 	auto viewmodel = reinterpret_cast<base_view_model*>(interfaces::entity_list->get_client_entity_handle(local_player->view_model()));
 
 	if (!viewmodel)
 		return false;
 
 	auto h_view_model_weapon = viewmodel->m_hweapon();
+
+	if (!h_view_model_weapon)
+		return false;
+
 	auto view_model_weapon = reinterpret_cast<attributable_item_t*>(interfaces::entity_list->get_client_entity_handle(h_view_model_weapon));
 
 	if (view_model_weapon != weapon)
@@ -39,7 +47,14 @@ void c_skinchanger::run() noexcept {
 		return;
 
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
+
+	if (!local_player)
+		return;
+
 	auto active_weapon = local_player->active_weapon();
+
+	if (!active_weapon)
+		return;
 
 	auto model_bayonet = "models/weapons/v_knife_bayonet.mdl";
 	auto model_m9 = "models/weapons/v_knife_m9_bay.mdl";
@@ -74,6 +89,9 @@ void c_skinchanger::run() noexcept {
 	auto my_weapons = local_player->weapons();
 	for (size_t i = 0; my_weapons[i] != INVALID_EHANDLE_INDEX; i++) {
 		auto weapon = reinterpret_cast<attributable_item_t*>(interfaces::entity_list->get_client_entity_handle(my_weapons[i]));
+
+		if (!weapon)
+			return;
 
 		//knife conditions
 		float wear = 0.f;

@@ -36,6 +36,9 @@ void c_misc::remove_flash() noexcept {
 
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 
+	if (!local_player)
+		return;
+
 	if (local_player->flash_duration() > 0.0f)
 		local_player->flash_duration() = 0.0f;
 }
@@ -57,6 +60,9 @@ void c_misc::remove_scope() noexcept {
 		return;
 
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
+
+	if (!local_player)
+		return;
 
 	if (local_player && !local_player->is_scoped())
 		return;
@@ -82,13 +88,25 @@ void c_misc::spectators() noexcept {
 	render.draw_text(width - 80, height / 2 - 10, render.name_font, "spectators", true, color(255, 255, 255));
 	for (int i = 0; i < interfaces::entity_list->get_highest_index(); i++) {
 		auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
+
+		if (!local_player)
+			return;
+
 		auto entity = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(i));
+
+		if (!entity)
+			return;
+
 		player_info_t info;
 
 		if (entity && entity != local_player) {
 			interfaces::engine->get_player_info(i, &info);
 			if (!entity->is_alive() && !entity->dormant()) {
 				auto target = entity->observer_target();
+
+				if (!target)
+					return;
+
 				if (target) {
 					auto spectator_target = interfaces::entity_list->get_client_entity_handle(target);
 					if (spectator_target == local_player) {
@@ -122,6 +140,10 @@ void c_misc::watermark() noexcept {
 
 	auto net_channel = interfaces::engine->get_net_channel_info();
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
+
+	if (!local_player)
+		return;
+
 	std::string incoming = local_player ? std::to_string((int)(net_channel->get_latency(FLOW_INCOMING) * 1000)) : "0";
 	std::string outgoing = local_player ? std::to_string((int)(net_channel->get_latency(FLOW_OUTGOING) * 1000)) : "0";
 
@@ -180,6 +202,10 @@ void c_misc::force_crosshair() noexcept {
 		return;
 
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
+
+	if (!local_player)
+		return;
+
 	static auto weapon_debug_spread_show = interfaces::console->get_convar("weapon_debug_spread_show");
 
 	if (local_player && local_player->health() > 0) {

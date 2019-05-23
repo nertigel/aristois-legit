@@ -28,9 +28,8 @@ void c_visuals::run() noexcept {
 		if (entity->health() <= 0)
 			continue;
 
-		if (config_system.radar) {
+		if (config_system.radar)
 			entity->spotted() = true;
-		}
 
 		if (entity->team() == local_player->team() && !config_system.visuals_team_check)
 			continue;
@@ -56,6 +55,7 @@ void c_visuals::run() noexcept {
 	//non player drawing loop
 	for (int i = 0; i < interfaces::entity_list->get_highest_index(); i++) {
 		auto entity = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(i));
+
 		if (entity && entity != local_player) {
 			auto client_class = entity->client_class();
 			auto model_name = interfaces::model_info->get_model_name(entity->model());
@@ -193,6 +193,12 @@ void c_visuals::dropped_weapons(player_t* entity) noexcept {
 	auto class_id = entity->client_class()->class_id;
 	auto model_name = interfaces::model_info->get_model_name(entity->model());
 	auto weapon = entity;
+
+	if (!entity)
+		return;
+
+	if (!weapon)
+		return;
 
 	vec3_t dropped_weapon_position, dropped_weapon_origin;
 
@@ -360,6 +366,13 @@ void c_visuals::bomb_esp(player_t* entity) noexcept {
 		return;
 
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
+
+	if (!entity)
+		return;
+
+	if (!local_player)
+		return;
+
 	auto class_id = entity->client_class()->class_id;
 	auto explode_time = entity->c4_blow_time();
 
@@ -433,6 +446,9 @@ void c_visuals::chams() noexcept {
 
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 
+	if (!local_player)
+		return;
+
 	for (int i = 1; i <= interfaces::globals->max_clients; i++) {
 		auto entity = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(i));
 
@@ -502,6 +518,9 @@ void c_visuals::glow() noexcept {
 
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 
+	if (!local_player)
+		return;
+
 	for (size_t i = 0; i < interfaces::glow_manager->size; i++) {
 		auto &glow = interfaces::glow_manager->objects[i];
 
@@ -566,6 +585,9 @@ void c_visuals::skeleton(player_t* entity) noexcept {
 
 	for (int i = 0; i < p_studio_hdr->bones_count; i++) {
 		studio_bone_t* bone = p_studio_hdr->bone(i);
+
+		if (!bone)
+			return;
 
 		if (bone && (bone->flags & BONE_USED_BY_HITBOX) && (bone->parent != -1)) {
 			v_child = entity->get_bone_position(i);

@@ -29,9 +29,8 @@ void c_sound_esp::draw_circle(color colors, vec3_t position) noexcept {
 	beam_info.m_flEndRadius = 640.f;
 
 	auto beam = interfaces::render_beams->create_beam_ring_point(beam_info);
-	if (beam) {
+	if (beam)
 		interfaces::render_beams->draw_beam(beam);
-	}
 }
 
 void c_sound_esp::event_player_footstep(i_game_event * event) noexcept {
@@ -41,16 +40,18 @@ void c_sound_esp::event_player_footstep(i_game_event * event) noexcept {
 	if (!interfaces::engine->is_connected() && !interfaces::engine->is_in_game())
 		return;
 
-	if (!event) {
+	if (!event)
 		return;
-	}
 
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
+
+	if (!local_player)
+		return;
+
 	auto walker = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_player_for_user_id(event->get_int("userid"))));
 
-	if (walker == nullptr) {
+	if (!walker)
 		return;
-	}
 
 	if (walker->dormant()) {
 		return;
@@ -77,13 +78,24 @@ void c_sound_esp::event_player_hurt(i_game_event * event) noexcept {
 	if (!interfaces::engine->is_connected() && !interfaces::engine->is_in_game())
 		return;
 
-	if (!event) {
+	if (!event)
 		return;
-	}
 
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
+
+	if (!local_player)
+		return;
+
 	auto attacker = interfaces::entity_list->get_client_entity(interfaces::engine->get_player_for_user_id(event->get_int("attacker")));
+
+	if (!attacker)
+		return;
+
 	auto victim = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_player_for_user_id(event->get_int("userid"))));
+
+	if (!victim)
+		return;
+
 	static int timer;
 
 	timer += 1;
@@ -112,7 +124,6 @@ void c_sound_esp::draw() noexcept {
 
 	for (unsigned int i = 0; i < sound_logs.size(); i++) {
 		draw_circle(color(red, green, blue, alpha), sound_logs[i].position);
-
 		sound_logs.erase(sound_logs.begin() + i);
 	}
 }

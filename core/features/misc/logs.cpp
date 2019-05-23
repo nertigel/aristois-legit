@@ -44,6 +44,9 @@ void c_event_logs::event_item_purchase(i_game_event* event) noexcept {
 
 	auto engine_userid = interfaces::engine->get_player_for_user_id(userid);
 
+	if (!engine_userid)
+		return;
+
 	player_info_t info;
 	interfaces::engine->get_player_info(engine_userid, &info);
 
@@ -76,9 +79,20 @@ void c_event_logs::event_player_hurt(i_game_event* event) noexcept {
 	if (!event)
 		return;
 
-	auto victim = interfaces::engine->get_player_for_user_id(event->get_int("userid"));
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
+
+	if (!local_player)
+		return;
+
+	auto victim = interfaces::engine->get_player_for_user_id(event->get_int("userid"));
+
+	if (!victim)
+		return;
+
 	auto attacker = interfaces::entity_list->get_client_entity(interfaces::engine->get_player_for_user_id(event->get_int("attacker")));
+
+	if (!attacker)
+		return;
 
 	if (attacker == local_player) {
 		auto entity = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(victim));

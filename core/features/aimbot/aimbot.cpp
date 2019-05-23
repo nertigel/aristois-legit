@@ -9,6 +9,10 @@ c_aimbot aimbot;
 
 int c_aimbot::get_nearest_bone(player_t* entity, c_usercmd* user_cmd) noexcept {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
+
+	if (!local_player)
+		return false;
+
 	float best_dist = 360.f;
 	int aimbone;
 
@@ -174,6 +178,10 @@ void c_aimbot::weapon_settings(weapon_t* weapon) noexcept {
 
 int c_aimbot::find_target(c_usercmd* user_cmd) noexcept {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
+
+	if (!local_player)
+		return false;
+
 	auto best_fov = aim_fov;
 	auto best_target = 0;
 
@@ -198,8 +206,11 @@ int c_aimbot::find_target(c_usercmd* user_cmd) noexcept {
 
 void c_aimbot::run(c_usercmd* user_cmd) noexcept {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
-	auto weapon = local_player->active_weapon();
 
+	if (!local_player)
+		return;
+
+	auto weapon = local_player->active_weapon();
 	weapon_settings(weapon);
 
 	if (config_system.aim_enabled && user_cmd->buttons & in_attack || GetAsyncKeyState(config_system.aim_key)) {
