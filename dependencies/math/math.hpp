@@ -4,7 +4,7 @@ constexpr double pi = 3.14159265358979323846;
 #define deg_to_rad( x )  ( (float)(x) * (float)( pi / 180.f ) )
 #define rad_to_deg( x )  ( (float)(x) * (float)( 180.f / pi ) )
 
-class c_math : public singleton< c_math > {
+class c_math {
 public:
 	float distance_based_fov(float distance, vec3_t angle, c_usercmd * cmd);
 	vec3_t calculate_angle(const vec3_t & source, const vec3_t & destination, const vec3_t & viewAngles);
@@ -24,3 +24,5 @@ public:
 	bool world_to_screen(const vec3_t &origin, vec3_t &screen);
 	float distance_to_ray(vec3_t &pos, vec3_t &ray_start, vec3_t &ray_end, float *along = nullptr, vec3_t *point_on_ray = nullptr);
 };
+
+extern c_math math;

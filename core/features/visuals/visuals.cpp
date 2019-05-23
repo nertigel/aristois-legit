@@ -86,7 +86,7 @@ void c_visuals::entity_esp(player_t* entity) noexcept {
 	entity_origin = entity->origin();
 	auto client_class = entity->client_class();
 
-	if (!c_math::get().world_to_screen(entity_origin, entity_position))
+	if (!math.world_to_screen(entity_origin, entity_position))
 		return;
 
 	if (client_class->class_id == class_ids::cchicken) {
@@ -204,7 +204,7 @@ void c_visuals::dropped_weapons(player_t* entity) noexcept {
 
 	dropped_weapon_origin = weapon->origin();
 
-	if (!c_math::get().world_to_screen(dropped_weapon_origin, dropped_weapon_position))
+	if (!math.world_to_screen(dropped_weapon_origin, dropped_weapon_position))
 		return;
 
 	if (!(entity->origin().x == 0 && entity->origin().y == 0 && entity->origin().z == 0)) { //ghetto fix sorry - designer
@@ -325,7 +325,7 @@ void c_visuals::projectiles(player_t* entity) noexcept {
 		std::string name = model->name_char_array;
 		grenade_origin = entity->origin();
 
-		if (!c_math::get().world_to_screen(grenade_origin, grenade_position))
+		if (!math.world_to_screen(grenade_origin, grenade_position))
 			return;
 
 		if (name.find("flashbang") != std::string::npos) {
@@ -431,7 +431,7 @@ void c_visuals::bomb_esp(player_t* entity) noexcept {
 		render.draw_text(12, value - 31, render.name_font, "FATAL", false, color(255, 255, 255));
 	}
 
-	if (!c_math::get().world_to_screen(bomb_origin, bomb_position))
+	if (!math.world_to_screen(bomb_origin, bomb_position))
 		return;
 
 	//render classic world timer + bar
@@ -593,7 +593,7 @@ void c_visuals::skeleton(player_t* entity) noexcept {
 			v_child = entity->get_bone_position(i);
 			v_parent = entity->get_bone_position(bone->parent);
 
-			if (c_math::get().world_to_screen(v_parent, s_parent) && c_math::get().world_to_screen(v_child, s_child))
+			if (math.world_to_screen(v_parent, s_parent) && math.world_to_screen(v_child, s_child))
 				render.draw_line(s_parent[0], s_parent[1], s_child[0], s_child[1], color(255, 255, 255, alpha[entity->index()]));
 		}
 	}

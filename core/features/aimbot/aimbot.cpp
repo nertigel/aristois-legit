@@ -38,7 +38,7 @@ int c_aimbot::get_nearest_bone(player_t* entity, c_usercmd* user_cmd) noexcept {
 		if (!hitbox)
 			continue;
 
-		auto angle = c_math::get().calculate_angle(local_player->get_eye_pos(), vec3_t(matrix[hitbox->bone][0][3], matrix[hitbox->bone][1][3], matrix[hitbox->bone][2][3]), user_cmd->viewangles);
+		auto angle = math.calculate_angle(local_player->get_eye_pos(), vec3_t(matrix[hitbox->bone][0][3], matrix[hitbox->bone][1][3], matrix[hitbox->bone][2][3]), user_cmd->viewangles);
 		auto this_dist = std::hypotf(angle.x, angle.y);
 
 		if (best_dist > this_dist) {
@@ -194,8 +194,8 @@ int c_aimbot::find_target(c_usercmd* user_cmd) noexcept {
 		if (!entity || entity == local_player || entity->dormant() || !entity->is_alive() || entity->has_gun_game_immunity())
 			continue;
 
-		angle = c_math::get().calculate_angle(local_eye_pos, entity_bone_pos, user_cmd->viewangles);
-		auto fov = config_system.aim_distance_based_fov ? c_math::get().distance_based_fov(distance, c_math::get().calculate_angle_alternative(local_eye_pos, entity_bone_pos), user_cmd) : std::hypotf(angle.x, angle.y);
+		angle = math.calculate_angle(local_eye_pos, entity_bone_pos, user_cmd->viewangles);
+		auto fov = config_system.aim_distance_based_fov ? math.distance_based_fov(distance, math.calculate_angle_alternative(local_eye_pos, entity_bone_pos), user_cmd) : std::hypotf(angle.x, angle.y);
 		if (fov < best_fov) {
 			best_fov = fov;
 			best_target = i;
@@ -243,16 +243,16 @@ void c_aimbot::run(c_usercmd* user_cmd) noexcept {
 			if (config_system.aim_at_backtrack) {
 				auto record = &records[entity->index()];
 				if (record && record->size() && backtrack.valid_tick(record->front().simulation_time)) {
-					angle = c_math::get().calculate_angle(local_player->get_eye_pos(), record->back().head, user_cmd->viewangles + aim_punch);
+					angle = math.calculate_angle(local_player->get_eye_pos(), record->back().head, user_cmd->viewangles + aim_punch);
 				}
 			}
 			else {
 				switch (config_system.aim_mode) {
 				case 0:
-					angle = c_math::get().calculate_angle(local_player->get_eye_pos(), entity->get_hitbox_position(entity, hitbox_id), user_cmd->viewangles + aim_punch);
+					angle = math.calculate_angle(local_player->get_eye_pos(), entity->get_hitbox_position(entity, hitbox_id), user_cmd->viewangles + aim_punch);
 					break;
 				case 1:
-					angle = c_math::get().calculate_angle(local_player->get_eye_pos(), entity->get_bone_position(get_nearest_bone(entity, user_cmd)), user_cmd->viewangles + aim_punch);
+					angle = math.calculate_angle(local_player->get_eye_pos(), entity->get_bone_position(get_nearest_bone(entity, user_cmd)), user_cmd->viewangles + aim_punch);
 					break;
 				}
 			}

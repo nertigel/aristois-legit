@@ -88,7 +88,7 @@ void c_backtrack::run(c_usercmd * cmd) noexcept {
 
 		auto head_position = entity->get_bone_position(8);
 
-		auto angle = c_math::get().calculate_angle(local_player->get_eye_pos(), head_position, cmd->viewangles);
+		auto angle = math.calculate_angle(local_player->get_eye_pos(), head_position, cmd->viewangles);
 		auto fov = std::hypotf(angle.x, angle.y);
 		if (fov < best_fov) {
 			best_fov = fov;
@@ -109,7 +109,7 @@ void c_backtrack::run(c_usercmd * cmd) noexcept {
 			if (!record || !valid_tick(record->simulation_time))
 				continue;
 
-			auto angle = c_math::get().calculate_angle(local_player->get_eye_pos(), record->head, cmd->viewangles);
+			auto angle = math.calculate_angle(local_player->get_eye_pos(), record->head, cmd->viewangles);
 			auto fov = std::hypotf(angle.x, angle.y);
 			if (fov < best_fov) {
 				best_fov = fov;

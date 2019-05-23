@@ -1,12 +1,14 @@
 #include "../common_includes.hpp"
 
+c_math math;
+
 float c_math::distance_based_fov(float distance, vec3_t angle, c_usercmd* cmd) {
 	vec3_t aiming_at;
-	c_math::get().angle_vectors(cmd->viewangles, aiming_at);
+	math.angle_vectors(cmd->viewangles, aiming_at);
 	aiming_at *= distance / 10;
 
 	vec3_t aim_at;
-	c_math::get().angle_vectors(angle, aim_at);
+	math.angle_vectors(angle, aim_at);
 	aim_at *= distance / 10;
 
 	return aiming_at.distance_to(aim_at);
