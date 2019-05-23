@@ -4,6 +4,7 @@ Full project files for **aristois**, Counter-Strike: Global Offensive cheat base
 
 ## Known issues
 - Skin changer is not finished.
+- Force update might crash.
 
 ## FAQ
 ### I'm crashing while loading config, help!
