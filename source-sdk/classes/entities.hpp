@@ -4,7 +4,6 @@
 #include "collideable.hpp"
 #include "client_class.hpp"
 #include "../../dependencies/utilities/netvar_manager.hpp"
-#include "../../source-sdk/structs/animstate.hpp"
 
 enum move_type {
 	movetype_none = 0,
@@ -272,11 +271,6 @@ public:
 	NETVAR("DT_BaseAttributableItem", "m_iItemDefinitionIndex", item_definition_index, short);
 	NETVAR("DT_BaseCombatWeapon", "m_iEntityQuality", entity_quality, int);
 
-	bool is_reloading() {
-		static auto fn = *reinterpret_cast<uint32_t*>(utilities::pattern_scan(GetModuleHandleA("client_panorama.dll"), "C6 87 ? ? ? ? ? 8B 06 8B CE FF 90") + 2);
-		return *reinterpret_cast<bool*>(uintptr_t(this) + fn);
-	}
-
 	float get_innacuracy() {
 		using original_fn = float(__thiscall*)(void*);
 		return (*(original_fn**)this)[476](this);
@@ -341,10 +335,6 @@ public:
 	NETVAR("DT_PlantedC4", "m_flC4Blow", c4_blow_time, float);
 	NETVAR("DT_SmokeGrenadeProjectile", "m_nSmokeEffectTickBegin", smoke_grenade_tick_begin, int);
 	NETVAR("DT_CSPlayer", "m_nTickBase", get_tick_base, int);
-
-	ccs_player_anim_state* get_player_anim_state() {
-		return *reinterpret_cast<ccs_player_anim_state**>(DWORD(this) + 0x3900); //hazedumper
-	}
 
 	weapon_t* active_weapon() {
 		auto active_weapon = read<DWORD>(sdk::util::getNetVar(sdk::util::fnv::hash("DT_CSPlayer"), sdk::util::fnv::hash("m_hActiveWeapon"))) & 0xFFF;
