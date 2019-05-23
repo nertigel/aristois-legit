@@ -389,6 +389,8 @@ void c_menu::run() {
 					ImGui::Checkbox("disable post processing", &config_system.disable_post_processing);
 					ImGui::Checkbox("recoil crosshair", &config_system.recoil_crosshair);
 					ImGui::Checkbox("rank reveal", &config_system.rank_reveal);
+					ImGui::Checkbox("legit anti aim", &config_system.desync_enable);
+					ImGui::Checkbox("flip desync angle", &config_system.desync_flip);
 
 					ImGui::Checkbox("viewmodel offset", &config_system.viewmodel_offset);
 					if (config_system.viewmodel_offset) {
