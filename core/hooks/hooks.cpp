@@ -14,7 +14,6 @@
 #include "../features/visuals/sound.hpp"
 #include "../features/skinchanger/parser.hpp"
 #include "../features/visuals/nightmode.hpp"
-#include "../features/misc/desync.hpp"
 
 std::unique_ptr<vmt_hook> hooks::client_hook;
 std::unique_ptr<vmt_hook> hooks::clientmode_hook;
@@ -142,8 +141,7 @@ bool __stdcall hooks::create_move(float frame_time, c_usercmd* user_cmd) {
 	if (!interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()))
 		return original_fn;
 
-	const auto ebp = reinterpret_cast<uintptr_t*>(uintptr_t(_AddressOfReturnAddress()) - sizeof(void*));
-	auto & send_packet = *reinterpret_cast<bool*>(*ebp - 0x1C);
+	bool& send_packet = *reinterpret_cast<bool*>(*(static_cast<uintptr_t*>(_AddressOfReturnAddress()) - 1) - 0x1C);
 
 	if (interfaces::engine->is_connected() && interfaces::engine->is_in_game()) {
 		//misc
@@ -164,7 +162,7 @@ bool __stdcall hooks::create_move(float frame_time, c_usercmd* user_cmd) {
 
 		engine_prediction.end_prediction();
 		movement.edge_jump_post_prediction(user_cmd);
-		desync.run(user_cmd, send_packet);
+
 		night_mode.run();
 
 		//clamping movement

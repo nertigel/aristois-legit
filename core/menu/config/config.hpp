@@ -186,8 +186,6 @@ public:
 	bool disable_post_processing = false;
 	bool recoil_crosshair = false;
 	bool rank_reveal = false;
-	bool desync_enable = false;
-	bool desync_flip = false;
 };
 
 extern c_config config_system;

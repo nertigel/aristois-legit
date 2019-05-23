@@ -6,8 +6,6 @@ constexpr double pi = 3.14159265358979323846;
 
 class c_math : public singleton< c_math > {
 public:
-	void correct_movement(c_usercmd* user_cmd, const vec3_t& old_angles);
-	void correct_movement(c_usercmd* user_cmd, const vec3_t& old_angles, const float& old_forward, const float& old_sidemove);
 	float distance_based_fov(float distance, vec3_t angle, c_usercmd * cmd);
 	vec3_t calculate_angle(const vec3_t & source, const vec3_t & destination, const vec3_t & viewAngles);
 	void sin_cos(float r, float* s, float* c);

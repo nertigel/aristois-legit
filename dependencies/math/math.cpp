@@ -1,32 +1,5 @@
 #include "../common_includes.hpp"
 
-void c_math::correct_movement(c_usercmd* user_cmd, const vec3_t& old_angles) {
-	correct_movement(user_cmd, old_angles, user_cmd->forwardmove, user_cmd->sidemove);
-}
-
-void c_math::correct_movement(c_usercmd* user_cmd, const vec3_t& old_angles, const float& old_forward, const float& old_sidemove) {
-	float f1, f2, deltaView;
-	if (old_angles.y < 0.f)
-		f1 = 360.0f + old_angles.y;
-	else
-		f1 = old_angles.y;
-
-	if (user_cmd->viewangles.y < 0.0f)
-		f2 = 360.0f + user_cmd->viewangles.y;
-	else
-		f2 = user_cmd->viewangles.y;
-
-	if (f2 < f1)
-		deltaView = abs(f2 - f1);
-	else
-		deltaView = 360.0f - abs(f1 - f2);
-
-	deltaView = 360.0f - deltaView;
-
-	user_cmd->forwardmove = cos(DEG2RAD(deltaView)) * old_forward + cos(DEG2RAD(deltaView + 90.f)) * old_sidemove;
-	user_cmd->sidemove = sin(DEG2RAD(deltaView)) * old_forward + sin(DEG2RAD(deltaView + 90.f)) * old_sidemove;
-}
-
 float c_math::distance_based_fov(float distance, vec3_t angle, c_usercmd* cmd) {
 	vec3_t aiming_at;
 	c_math::get().angle_vectors(cmd->viewangles, aiming_at);

@@ -86,7 +86,6 @@
   <ItemGroup>
     <ClCompile Include="core\features\aimbot\aimbot.cpp" />
     <ClCompile Include="core\features\backtrack\backtrack.cpp" />
-    <ClCompile Include="core\features\misc\desync.cpp" />
     <ClCompile Include="core\features\misc\logs.cpp">
       <DeploymentContent>true</DeploymentContent>
     </ClCompile>
@@ -126,7 +125,6 @@
   <ItemGroup>
     <ClInclude Include="core\features\aimbot\aimbot.hpp" />
     <ClInclude Include="core\features\backtrack\backtrack.hpp" />
-    <ClInclude Include="core\features\misc\desync.hpp" />
     <ClInclude Include="core\features\misc\logs.hpp">
       <DeploymentContent>true</DeploymentContent>
     </ClInclude>
@@ -222,7 +220,6 @@
     <ClInclude Include="source-sdk\math\view_matrix.hpp" />
     <ClInclude Include="source-sdk\misc\color.hpp" />
     <ClInclude Include="source-sdk\sdk.hpp" />
-    <ClInclude Include="source-sdk\structs\animstate.hpp" />
     <ClInclude Include="source-sdk\structs\dlight.hpp" />
     <ClInclude Include="source-sdk\structs\materials.hpp" />
     <ClInclude Include="source-sdk\structs\models.hpp" />
