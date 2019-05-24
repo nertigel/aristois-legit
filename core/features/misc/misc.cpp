@@ -47,9 +47,8 @@ void c_misc::rank_reveal() noexcept {
 	if (!config_system.rank_reveal || !config_system.misc_enabled)
 		return;
 
-	if (GetAsyncKeyState(VK_TAB)) {
-		utilities::server_rank_reveal();
-	}
+	if (GetAsyncKeyState(VK_TAB))
+		interfaces::client->dispatch_user_message(cs_um_serverrankrevealall, 0, 0, nullptr);
 }
 
 void c_misc::remove_scope() noexcept {

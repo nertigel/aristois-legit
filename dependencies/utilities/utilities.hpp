@@ -37,7 +37,6 @@ namespace utilities {
 	void dump_steam_id();
 	void force_update();
 	void console_warning(const char * msg, ...);
-	void server_rank_reveal();
 	const char * hitgroup_name(int hitgroup);
 	float csgo_armor(float damage, int armor_value);
 	std::uint8_t* pattern_scan(void* module, const char* signature);
