@@ -88,17 +88,6 @@ void utilities::console_warning(const char* msg, ...) {
 	fn(buffer, list);
 }
 
-void utilities::server_rank_reveal() {
-	using ServerRankRevealAll2 = bool(__cdecl*)(int*);
-	static uint8_t* fn;
-
-	if (!fn)
-		fn = utilities::pattern_scan(GetModuleHandleW(L"client_panorama.dll"), "55 8B EC 8B 0D ? ? ? ? 85 C9 75 28 A1 ? ? ? ? 68 ? ? ? ? 8B 08 8B 01 FF 50 04 85 C0 74 0B 8B C8 E8 ? ? ? ? 8B C8 EB 02 33 C9 89 0D ? ? ? ? 8B 45 08");
-
-	int v[3] = { 0,0,0 };
-	reinterpret_cast<ServerRankRevealAll2>(fn)(v);
-}
-
 const char* utilities::hitgroup_name(int hitgroup) {
 	switch (hitgroup) {
 	case hitgroup_head:
