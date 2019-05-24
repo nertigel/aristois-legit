@@ -10,10 +10,10 @@ void c_movement::bunnyhop(c_usercmd* user_cmd) noexcept {
 		return;
 
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
-	float hitchance = config_system.bunny_hop_hitchance;
-	float restrict_limit = 12;
-	float hop_limit = config_system.bunny_hop_maximum_value;
-	float min_hop = config_system.bunny_hop_minimum_value;
+	const int hitchance = config_system.bunny_hop_hitchance;
+	const int restrict_limit = 12;
+	const int hop_limit = config_system.bunny_hop_maximum_value;
+	const int min_hop = config_system.bunny_hop_minimum_value;
 	static int hops_restricted = 0;
 	static int hops_hit = 0;
 
