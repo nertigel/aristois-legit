@@ -2,6 +2,7 @@
 #include "../misc/logs.hpp"
 #include "../misc/hitmarker.hpp"
 #include "../visuals/sound.hpp"
+#include "../aimbot/aimbot.hpp"
 
 #pragma comment(lib, "Winmm.lib")
 
@@ -23,6 +24,10 @@ void c_hooked_events::fire_game_event(i_game_event* event) noexcept {
 	else if (strstr(event->get_name(), "player_footstep")) {
 		sound_esp.event_player_footstep(event);
 	}
+
+	else if (!strcmp(event_name, "player_death")) {
+		aimbot.event_player_death(event);
+	}
 }
 
 int c_hooked_events::get_event_debug_id(void) noexcept {
@@ -34,6 +39,7 @@ void c_hooked_events::setup() noexcept {
 	interfaces::event_manager->add_listener(this, "player_hurt", false);
 	interfaces::event_manager->add_listener(this, "item_purchase", false);
 	interfaces::event_manager->add_listener(this, "player_footstep", false);
+	interfaces::event_manager->add_listener(this, "player_death", false);
 
 	printf("Events initialized!\n");
 }

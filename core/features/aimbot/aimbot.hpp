@@ -12,9 +12,10 @@ private:
 	float rcs_y;
 	int hitbox_id;
 	vec3_t angle;
+	int kill_delay;
 public:
 	void run(c_usercmd*) noexcept;
-
+	void event_player_death(i_game_event* event) noexcept;
 	bool is_pistol(void* weapon) {
 		if (!weapon)
 			return false;

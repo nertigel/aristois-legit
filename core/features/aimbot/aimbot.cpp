@@ -204,10 +204,31 @@ int c_aimbot::find_target(c_usercmd* user_cmd) noexcept {
 	return best_target;
 }
 
+void c_aimbot::event_player_death(i_game_event* event) noexcept {
+	if (!interfaces::engine->is_connected() && !interfaces::engine->is_in_game())
+		return;
+
+	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
+
+	if (!local_player || !local_player->is_alive())
+		return;
+
+	auto attacker = interfaces::entity_list->get_client_entity(interfaces::engine->get_player_for_user_id(event->get_int("attacker")));
+
+	if (!attacker)
+		return;
+
+	if (attacker == local_player)
+		kill_delay = interfaces::globals->tick_count + config_system.aimbot_delay_after_kill;
+}
+
 void c_aimbot::run(c_usercmd* user_cmd) noexcept {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 
 	if (!local_player)
+		return;
+
+	if (kill_delay >= interfaces::globals->tick_count)
 		return;
 
 	auto weapon = local_player->active_weapon();

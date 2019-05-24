@@ -146,6 +146,8 @@ void c_menu::run() {
 					ImGui::Checkbox("scope aim", &config_system.scope_aim);
 					ImGui::Checkbox("smoke aim", &config_system.smoke_check);
 					ImGui::Checkbox("friendly fire", &config_system.aim_team_check);
+					ImGui::SliderInt("kill delay", &config_system.aimbot_delay_after_kill, 0, 350);
+
 				} ImGui::EndChild(true);
 
 				ImGui::PopStyleVar();

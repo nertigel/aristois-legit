@@ -190,6 +190,7 @@ public:
 	bool vis_chams_invis_teammate = false;
 	float clr_chams_vis_teammate[4] = { 1.0f,1.0f,1.0f,1.0f };
 	float clr_chams_invis_teammate[4] = { 1.0f,1.0f,1.0f,1.0f };
+	int aimbot_delay_after_kill = 0;
 };
 
 extern c_config config_system;
