@@ -16,6 +16,7 @@ private:
 public:
 	void run(c_usercmd*) noexcept;
 	void event_player_death(i_game_event* event) noexcept;
+	void auto_pistol(c_usercmd* user_cmd);
 	bool is_pistol(void* weapon) {
 		if (!weapon)
 			return false;

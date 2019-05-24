@@ -222,6 +222,33 @@ void c_aimbot::event_player_death(i_game_event* event) noexcept {
 		kill_delay = interfaces::globals->tick_count + config_system.aimbot_delay_after_kill;
 }
 
+void c_aimbot::auto_pistol(c_usercmd* user_cmd) {
+	if (!config_system.aimbot_auto_pistol)
+		return;
+
+	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
+
+	if (!local_player)
+		return;
+
+	auto weapon = local_player->active_weapon();
+
+	if (!weapon)
+		return;
+
+	static bool was_firing = false;
+
+	if (aimbot.is_pistol(weapon) && weapon->item_definition_index() != WEAPON_REVOLVER) {
+		if (user_cmd->buttons & in_attack && !aimbot.is_knife(weapon) && !aimbot.is_grenade(weapon)) {
+			if (was_firing) {
+				user_cmd->buttons &= ~in_attack;
+			}
+		}
+
+		was_firing = user_cmd->buttons & in_attack ? true : false;
+	}
+}
+
 void c_aimbot::run(c_usercmd* user_cmd) noexcept {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 
@@ -233,6 +260,7 @@ void c_aimbot::run(c_usercmd* user_cmd) noexcept {
 
 	auto weapon = local_player->active_weapon();
 	weapon_settings(weapon);
+	auto_pistol(user_cmd);
 
 	if (config_system.aim_enabled && user_cmd->buttons & in_attack || GetAsyncKeyState(config_system.aim_key)) {
 		if (auto target = find_target(user_cmd)) {
@@ -261,22 +289,15 @@ void c_aimbot::run(c_usercmd* user_cmd) noexcept {
 			aim_punch.x *= rcs_x;
 			aim_punch.y *= rcs_y;
 
-			if (config_system.aim_at_backtrack) {
-				auto record = &records[entity->index()];
-				if (record && record->size() && backtrack.valid_tick(record->front().simulation_time)) {
-					angle = math.calculate_angle(local_player->get_eye_pos(), record->back().head, user_cmd->viewangles + aim_punch);
-				}
+			switch (config_system.aim_mode) {
+			case 0:
+				angle = math.calculate_angle(local_player->get_eye_pos(), entity->get_hitbox_position(entity, hitbox_id), user_cmd->viewangles + aim_punch);
+				break;
+			case 1:
+				angle = math.calculate_angle(local_player->get_eye_pos(), entity->get_bone_position(get_nearest_bone(entity, user_cmd)), user_cmd->viewangles + aim_punch);
+				break;
 			}
-			else {
-				switch (config_system.aim_mode) {
-				case 0:
-					angle = math.calculate_angle(local_player->get_eye_pos(), entity->get_hitbox_position(entity, hitbox_id), user_cmd->viewangles + aim_punch);
-					break;
-				case 1:
-					angle = math.calculate_angle(local_player->get_eye_pos(), entity->get_bone_position(get_nearest_bone(entity, user_cmd)), user_cmd->viewangles + aim_punch);
-					break;
-				}
-			}
+			
 
 			angle /= aim_smooth;
 			user_cmd->viewangles += angle;

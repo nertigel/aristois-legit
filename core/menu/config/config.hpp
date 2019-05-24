@@ -12,7 +12,6 @@ public:
 	std::vector<std::string> get_configs();
 
 	bool backtrack = false;
-	bool aim_at_backtrack = false;
 	bool backtrack_visualize = false;
 	bool aim_enabled = false;
 	bool scope_aim = false;
@@ -191,6 +190,7 @@ public:
 	float clr_chams_vis_teammate[4] = { 1.0f,1.0f,1.0f,1.0f };
 	float clr_chams_invis_teammate[4] = { 1.0f,1.0f,1.0f,1.0f };
 	int aimbot_delay_after_kill = 0;
+	bool aimbot_auto_pistol = false;
 };
 
 extern c_config config_system;

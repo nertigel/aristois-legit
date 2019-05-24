@@ -146,6 +146,7 @@ void c_menu::run() {
 					ImGui::Checkbox("scope aim", &config_system.scope_aim);
 					ImGui::Checkbox("smoke aim", &config_system.smoke_check);
 					ImGui::Checkbox("friendly fire", &config_system.aim_team_check);
+					ImGui::Checkbox("auto pistol", &config_system.aimbot_auto_pistol);
 					ImGui::SliderInt("kill delay", &config_system.aimbot_delay_after_kill, 0, 350);
 
 				} ImGui::EndChild(true);
@@ -157,8 +158,7 @@ void c_menu::run() {
 
 				ImGui::BeginChild("backtrack", ImVec2(279, 267), true); {
 					ImGui::Checkbox("active", &config_system.backtrack);
-					ImGui::Checkbox("aim at records", &config_system.aim_at_backtrack);
-					ImGui::SliderFloat("backtrack records (ms)", &config_system.backtrack_ms, 1.0f, 200.0f, "%.2f");
+					ImGui::SliderFloat("records (ms)", &config_system.backtrack_ms, 1.0f, 200.0f, "%.2f");
 				}
 				ImGui::EndChild(true);
 
