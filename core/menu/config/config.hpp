@@ -186,6 +186,10 @@ public:
 	bool disable_post_processing = false;
 	bool recoil_crosshair = false;
 	bool rank_reveal = false;
+	bool vis_chams_vis_teammate = false;
+	bool vis_chams_invis_teammate = false;
+	float clr_chams_vis_teammate[4] = { 1.0f,1.0f,1.0f,1.0f };
+	float clr_chams_invis_teammate[4] = { 1.0f,1.0f,1.0f,1.0f };
 };
 
 extern c_config config_system;

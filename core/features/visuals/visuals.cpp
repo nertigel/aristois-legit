@@ -444,22 +444,15 @@ void c_visuals::chams() noexcept {
 	if (!config_system.visuals_enabled || (!config_system.vis_chams_vis && !config_system.vis_chams_invis))
 		return;
 
-	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
-
-	if (!local_player)
-		return;
-
 	for (int i = 1; i <= interfaces::globals->max_clients; i++) {
 		auto entity = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(i));
+		auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 
-		if (!entity)
+		if (!entity || !entity->is_alive() || entity->dormant() || !local_player)
 			continue;
-		if (local_player && entity == local_player)
-			continue;
-		if (entity->health() <= 0)
-			continue;
-		if (entity->team() == local_player->team())
-			continue;
+
+		bool is_teammate = entity->team() == local_player->team();
+		bool is_enemy = entity->team() != local_player->team();
 
 		static i_material* mat = nullptr;
 		auto textured = interfaces::material_system->find_material("aristois_material", TEXTURE_GROUP_MODEL, true, nullptr);
@@ -486,26 +479,47 @@ void c_visuals::chams() noexcept {
 			break;
 		}
 
-		if (config_system.vis_chams_invis) {
-			if (utilities::is_behind_smoke(local_player->get_eye_pos(), entity->get_hitbox_position(entity, hitbox_head)) && config_system.vis_chams_smoke_check)
-				return;
-			interfaces::render_view->modulate_color(config_system.clr_chams_invis);
-			interfaces::render_view->set_blend(config_system.clr_chams_invis[3]);
-			mat->set_material_var_flag(MATERIAL_VAR_IGNOREZ, true); //crash without increment_reference_count - designer
+		if (is_enemy) {
+			if (config_system.vis_chams_invis) {
+				if (utilities::is_behind_smoke(local_player->get_eye_pos(), entity->get_hitbox_position(entity, hitbox_head)) && config_system.vis_chams_smoke_check)
+					return;
+				interfaces::render_view->modulate_color(config_system.clr_chams_invis);
+				interfaces::render_view->set_blend(config_system.clr_chams_invis[3]);
+				mat->set_material_var_flag(MATERIAL_VAR_IGNOREZ, true);
 
-			interfaces::model_render->override_material(mat);
-			entity->draw_model(1, 255);
+				interfaces::model_render->override_material(mat);
+				entity->draw_model(1, 255);
+			}
+			if (config_system.vis_chams_vis) {
+				if (utilities::is_behind_smoke(local_player->get_eye_pos(), entity->get_hitbox_position(entity, hitbox_head)) && config_system.vis_chams_smoke_check)
+					return;
+
+				interfaces::render_view->modulate_color(config_system.clr_chams_vis);
+				interfaces::render_view->set_blend(config_system.clr_chams_vis[3]);
+				mat->set_material_var_flag(MATERIAL_VAR_IGNOREZ, false);
+
+				interfaces::model_render->override_material(mat);
+				entity->draw_model(1, 255);
+			}
 		}
-		if (config_system.vis_chams_vis) {
-			if (utilities::is_behind_smoke(local_player->get_eye_pos(), entity->get_hitbox_position(entity, hitbox_head)) && config_system.vis_chams_smoke_check)
-				return;
-			
-			interfaces::render_view->modulate_color(config_system.clr_chams_vis);
-			interfaces::render_view->set_blend(config_system.clr_chams_vis[3]);
-			mat->set_material_var_flag(MATERIAL_VAR_IGNOREZ, false);
 
-			interfaces::model_render->override_material(mat);
-			entity->draw_model(1, 255);
+		if (is_teammate) {
+			if (config_system.vis_chams_invis_teammate) {
+				interfaces::render_view->modulate_color(config_system.clr_chams_invis_teammate);
+				interfaces::render_view->set_blend(config_system.clr_chams_invis_teammate[3]);
+				mat->set_material_var_flag(MATERIAL_VAR_IGNOREZ, true);
+
+				interfaces::model_render->override_material(mat);
+				entity->draw_model(1, 255);
+			}
+			if (config_system.vis_chams_vis_teammate) {
+				interfaces::render_view->modulate_color(config_system.clr_chams_vis_teammate);
+				interfaces::render_view->set_blend(config_system.clr_chams_vis_teammate[3]);
+				mat->set_material_var_flag(MATERIAL_VAR_IGNOREZ, false);
+
+				interfaces::model_render->override_material(mat);
+				entity->draw_model(1, 255);
+			}
 		}
 
 		interfaces::model_render->override_material(nullptr);

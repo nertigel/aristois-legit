@@ -238,7 +238,7 @@ void c_menu::run() {
 				ImGui::BeginChild("player", ImVec2(279, 268), true); {
 					ImGui::Checkbox("active", &config_system.visuals_enabled);
 					if (config_system.visuals_enabled) {
-						ImGui::Checkbox("team", &config_system.visuals_team_check);
+						ImGui::Checkbox("teammate", &config_system.visuals_team_check);
 					}
 					ImGui::Checkbox("name", &config_system.player_name);
 					ImGui::ColorEdit4("name color", config_system.clr_name, ImGuiColorEditFlags_NoInputs);
@@ -345,6 +345,12 @@ void c_menu::run() {
 					ImGui::ColorEdit4("enemy color", config_system.clr_chams_vis, ImGuiColorEditFlags_NoInputs);
 					ImGui::Checkbox("enemy (behind wall)", &config_system.vis_chams_invis);
 					ImGui::ColorEdit4("enemy (behind wall) color", config_system.clr_chams_invis, ImGuiColorEditFlags_NoInputs);
+
+					ImGui::Checkbox("teammate", &config_system.vis_chams_vis_teammate);
+					ImGui::ColorEdit4("teammate color", config_system.clr_chams_vis_teammate, ImGuiColorEditFlags_NoInputs);
+					ImGui::Checkbox("teammate (behind wall)", &config_system.vis_chams_invis_teammate);
+					ImGui::ColorEdit4("teammate (behind wall) color", config_system.clr_chams_invis_teammate, ImGuiColorEditFlags_NoInputs);
+
 					ImGui::Checkbox("backtrack", &config_system.backtrack_visualize);
 					ImGui::Checkbox("smoke check", &config_system.vis_chams_smoke_check);
 				}
