@@ -385,8 +385,8 @@ public:
 				if (hitbox) {
 					auto min = vec3_t{}, max = vec3_t{};
 
-					c_math::get().transform_vector(hitbox->mins, bone_matrix[hitbox->bone], min);
-					c_math::get().transform_vector(hitbox->maxs, bone_matrix[hitbox->bone], max);
+					math.transform_vector(hitbox->mins, bone_matrix[hitbox->bone], min);
+					math.transform_vector(hitbox->maxs, bone_matrix[hitbox->bone], max);
 
 					return vec3_t((min.x + max.x) * 0.5f, (min.y + max.y) * 0.5f, (min.z + max.z) * 0.5f);
 				}
