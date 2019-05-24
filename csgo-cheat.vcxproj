@@ -143,9 +143,6 @@
     <ClInclude Include="core\menu\imgui\dx9\imgui_impl_dx9.h">
       <DeploymentContent>true</DeploymentContent>
     </ClInclude>
-    <ClInclude Include="core\menu\imgui\font.hh">
-      <DeploymentContent>true</DeploymentContent>
-    </ClInclude>
     <ClInclude Include="core\menu\imgui\imconfig.h">
       <DeploymentContent>true</DeploymentContent>
     </ClInclude>
