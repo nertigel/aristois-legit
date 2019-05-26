@@ -7,15 +7,11 @@ Full project files for **aristois**, Counter-Strike: Global Offensive cheat base
 - Force update might crash.
 
 ## FAQ
-### I'm crashing while loading config, help!
-This happens after updating cheat.
-Create new, fresh config, the reason of this crash is config created on older cheat version (config version mismatch).
-
 ### Where's the DLL file?
 You must build it yourself, after that you can localize dll in: **aristois-legit/output/debug/** folder. (**aristois beta.dll**)
 
 ### Where are config files stored?
-Configs are stored in **C:\aristois** folder.
+Configs are stored in **C:\Users\YourUserName\Documents\aristois** folder.
 
 ### How can I open the menu?
 Press `INSERT` key.
