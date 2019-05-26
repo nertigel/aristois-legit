@@ -127,14 +127,18 @@ void c_menu::run() {
 				ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0 / 255.f, 0 / 255.f, 0 / 255.f, 0.1f));
 				ImGui::BeginChild("aimbot", ImVec2(279, 268), true); {
 					ImGui::Checkbox("active", &config_system.item.aim_enabled);
+					ImGui::PushStyleColor(ImGuiCol_Text, config_system.item.aim_enabled ? ImVec4(1.f, 1.f, 1.f, 1) : ImVec4(.6f, .6f, .6f, 1));
 					ImGui::Combo("mode", &config_system.item.aim_mode, "hitbox\0nearest hitbox"); //todo add custom bone selection - designer
+					ImGui::PopStyleColor();
 					ImGui::Checkbox("dynamic fov", &config_system.item.aim_distance_based_fov);
 					ImGui::Checkbox("silent aim", &config_system.item.aim_silent);
 					ImGui::Checkbox("scope aim", &config_system.item.scope_aim);
 					ImGui::Checkbox("smoke aim", &config_system.item.smoke_check);
 					ImGui::Checkbox("friendly fire", &config_system.item.aim_team_check);
 					ImGui::Checkbox("auto pistol", &config_system.item.aimbot_auto_pistol);
+					ImGui::PushStyleColor(ImGuiCol_Text, config_system.item.aim_enabled ? ImVec4(1.f, 1.f, 1.f, 1) : ImVec4(.6f, .6f, .6f, 1));
 					ImGui::SliderInt("kill delay", &config_system.item.aimbot_delay_after_kill, 0, 350);
+					ImGui::PopStyleColor();
 
 				} ImGui::EndChild(true);
 
@@ -145,7 +149,9 @@ void c_menu::run() {
 
 				ImGui::BeginChild("backtrack", ImVec2(279, 267), true); {
 					ImGui::Checkbox("active", &config_system.item.backtrack);
+					ImGui::PushStyleColor(ImGuiCol_Text, config_system.item.backtrack ? ImVec4(1.f, 1.f, 1.f, 1) : ImVec4(.6f, .6f, .6f, 1));
 					ImGui::SliderFloat("records (ms)", &config_system.item.backtrack_ms, 1.0f, 200.0f, "%.2f");
+					ImGui::PopStyleColor();
 				}
 				ImGui::EndChild(true);
 
@@ -160,6 +166,7 @@ void c_menu::run() {
 
 					ImGui::PushFont(font_menu);
 
+					ImGui::PushStyleColor(ImGuiCol_Text, config_system.item.aim_enabled ? ImVec4(1.f, 1.f, 1.f, 1) : ImVec4(.6f, .6f, .6f, 1));
 					switch (test) {
 					case 0:
 						if (config_system.item.aim_mode == 0) {
@@ -208,6 +215,7 @@ void c_menu::run() {
 						ImGui::SliderFloat("heavy rcs y", &config_system.item.rcs_y_heavy, 0.0f, 1.0f, "%.2f");
 						break;
 					}
+					ImGui::PopStyleColor();
 
 					ImGui::PopFont();
 				} ImGui::EndChild(true);
@@ -237,6 +245,7 @@ void c_menu::run() {
 					ImGui::Checkbox("weapon", &config_system.item.player_weapon);
 					ImGui::ColorEdit4("weapon color", config_system.item.clr_weapon, ImGuiColorEditFlags_NoInputs);
 
+					ImGui::PushStyleColor(ImGuiCol_Text, config_system.item.visuals_enabled ? ImVec4(1.f, 1.f, 1.f, 1) : ImVec4(.6f, .6f, .6f, 1));
 					if (ImGui::BeginCombo("flags", "...", ImVec2(0, 105))) {
 						ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 8);
 						ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 4);
@@ -252,6 +261,7 @@ void c_menu::run() {
 
 						ImGui::EndCombo();
 					}
+					ImGui::PopStyleColor();
 					ImGui::Checkbox("footstep", &config_system.item.sound_footstep);
 					ImGui::ColorEdit4("footstep color", config_system.item.clr_footstep, ImGuiColorEditFlags_NoInputs);
 					ImGui::Checkbox("skeleton", &config_system.item.skeleton);
@@ -267,15 +277,17 @@ void c_menu::run() {
 
 				ImGui::BeginChild("effects", ImVec2(279, 267), true); {
 					ImGui::Checkbox("force crosshair", &config_system.item.force_crosshair);
+					ImGui::PushStyleColor(ImGuiCol_Text, config_system.item.visuals_enabled ? ImVec4(1.f, 1.f, 1.f, 1) : ImVec4(.6f, .6f, .6f, 1));
 					ImGui::SliderInt("viewmodel field of view", &config_system.item.viewmodel_fov, 0, 135);
 					ImGui::SliderInt("field of view", &config_system.item.fov, 0, 60);
+					ImGui::PopStyleColor();
 					ImGui::Checkbox("night mode", &config_system.item.nightmode);
 					ImGui::ColorEdit4("sky color", config_system.item.clr_sky, ImGuiColorEditFlags_NoInputs);
 					if (config_system.item.nightmode) {
 						ImGui::SliderInt("brightness", &config_system.item.nightmode_brightness, 0, 100);
 					}
 
-
+					ImGui::PushStyleColor(ImGuiCol_Text, config_system.item.visuals_enabled ? ImVec4(1.f, 1.f, 1.f, 1) : ImVec4(.6f, .6f, .6f, 1));
 					if (ImGui::BeginCombo("removals", "...", ImVec2(0, 105))) {
 						ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 8);
 						ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 4);
@@ -305,6 +317,7 @@ void c_menu::run() {
 						ImGui::Selectable(("danger zone"), &config_system.item.danger_zone_dropped, ImGuiSelectableFlags_::ImGuiSelectableFlags_DontClosePopups);
 						ImGui::EndCombo();
 					}
+					ImGui::PopStyleColor();
 				}
 				ImGui::EndChild(true);
 
@@ -329,7 +342,9 @@ void c_menu::run() {
 				ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 8);
 
 				ImGui::BeginChild("chams", ImVec2(279, 267), true); {
+					ImGui::PushStyleColor(ImGuiCol_Text, config_system.item.visuals_enabled ? ImVec4(1.f, 1.f, 1.f, 1) : ImVec4(.6f, .6f, .6f, 1));
 					ImGui::Combo("chams type", &config_system.item.vis_chams_type, "textured\0flat\0metallic\0pulsating");
+					ImGui::PopStyleColor();
 					ImGui::Checkbox("enemy", &config_system.item.vis_chams_vis);
 					ImGui::ColorEdit4("enemy color", config_system.item.clr_chams_vis, ImGuiColorEditFlags_NoInputs);
 					ImGui::Checkbox("enemy (behind wall)", &config_system.item.vis_chams_invis);
@@ -363,6 +378,7 @@ void c_menu::run() {
 					ImGui::Checkbox("clantag spammer", &config_system.item.clan_tag);
 					ImGui::Checkbox("engine radar", &config_system.item.radar);
 
+					ImGui::PushStyleColor(ImGuiCol_Text, config_system.item.misc_enabled ? ImVec4(1.f, 1.f, 1.f, 1) : ImVec4(.6f, .6f, .6f, 1));
 					if (ImGui::BeginCombo("logs", "...", ImVec2(0, 65))) {
 						ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 8);
 						ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 4);
@@ -373,6 +389,7 @@ void c_menu::run() {
 						ImGui::Selectable(("config system"), &config_system.item.logs_config_system, ImGuiSelectableFlags_::ImGuiSelectableFlags_DontClosePopups);
 						ImGui::EndCombo();
 					}
+					ImGui::PopStyleColor();
 
 					ImGui::Checkbox("hitmarker", &config_system.item.hitmarker);
 					if (config_system.item.hitmarker) {
@@ -393,6 +410,7 @@ void c_menu::run() {
 
 					}
 
+					ImGui::PushStyleColor(ImGuiCol_Text, config_system.item.misc_enabled ? ImVec4(1.f, 1.f, 1.f, 1) : ImVec4(.6f, .6f, .6f, 1));
 					ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 18);
 					if (ImGui::Button("dump steam id", ImVec2(84, 18))) {
 						utilities::dump_steam_id();
@@ -402,6 +420,7 @@ void c_menu::run() {
 					if (ImGui::Button("hide name", ImVec2(84, 18))) {
 						utilities::change_name("\n\xAD\xAD\xAD");
 					}
+					ImGui::PopStyleColor();
 
 				}
 				ImGui::EndChild(true);
@@ -436,6 +455,7 @@ void c_menu::run() {
 				ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0 / 255.f, 0 / 255.f, 0 / 255.f, 0.1f));
 				ImGui::BeginChild("knife", ImVec2(279, 268), true); {
 					ImGui::Checkbox("enable", &config_system.item.skinchanger_enable);
+					ImGui::PushStyleColor(ImGuiCol_Text, config_system.item.skinchanger_enable ? ImVec4(1.f, 1.f, 1.f, 1) : ImVec4(.6f, .6f, .6f, 1));
 					ImGui::Combo("knife", &config_system.item.knife_model, "default\0bayonet\0m9\0karambit\0bowie\0butterfly\0falchion\0flip\0gut\0huntsman\0shaddow daggers\0navaja\0stiletto\0talon\0ursus");
 					ImGui::Combo("condition", &config_system.item.knife_wear, "factory new\0minimal wear\0field-tested\0well-worn\0battle-scarred");
 
@@ -444,6 +464,7 @@ void c_menu::run() {
 						return true;
 					}, nullptr, parser_skins.size(), 10);
 					config_system.item.paint_kit_index_knife = parser_skins[config_system.item.paint_kit_vector_index_knife].id;
+					ImGui::PopStyleColor();
 
 				}
 				ImGui::EndChild(true);
@@ -472,6 +493,7 @@ void c_menu::run() {
 					if (ImGui::ButtonT("smg", ImVec2(50, 30), weapons_page, 3, false, false)) weapons_page = 3; ImGui::SameLine(0, 0);
 					if (ImGui::ButtonT("heavy", ImVec2(50, 30), weapons_page, 4, false, false)) weapons_page = 4;
 
+					ImGui::PushStyleColor(ImGuiCol_Text, config_system.item.skinchanger_enable ? ImVec4(1.f, 1.f, 1.f, 1) : ImVec4(.6f, .6f, .6f, 1));
 					switch (weapons_page) {
 					case 0:
 						ImGui::Combo(("p2000"), &config_system.item.paint_kit_vector_index_p2000, [](void* data, int idx, const char** out_text) {
@@ -612,6 +634,7 @@ void c_menu::run() {
 						break;
 
 					}
+					ImGui::PopStyleColor();
 				}
 				ImGui::EndChild(true);
 				ImGui::PopStyleVar();

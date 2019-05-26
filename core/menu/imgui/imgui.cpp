@@ -7047,7 +7047,14 @@ bool ImGui::Checkbox(const char* label, bool* v) {
 	if (g.LogEnabled)
 		LogRenderedText(text_bb.GetTL(), *v ? "[x]" : "[ ]");
 	if (label_size.x > 0.0f) {
+		if (*v) {
+			PushStyleColor(ImGuiCol_Text, ImVec4(1.f, 1.f, 1.f, 1));
+		}
+		else {
+			PushStyleColor(ImGuiCol_Text, ImVec4(.6f, .6f, .6f, 1));
+		}
 		RenderText(text_bb.GetTL() - ImVec2(0, 6), label);
+		PopStyleColor();
 	}
 
 	return pressed;
