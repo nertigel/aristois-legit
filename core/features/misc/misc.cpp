@@ -3,7 +3,7 @@
 c_misc misc;
 
 void c_misc::remove_smoke() noexcept {
-	if (!config_system.remove_smoke || !config_system.visuals_enabled)
+	if (!config_system.item.remove_smoke || !config_system.item.visuals_enabled)
 		return;
 
 	if (!interfaces::engine->is_connected() && !interfaces::engine->is_in_game())
@@ -28,7 +28,7 @@ void c_misc::remove_smoke() noexcept {
 }
 
 void c_misc::remove_flash() noexcept {
-	if (!config_system.reduce_flash || !config_system.visuals_enabled)
+	if (!config_system.item.reduce_flash || !config_system.item.visuals_enabled)
 		return;
 
 	if (!interfaces::engine->is_connected() && !interfaces::engine->is_in_game())
@@ -44,7 +44,7 @@ void c_misc::remove_flash() noexcept {
 }
 
 void c_misc::rank_reveal() noexcept {
-	if (!config_system.rank_reveal || !config_system.misc_enabled)
+	if (!config_system.item.rank_reveal || !config_system.item.misc_enabled)
 		return;
 
 	if (GetAsyncKeyState(VK_TAB))
@@ -52,7 +52,7 @@ void c_misc::rank_reveal() noexcept {
 }
 
 void c_misc::remove_scope() noexcept {
-	if (!config_system.remove_scope || !config_system.visuals_enabled)
+	if (!config_system.item.remove_scope || !config_system.item.visuals_enabled)
 		return;
 
 	if (!interfaces::engine->is_connected() && !interfaces::engine->is_in_game())
@@ -74,7 +74,7 @@ void c_misc::remove_scope() noexcept {
 }
 
 void c_misc::spectators() noexcept {
-	if (!config_system.spectators_list || !config_system.misc_enabled)
+	if (!config_system.item.spectators_list || !config_system.item.misc_enabled)
 		return;
 
 	if (!interfaces::engine->is_connected() && !interfaces::engine->is_in_game())
@@ -123,7 +123,7 @@ void c_misc::spectators() noexcept {
 }
 
 void c_misc::watermark() noexcept {
-	if (!config_system.watermark || !config_system.misc_enabled)
+	if (!config_system.item.watermark || !config_system.item.misc_enabled)
 		return;
 
 	int width, height;
@@ -154,7 +154,7 @@ void c_misc::watermark() noexcept {
 }
 
 void c_misc::clantag_spammer() noexcept {
-	if (!config_system.clan_tag || !config_system.misc_enabled)
+	if (!config_system.item.clan_tag || !config_system.item.misc_enabled)
 		return;
 
 	static std::string tag = "aristois.me ";
@@ -172,32 +172,32 @@ void c_misc::clantag_spammer() noexcept {
 }
 
 void c_misc::viewmodel_offset() noexcept {
-	if (!config_system.viewmodel_offset || !config_system.misc_enabled)
+	if (!config_system.item.viewmodel_offset || !config_system.item.misc_enabled)
 		return;
 
-	interfaces::console->get_convar("viewmodel_offset_x")->set_value(config_system.viewmodel_x);
-	interfaces::console->get_convar("viewmodel_offset_y")->set_value(config_system.viewmodel_y);
-	interfaces::console->get_convar("viewmodel_offset_z")->set_value(config_system.viewmodel_z);
+	interfaces::console->get_convar("viewmodel_offset_x")->set_value(config_system.item.viewmodel_x);
+	interfaces::console->get_convar("viewmodel_offset_y")->set_value(config_system.item.viewmodel_y);
+	interfaces::console->get_convar("viewmodel_offset_z")->set_value(config_system.item.viewmodel_z);
 }
 
 void c_misc::disable_post_processing() noexcept {
-	if (!config_system.misc_enabled)
+	if (!config_system.item.misc_enabled)
 		return;
 
 	static auto mat_postprocess_enable = interfaces::console->get_convar("mat_postprocess_enable");
-	mat_postprocess_enable->set_value(config_system.disable_post_processing ? 0 : 1);
+	mat_postprocess_enable->set_value(config_system.item.disable_post_processing ? 0 : 1);
 }
 
 void c_misc::recoil_crosshair() noexcept {
-	if (!config_system.misc_enabled)
+	if (!config_system.item.misc_enabled)
 		return;
 
 	static auto cl_crosshair_recoil = interfaces::console->get_convar("cl_crosshair_recoil");
-	cl_crosshair_recoil->set_value(config_system.recoil_crosshair ? 1 : 0);
+	cl_crosshair_recoil->set_value(config_system.item.recoil_crosshair ? 1 : 0);
 }
 
 void c_misc::force_crosshair() noexcept {
-	if (!config_system.misc_enabled)
+	if (!config_system.item.misc_enabled)
 		return;
 
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
@@ -208,6 +208,6 @@ void c_misc::force_crosshair() noexcept {
 	static auto weapon_debug_spread_show = interfaces::console->get_convar("weapon_debug_spread_show");
 
 	if (local_player && local_player->health() > 0) {
-		weapon_debug_spread_show->set_value(local_player->is_scoped() || !config_system.force_crosshair ? 0 : 3);
+		weapon_debug_spread_show->set_value(local_player->is_scoped() || !config_system.item.force_crosshair ? 0 : 3);
 	}
 }

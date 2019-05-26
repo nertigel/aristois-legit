@@ -34,7 +34,7 @@ void c_event_logs::run() noexcept {
 }
 
 void c_event_logs::event_item_purchase(i_game_event* event) noexcept {
-	if (!config_system.logs_player_bought)
+	if (!config_system.item.logs_player_bought)
 		return;
 
 	auto userid = event->get_int("userid");
@@ -73,7 +73,7 @@ void c_event_logs::event_item_purchase(i_game_event* event) noexcept {
 }
 
 void c_event_logs::event_player_hurt(i_game_event* event) noexcept {
-	if (!config_system.logs_player_hurt)
+	if (!config_system.item.logs_player_hurt)
 		return;
 
 	if (!event)

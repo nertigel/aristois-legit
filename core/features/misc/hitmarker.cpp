@@ -9,7 +9,7 @@ void c_hitmarker::run() noexcept {
 	if (!interfaces::engine->is_connected() && !interfaces::engine->is_in_game())
 		return;
 
-	if (config_system.hitmarker || config_system.hitmarker_sound) {
+	if (config_system.item.hitmarker || config_system.item.hitmarker_sound) {
 		hitmarker.draw();
 	}
 }
@@ -31,7 +31,7 @@ void c_hitmarker::event(i_game_event* event) noexcept {
 	if (attacker == local_player) {
 		hitmarker_time = 255;
 
-		switch (config_system.hitmarker_sound) {
+		switch (config_system.item.hitmarker_sound) {
 		case 0:
 			break;
 		case 1:
@@ -48,7 +48,7 @@ void c_hitmarker::event(i_game_event* event) noexcept {
 }
 
 void c_hitmarker::draw() noexcept {
-	if (!config_system.hitmarker)
+	if (!config_system.item.hitmarker)
 		return;
 
 	int width, height;

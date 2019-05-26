@@ -25,7 +25,7 @@ bool c_backtrack::valid_tick(float simtime) noexcept {
 
 void c_backtrack::update() noexcept {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
-	if (!config_system.backtrack || !local_player || !local_player->is_alive()) {
+	if (!config_system.item.backtrack || !local_player || !local_player->is_alive()) {
 		if (!records->empty())
 			records->clear();
 
@@ -55,7 +55,7 @@ void c_backtrack::update() noexcept {
 
 		records[i].push_front(record);
 
-		while (records[i].size() > 3 && records[i].size() > static_cast<size_t>(time_to_ticks(static_cast<float>(config_system.backtrack_ms) / 1000.f)))
+		while (records[i].size() > 3 && records[i].size() > static_cast<size_t>(time_to_ticks(static_cast<float>(config_system.item.backtrack_ms) / 1000.f)))
 			records[i].pop_back();
 
 		if (auto invalid = std::find_if(std::cbegin(records[i]), std::cend(records[i]), [](const stored_records & rec) { return !backtrack.valid_tick(rec.simulation_time); }); invalid != std::cend(records[i]))
@@ -64,7 +64,7 @@ void c_backtrack::update() noexcept {
 }
 
 void c_backtrack::run(c_usercmd * cmd) noexcept {
-	if (!config_system.backtrack)
+	if (!config_system.item.backtrack)
 		return;
 
 	if (!(cmd->buttons & in_attack))

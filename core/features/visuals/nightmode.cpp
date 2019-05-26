@@ -6,16 +6,16 @@ static convar* old_sky_name;
 bool executed = false;
 
 void c_nightmode::run() noexcept {
-	if (!config_system.visuals_enabled)
+	if (!config_system.item.visuals_enabled)
 		return;
 
-	config_system.nightmode ? night_mode.apply() : night_mode.remove();
+	config_system.item.nightmode ? night_mode.apply() : night_mode.remove();
 
 	static auto r_drawspecificstaticprop = interfaces::console->get_convar("r_DrawSpecificStaticProp");
-	r_drawspecificstaticprop->set_value(config_system.nightmode ? 0 : 1);
+	r_drawspecificstaticprop->set_value(config_system.item.nightmode ? 0 : 1);
 
 	static auto r_3dsky = interfaces::console->get_convar("r_3dsky");
-	r_3dsky->set_value(config_system.nightmode ? 0 : 1);
+	r_3dsky->set_value(config_system.item.nightmode ? 0 : 1);
 }
 
 void c_nightmode::apply() noexcept {
@@ -29,7 +29,7 @@ void c_nightmode::apply() noexcept {
 		return;
 
 	old_sky_name = interfaces::console->get_convar("sv_skyname");
-	float brightness = config_system.nightmode_brightness / 100.f;
+	float brightness = config_system.item.nightmode_brightness / 100.f;
 
 	for (MaterialHandle_t i = interfaces::material_system->first_material(); i != interfaces::material_system->invalid_material_handle(); i = interfaces::material_system->next_material(i)) {
 		auto material = interfaces::material_system->get_material(i);
@@ -44,7 +44,7 @@ void c_nightmode::apply() noexcept {
 			material->color_modulate(brightness + 0.25f, brightness + 0.25f, brightness + 0.25f);
 		}
 		if (strstr(material->GetTextureGroupName(), ("SkyBox"))) {
-			material->color_modulate(config_system.clr_sky[0], config_system.clr_sky[1], config_system.clr_sky[2]);
+			material->color_modulate(config_system.item.clr_sky[0], config_system.item.clr_sky[1], config_system.item.clr_sky[2]);
 		}
 	}
 

@@ -107,7 +107,7 @@ float __stdcall hooks::viewmodel_fov() {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 
 	if (local_player && local_player->is_alive()) {
-		return 68.f + config_system.viewmodel_fov;
+		return 68.f + config_system.item.viewmodel_fov;
 	}
 	else {
 		return 68.f;
@@ -201,8 +201,8 @@ void __fastcall hooks::override_view(void* _this, void* _edx, c_viewsetup* setup
 	static auto original_fn = reinterpret_cast<override_view_fn>(clientmode_hook->get_original(18));
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 
-	if (local_player && !local_player->is_scoped() && config_system.fov > 0 && config_system.visuals_enabled) {
-		setup->fov = 90 + config_system.fov;
+	if (local_player && !local_player->is_scoped() && config_system.item.fov > 0 && config_system.item.visuals_enabled) {
+		setup->fov = 90 + config_system.item.fov;
 	}
 
 	original_fn(interfaces::clientmode, _this, setup);
@@ -218,7 +218,7 @@ void __stdcall hooks::draw_model_execute(IMatRenderContext * ctx, const draw_mod
 	material->increment_reference_count();
 
 	if (interfaces::engine->is_connected() && interfaces::engine->is_in_game()) {
-		if (config_system.backtrack_visualize && strstr(model_name, "models/player")) {
+		if (config_system.item.backtrack_visualize && strstr(model_name, "models/player")) {
 			if (entity) {
 				int i = entity->index();
 
@@ -234,13 +234,13 @@ void __stdcall hooks::draw_model_execute(IMatRenderContext * ctx, const draw_mod
 		}
 
 		if (strstr(model_name, "sleeve")) {
-			if (config_system.remove_sleeves) {
+			if (config_system.item.remove_sleeves) {
 				interfaces::render_view->set_blend(0.f);
 			}
 		}
 
 		if (strstr(model_name, "arms")) {
-			if (config_system.remove_hands) {
+			if (config_system.item.remove_hands) {
 				interfaces::render_view->set_blend(0.f);
 			}
 		}
@@ -281,7 +281,7 @@ void __stdcall hooks::paint_traverse(unsigned int panel, bool force_repaint, boo
 	}
 
 	if (interfaces::engine->is_connected() && interfaces::engine->is_in_game()) {
-		if (config_system.remove_scope && panel == _hud_zoom_panel)
+		if (config_system.item.remove_scope && panel == _hud_zoom_panel)
 			return;
 	}
 
