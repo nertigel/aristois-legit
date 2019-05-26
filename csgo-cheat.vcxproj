@@ -139,6 +139,7 @@
     <ClInclude Include="core\features\visuals\sound.hpp" />
     <ClInclude Include="core\features\visuals\visuals.hpp" />
     <ClInclude Include="core\hooks\hooks.hpp" />
+    <ClInclude Include="core\menu\config\archivex.hpp" />
     <ClInclude Include="core\menu\config\config.hpp" />
     <ClInclude Include="core\menu\imgui\dx9\imgui_impl_dx9.h">
       <DeploymentContent>true</DeploymentContent>
