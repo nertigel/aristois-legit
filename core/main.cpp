@@ -3,10 +3,13 @@
 #include "menu/config/config.hpp"
 
 unsigned long __stdcall initial_thread(void* reserved) {
+
+#ifdef debug_build
 	AllocConsole();
 	SetConsoleTitleA("Counter-Strike: Global Offensive");
-	freopen_s((FILE**)stdin, "CONIN$", "r", stdin);
-	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
+	freopen_s((FILE * *)stdin, "CONIN$", "r", stdin);
+	freopen_s((FILE * *)stdout, "CONOUT$", "w", stdout);
+#endif
 
 	interfaces::initialize();
 	hooks::initialize();
@@ -19,9 +22,11 @@ unsigned long __stdcall initial_thread(void* reserved) {
 	hooks::shutdown();
 	std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
+#ifdef debug_build
 	fclose((FILE*)stdin);
 	fclose((FILE*)stdout);
 	FreeConsole();
+#endif
 
 	FreeLibraryAndExitThread(reinterpret_cast<HMODULE>(reserved), 0);
 	return 0ul;
