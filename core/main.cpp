@@ -1,5 +1,6 @@
 #include "../dependencies/common_includes.hpp"
 #include "features/misc/misc.hpp"
+#include "menu/config/config.hpp"
 
 unsigned long __stdcall initial_thread(void* reserved) {
 	AllocConsole();
@@ -10,6 +11,7 @@ unsigned long __stdcall initial_thread(void* reserved) {
 	interfaces::initialize();
 	hooks::initialize();
 	utilities::material_setup();
+	config_system.run("aristois");
 
 	while (!GetAsyncKeyState(VK_END))
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
