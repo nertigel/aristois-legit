@@ -679,31 +679,12 @@ void c_menu::run() {
 						ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 18);
 						if (ImGui::Button(("create"), ImVec2(85, 20))) {
 							config_system.add(buffer);
-
-							if (config_system.item.logs_config_system) {
-								utilities::console_warning("[config system] ");
-								interfaces::console->console_printf(config_items[current_config].c_str());
-								interfaces::console->console_printf(" created. \n");
-								std::stringstream ss;
-								ss << config_items[current_config].c_str() << "  created.";
-								event_logs.add(ss.str(), color(167, 255, 255, 255));
-							}
-
 						}
 
 						ImGui::SameLine();
 
 						if (ImGui::Button(("reset"), ImVec2(85, 20))) {
 							config_system.reset();
-
-							if (config_system.item.logs_config_system) {
-								utilities::console_warning("[config system] ");
-								interfaces::console->console_printf(config_items[current_config].c_str());
-								interfaces::console->console_printf(" restored to default values. \n");
-								std::stringstream ss;
-								ss << config_items[current_config].c_str() << "  restored to default values.";
-								event_logs.add(ss.str(), color(167, 255, 255, 255));
-							}
 						}
 
 						ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 18);
@@ -745,15 +726,6 @@ void c_menu::run() {
 							ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 18);
 							if (ImGui::Button(("remove"), ImVec2(85, 20))) {
 								config_system.remove(current_config);
-
-								if (config_system.item.logs_config_system) {
-									utilities::console_warning("[config system] ");
-									interfaces::console->console_printf(config_items[current_config].c_str());
-									interfaces::console->console_printf(" removed. \n");
-									std::stringstream ss;
-									ss << config_items[current_config].c_str() << " removed.";
-									event_logs.add(ss.str(), color(167, 255, 255, 255));
-								}
 							}
 						}
 				}
