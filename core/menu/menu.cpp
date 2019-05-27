@@ -265,7 +265,6 @@ void c_menu::run() {
 					ImGui::Checkbox("footstep", &config_system.item.sound_footstep);
 					ImGui::ColorEdit4("footstep color", config_system.item.clr_footstep, ImGuiColorEditFlags_NoInputs);
 					ImGui::Checkbox("skeleton", &config_system.item.skeleton);
-					ImGui::Checkbox("backtrack skeleton", &config_system.item.backtrack_skeleton);
 					ImGui::Checkbox("preview visuals", &config_system.item.visuals_preview);
 				}
 				ImGui::EndChild(true);

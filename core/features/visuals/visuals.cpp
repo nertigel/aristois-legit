@@ -1,4 +1,5 @@
 #include "visuals.hpp"
+#include "../backtrack/backtrack.hpp"
 #include "../../../dependencies/common_includes.hpp"
 
 c_visuals visuals;
@@ -48,7 +49,6 @@ void c_visuals::run() noexcept {
 
 		player_rendering(entity);
 		skeleton(entity);
-		backtrack_skeleton(entity);
 		last_dormant[i] = entity->dormant();
 	}
 
@@ -613,9 +613,67 @@ void c_visuals::skeleton(player_t* entity) noexcept {
 	}
 }
 
-void c_visuals::backtrack_skeleton(player_t* entity) noexcept {
-	if (!config_system.item.backtrack_skeleton)
+void c_visuals::backtrack_chams(IMatRenderContext* ctx, const draw_model_state_t& state, const model_render_info_t& info) {
+	if (!config_system.item.backtrack_visualize)
 		return;
 
+	if (!interfaces::engine->is_connected() && !interfaces::engine->is_in_game())
+		return;
 
+	auto model_name = interfaces::model_info->get_model_name((model_t*)info.model);
+	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
+
+	if (!local_player)
+		return;
+
+	auto entity = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(info.entity_index));
+
+	if (!entity)
+		return;
+
+	static auto draw_model_execute_fn = reinterpret_cast<hooks::draw_model_execute_fn>(hooks::modelrender_hook->get_original(21));
+
+	if (strstr(model_name, "models/player")) {
+		if (entity && entity->is_alive() && !entity->dormant()) {
+			int i = entity->index();
+
+			if (local_player && local_player->is_alive() && entity->team() != local_player->team()) {
+				auto record = &records[info.entity_index];
+
+				if (!record)
+					return;
+
+				if (record && record->size() && backtrack.valid_tick(record->front().simulation_time)) {
+					draw_model_execute_fn(interfaces::model_render, ctx, state, info, record->back().matrix);
+				}
+			}
+		}
+	}
+}
+
+void c_visuals::viewmodel_modulate(const model_render_info_t& info) {
+	if (!interfaces::engine->is_connected() && !interfaces::engine->is_in_game())
+		return;
+
+	auto model_name = interfaces::model_info->get_model_name((model_t*)info.model);
+
+	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
+
+	if (!local_player)
+		return;
+
+	if (!local_player->is_alive())
+		return;
+
+	if (strstr(model_name, "sleeve")) {
+		if (config_system.item.remove_sleeves) {
+			interfaces::render_view->set_blend(0.f);
+		}
+	}
+
+	if (strstr(model_name, "arms")) {
+		if (config_system.item.remove_hands) {
+			interfaces::render_view->set_blend(0.f);
+		}
+	}
 }

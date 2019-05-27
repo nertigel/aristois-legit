@@ -210,41 +210,9 @@ void __fastcall hooks::override_view(void* _this, void* _edx, c_viewsetup* setup
 
 void __stdcall hooks::draw_model_execute(IMatRenderContext * ctx, const draw_model_state_t & state, const model_render_info_t & info, matrix_t * bone_to_world) {
 	static auto original_fn = reinterpret_cast<draw_model_execute_fn>(modelrender_hook->get_original(21));
-	auto model_name = interfaces::model_info->get_model_name((model_t*)info.model);
-	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
-	auto entity = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(info.entity_index));
 
-	auto material = interfaces::material_system->find_material("debug/debugdrawflat", TEXTURE_GROUP_MODEL);
-	material->increment_reference_count();
-
-	if (interfaces::engine->is_connected() && interfaces::engine->is_in_game()) {
-		if (config_system.item.backtrack_visualize && strstr(model_name, "models/player")) {
-			if (entity) {
-				int i = entity->index();
-
-				if (entity && !entity->dormant()) {
-					if (local_player && entity->team() != local_player->team()) {
-						auto record = &records[info.entity_index];
-						if (record && record->size() && backtrack.valid_tick(record->front().simulation_time)) {
-							original_fn(interfaces::model_render, ctx, state, info, record->back().matrix);
-						}
-					}
-				}
-			}
-		}
-
-		if (strstr(model_name, "sleeve")) {
-			if (config_system.item.remove_sleeves) {
-				interfaces::render_view->set_blend(0.f);
-			}
-		}
-
-		if (strstr(model_name, "arms")) {
-			if (config_system.item.remove_hands) {
-				interfaces::render_view->set_blend(0.f);
-			}
-		}
-	}
+	visuals.backtrack_chams(ctx, state, info);
+	visuals.viewmodel_modulate(info);
 
 	original_fn(interfaces::model_render, ctx, state, info, bone_to_world);
 }
