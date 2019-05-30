@@ -144,8 +144,8 @@ std::uint8_t* utilities::pattern_scan(void* module, const char* signature) {
 		return bytes;
 	};
 
-	auto dos_headers = (PIMAGE_DOS_HEADER)module;
-	auto nt_headers = (PIMAGE_NT_HEADERS)((std::uint8_t*)module + dos_headers->e_lfanew);
+	auto dos_headers = reinterpret_cast<PIMAGE_DOS_HEADER>(module);
+	auto nt_headers = reinterpret_cast<PIMAGE_NT_HEADERS>((std::uint8_t*)module + dos_headers->e_lfanew);
 
 	auto size_of_image = nt_headers->OptionalHeader.SizeOfImage;
 	auto pattern_bytes = pattern_to_byte(signature);
@@ -190,7 +190,7 @@ bool utilities::is_behind_smoke(vec3_t start_pos, vec3_t end_pos) {
 	static line_goes_through_smoke line_goes_through_smoke_fn = 0;
 
 	if (!line_goes_through_smoke_fn)
-		line_goes_through_smoke_fn = (line_goes_through_smoke)(utilities::pattern_scan(GetModuleHandleA("client_panorama.dll"), "55 8B EC 83 EC 08 8B 15 ? ? ? ? 0F 57 C0"));
+		line_goes_through_smoke_fn = reinterpret_cast<line_goes_through_smoke>(utilities::pattern_scan(GetModuleHandleA("client_panorama.dll"), "55 8B EC 83 EC 08 8B 15 ? ? ? ? 0F 57 C0"));
 
 	if (line_goes_through_smoke_fn)
 		return line_goes_through_smoke_fn(start_pos, end_pos);
@@ -199,7 +199,7 @@ bool utilities::is_behind_smoke(vec3_t start_pos, vec3_t end_pos) {
 
 void* utilities::game::capture_interface(const char* mod, const char* iface) {
 	using fn_capture_iface_t = void*(*)(const char*, int*);
-	auto fn_addr = (fn_capture_iface_t)GetProcAddress(GetModuleHandleA(mod), "CreateInterface");
+	auto fn_addr = reinterpret_cast<fn_capture_iface_t>(GetProcAddress(GetModuleHandleA(mod), "CreateInterface"));
 
 	auto iface_addr = fn_addr(iface, nullptr);
 	printf("found %s at 0x%p\n", iface, fn_addr(iface, nullptr));

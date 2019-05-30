@@ -46,37 +46,30 @@
 #include "../../source-sdk/classes/recv_props.hpp"
 #include "../../source-sdk/classes/client_class.hpp"
 
-namespace sdk::util
-{
+namespace netvar_manager {
 #pragma warning( push )
 #pragma warning( disable: 4307 )
-	//Already Fixed: Fix constant overflow when hashing
-	namespace fnv_1a
-	{
+	namespace fnv_1a {
 		template< typename S >
 		struct fnv_internal;
 		template< typename S >
 		struct fnv1a;
 
 		template< >
-		struct fnv_internal< uint32_t >
-		{
+		struct fnv_internal< uint32_t > {
 			constexpr static uint32_t default_offset_basis = 0x811C9DC5;
 			constexpr static uint32_t prime = 0x01000193;
 		};
 
 		template< >
-		struct fnv1a< uint32_t > : public fnv_internal< uint32_t >
-		{
-			constexpr static uint32_t hash(char const *const aString, const uint32_t val = default_offset_basis)
-			{
+		struct fnv1a< uint32_t > : public fnv_internal< uint32_t > {
+			constexpr static uint32_t hash(char const *const aString, const uint32_t val = default_offset_basis) {
 				return (aString[0] == '\0')
 					? val
 					: hash(&aString[1], (val ^ uint32_t(aString[0])) * prime);
 			}
 
-			constexpr static uint32_t hash(wchar_t const *const aString, const uint32_t val = default_offset_basis)
-			{
+			constexpr static uint32_t hash(wchar_t const *const aString, const uint32_t val = default_offset_basis) {
 				return (aString[0] == L'\0')
 					? val
 					: hash(&aString[1], (val ^ uint32_t(aString[0])) * prime);
@@ -93,7 +86,7 @@ namespace sdk::util
 	type& func_name( ) { \
       static uintptr_t offset = 0; \
       if(!offset) \
-      { offset = sdk::util::getNetVar( sdk::util::fnv::hash( table ), sdk::util::fnv::hash( prop ) ); } \
+      { offset = netvar_manager::get_net_var(netvar_manager::fnv::hash( table ), netvar_manager::fnv::hash( prop ) ); } \
 	  \
       return *reinterpret_cast< type* >( uintptr_t( this ) + offset ); \
     }
@@ -102,7 +95,7 @@ namespace sdk::util
 	type* func_name( ) { \
       static uintptr_t offset = 0; \
       if(!offset) \
-      { offset = sdk::util::getNetVar( sdk::util::fnv::hash( table ), sdk::util::fnv::hash( prop ) ); } \
+      { offset = netvar_manager::get_net_var(netvar_manager::fnv::hash( table ), netvar_manager::fnv::hash( prop ) ); } \
 	  \
       return reinterpret_cast< type* >( uintptr_t( this ) + offset ); \
     }
@@ -112,8 +105,6 @@ namespace sdk::util
 		return *(type*)(uintptr_t(this) + offset); \
 	} \
 
-namespace sdk::util
-{
-	uintptr_t getNetVar(uint32_t table,
-		uint32_t prop);
+namespace netvar_manager {
+	uintptr_t get_net_var(uint32_t table, uint32_t prop);
 }

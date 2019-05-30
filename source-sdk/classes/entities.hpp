@@ -337,7 +337,7 @@ public:
 	NETVAR("DT_CSPlayer", "m_nTickBase", get_tick_base, int);
 
 	weapon_t* active_weapon() {
-		auto active_weapon = read<DWORD>(sdk::util::getNetVar(sdk::util::fnv::hash("DT_CSPlayer"), sdk::util::fnv::hash("m_hActiveWeapon"))) & 0xFFF;
+		auto active_weapon = read<DWORD>(netvar_manager::get_net_var(netvar_manager::fnv::hash("DT_CSPlayer"), netvar_manager::fnv::hash("m_hActiveWeapon"))) & 0xFFF;
 		return reinterpret_cast<weapon_t*>(interfaces::entity_list->get_client_entity(active_weapon));
 	}
 

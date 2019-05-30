@@ -20,10 +20,9 @@ enum font_flags {
 
 class c_render {
 public:
-	DWORD watermark_font;
-	DWORD name_font;
+	unsigned long watermark_font;
+	unsigned long name_font;
 
-public:
 	void setup_fonts() {
 		watermark_font = interfaces::surface->font_create();
 		name_font = interfaces::surface->font_create();

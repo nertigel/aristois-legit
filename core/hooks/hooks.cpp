@@ -70,9 +70,8 @@ void hooks::initialize() {
 	**reinterpret_cast<void***>(present_address) = reinterpret_cast<void*>(&present);
 	**reinterpret_cast<void***>(reset_address) = reinterpret_cast<void*>(&reset);
 
-	window = FindWindow("Valve001", NULL);
-
-	wndproc_original = (WNDPROC)SetWindowLongPtrA(window, GWL_WNDPROC, (LONG)wndproc);
+	window = FindWindowW(L"Valve001", NULL);
+	wndproc_original = (WNDPROC)SetWindowLongW(window, GWL_WNDPROC, (LONG)wndproc);
 
 	interfaces::console->get_convar("crosshair")->set_value(1);
 	interfaces::console->get_convar("viewmodel_fov")->callbacks.set_size(false);
@@ -218,8 +217,7 @@ void __stdcall hooks::draw_model_execute(IMatRenderContext * ctx, const draw_mod
 }
 
 void __stdcall hooks::frame_stage_notify(int frame_stage) {
-	reinterpret_cast<frame_stage_notify_fn>(client_hook->get_original(37))(interfaces::client, frame_stage);
-
+	static auto original_fn = reinterpret_cast<frame_stage_notify_fn>(client_hook->get_original(37));
 	static auto backtrack_init = (backtrack.init(), false);
 
 	if (frame_stage == FRAME_RENDER_START) {
@@ -238,34 +236,20 @@ void __stdcall hooks::frame_stage_notify(int frame_stage) {
 	else if (frame_stage == FRAME_NET_UPDATE_END && interfaces::engine->is_in_game()) {
 		backtrack.update();
 	}
+
+	original_fn(interfaces::client, frame_stage);
 }
 void __stdcall hooks::paint_traverse(unsigned int panel, bool force_repaint, bool allow_force) {
-	std::string panel_name = interfaces::panel->get_panel_name(panel);
-	static unsigned int _hud_zoom_panel = 0, _panel = 0;
-
-	PCHAR panel_char = (PCHAR)interfaces::panel->get_panel_name(panel);
-	if (strstr(panel_char, "HudZoom")) {
-		_hud_zoom_panel = panel;
-	}
-
-	if (interfaces::engine->is_connected() && interfaces::engine->is_in_game()) {
-		if (config_system.item.remove_scope && panel == _hud_zoom_panel)
-			return;
+	if (strstr(interfaces::panel->get_panel_name(panel), "HudZoom")) {
+		if (interfaces::engine->is_connected() && interfaces::engine->is_in_game()) {
+			if (config_system.item.remove_scope)
+				return;
+		}
 	}
 
 	reinterpret_cast<paint_traverse_fn>(panel_hook->get_original(41))(interfaces::panel, panel, force_repaint, allow_force);
 
-	static bool once = false;
-
-	if (!once) {
-		PCHAR panel_char = (PCHAR)interfaces::panel->get_panel_name(panel);
-		if (strstr(panel_char, "MatSystemTopPanel")) {
-			_panel = panel;
-			once = true;
-		}
-	}
-
-	else if (_panel == panel) {
+	if (strstr(interfaces::panel->get_panel_name(panel), "MatSystemTopPanel")) {
 		visuals.run();
 		hitmarker.run();
 		event_logs.run();
@@ -276,7 +260,7 @@ void __stdcall hooks::paint_traverse(unsigned int panel, bool force_repaint, boo
 }
 
 void __stdcall hooks::scene_end() {
-	auto original_fn = reinterpret_cast<scene_end_fn>(renderview_hook->get_original(9));
+	static auto original_fn = reinterpret_cast<scene_end_fn>(renderview_hook->get_original(9));
 
 	visuals.chams();
 
@@ -312,7 +296,7 @@ LRESULT __stdcall hooks::wndproc(HWND hwnd, UINT message, WPARAM wparam, LPARAM 
 }
 
 void __stdcall hooks::lock_cursor() {
-	auto original_fn = reinterpret_cast<lock_cursor_fn>(surface_hook->get_original(67));
+	static auto original_fn = reinterpret_cast<lock_cursor_fn>(surface_hook->get_original(67));
 
 	if (menu.opened) {
 		interfaces::surface->unlock_cursor();

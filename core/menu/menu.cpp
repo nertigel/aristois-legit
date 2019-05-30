@@ -11,15 +11,15 @@ IDirect3DStateBlock9 *state_block;
 bool reverse = false;
 int offset = 0;
 bool show_popup = false;
-static bool save_config = false;
-static bool load_config = false;
+bool save_config = false;
+bool load_config = false;
 namespace ImGui {
 	long get_mils() {
 		auto duration = std::chrono::system_clock::now().time_since_epoch();
 		return std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
 	}
 
-	void begin_popup(const char* text, int onScreenMils, bool* done) {
+	void begin_popup(const char* text, int on_screen_mils, bool* done) {
 		if (!done)
 			show_popup = true;
 
@@ -49,7 +49,7 @@ namespace ImGui {
 			}
 		}
 
-		if (current_time_ms - old_time >= onScreenMils && old_time != -1)
+		if (current_time_ms - old_time >= on_screen_mils && old_time != -1)
 			reverse = true;
 
 		if (reverse) {
