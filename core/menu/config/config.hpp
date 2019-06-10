@@ -18,7 +18,7 @@ public:
 
 	struct {
 		bool backtrack{ false };
-		bool backtrack_visualize{ false };
+		bool backtrack_chams{ false };
 		bool aim_enabled{ false };
 		bool scope_aim{ false };
 		bool smoke_check{ false };
@@ -197,6 +197,9 @@ public:
 		float clr_chams_invis_teammate[4]{ 1.0f,1.0f,1.0f,1.0f };
 		int aimbot_delay_after_kill{ 0 };
 		bool aimbot_auto_pistol{ false };
+		bool visuals_visible_only{ false };
+		bool visuals_on_key{ false };
+		int visuals_key{ 0 };
 	} item;
 
 private:

@@ -35,6 +35,12 @@ void c_visuals::run() noexcept {
 		if (entity->team() == local_player->team() && !config_system.item.visuals_team_check)
 			continue;
 
+		if (!local_player->can_see_player_pos(entity, entity->get_eye_pos()) && config_system.item.visuals_visible_only)
+			continue;
+
+		if (config_system.item.visuals_on_key && !GetAsyncKeyState(config_system.item.visuals_key))
+			continue;
+
 		const int fade = (int)((6.66666666667f * interfaces::globals->frame_time) * 255);
 
 		auto new_alpha = alpha[i];
@@ -614,7 +620,7 @@ void c_visuals::skeleton(player_t* entity) noexcept {
 }
 
 void c_visuals::backtrack_chams(IMatRenderContext* ctx, const draw_model_state_t& state, const model_render_info_t& info) {
-	if (!config_system.item.backtrack_visualize)
+	if (!config_system.item.backtrack_chams)
 		return;
 
 	if (!interfaces::engine->is_connected() && !interfaces::engine->is_in_game())

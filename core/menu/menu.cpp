@@ -236,6 +236,8 @@ void c_menu::run() {
 					ImGui::Checkbox("active", &config_system.item.visuals_enabled);
 					if (config_system.item.visuals_enabled) {
 						ImGui::Checkbox("teammate", &config_system.item.visuals_team_check);
+						ImGui::Checkbox("visible only", &config_system.item.visuals_visible_only);
+						ImGui::Checkbox("on key", &config_system.item.visuals_on_key);
 					}
 					ImGui::Checkbox("name", &config_system.item.player_name);
 					ImGui::ColorEdit4("name color", config_system.item.clr_name, ImGuiColorEditFlags_NoInputs);
@@ -354,7 +356,10 @@ void c_menu::run() {
 					ImGui::Checkbox("teammate (behind wall)", &config_system.item.vis_chams_invis_teammate);
 					ImGui::ColorEdit4("teammate (behind wall) color", config_system.item.clr_chams_invis_teammate, ImGuiColorEditFlags_NoInputs);
 
-					ImGui::Checkbox("backtrack", &config_system.item.backtrack_visualize);
+#ifdef debug_build
+
+					ImGui::Checkbox("backtrack", &config_system.item.backtrack_chams);
+#endif
 					ImGui::Checkbox("smoke check", &config_system.item.vis_chams_smoke_check);
 				}
 				ImGui::EndChild(true);
@@ -736,7 +741,7 @@ void c_menu::run() {
 				ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(16, 16));
 
 				ImGui::BeginChild("settings", ImVec2(279, 267), true); {
-					ImGui::Combo("keybinds", &config_system.item.keybinds_selection, "edge jump\0aimbot key");
+					ImGui::Combo("keybinds", &config_system.item.keybinds_selection, "edge jump\0aimbot key\0visuals key");
 
 					if (config_system.item.keybinds_selection == 0) {
 						ImGui::Hotkey("##edge jump key", &config_system.item.edge_jump_key, ImVec2(100, 20));
@@ -744,6 +749,10 @@ void c_menu::run() {
 
 					else if (config_system.item.keybinds_selection == 1) {
 						ImGui::Hotkey("##aimbot key", &config_system.item.aim_key, ImVec2(100, 20));
+					}
+
+					else if (config_system.item.keybinds_selection == 2) {
+						ImGui::Hotkey("##visuals key", &config_system.item.visuals_key, ImVec2(100, 20));
 					}
 				}
 				ImGui::EndChild(true);
