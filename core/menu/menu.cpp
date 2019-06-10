@@ -235,8 +235,11 @@ void c_menu::run() {
 				ImGui::BeginChild("player", ImVec2(279, 268), true); {
 					ImGui::Checkbox("active", &config_system.item.visuals_enabled);
 					if (config_system.item.visuals_enabled) {
+						ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 7);
 						ImGui::Checkbox("teammate", &config_system.item.visuals_team_check);
+						ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 7);
 						ImGui::Checkbox("visible only", &config_system.item.visuals_visible_only);
+						ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 7);
 						ImGui::Checkbox("on key", &config_system.item.visuals_on_key);
 					}
 					ImGui::Checkbox("name", &config_system.item.player_name);
