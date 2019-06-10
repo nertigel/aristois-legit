@@ -142,56 +142,36 @@ bool __stdcall hooks::create_move(float frame_time, c_usercmd* user_cmd) {
 
 	bool& send_packet = *reinterpret_cast<bool*>(*(static_cast<uintptr_t*>(_AddressOfReturnAddress()) - 1) - 0x1C);
 
-	if (interfaces::engine->is_connected() && interfaces::engine->is_in_game()) {
-		//misc
-		movement.bunnyhop(user_cmd);
-		misc.clantag_spammer();
-		misc.viewmodel_offset();
-		misc.disable_post_processing();
-		misc.recoil_crosshair();
-		misc.force_crosshair();
-		misc.rank_reveal();
+	//misc
+	movement.bunnyhop(user_cmd);
+	misc.clantag_spammer();
+	misc.viewmodel_offset();
+	misc.disable_post_processing();
+	misc.recoil_crosshair();
+	misc.force_crosshair();
+	misc.rank_reveal();
 
-		//legitbot and prediction stuff
-		movement.edge_jump_pre_prediction(user_cmd);
-		engine_prediction.start_prediction(user_cmd); //small note for prediction, we need to run bhop before prediction otherwise it will be buggy
+	//legitbot and prediction stuff
+	movement.edge_jump_pre_prediction(user_cmd);
+	engine_prediction.start_prediction(user_cmd); //small note for prediction, we need to run bhop before prediction otherwise it will be buggy
 
-		aimbot.run(user_cmd);
-		backtrack.run(user_cmd);
+	aimbot.run(user_cmd);
+	backtrack.run(user_cmd);
 
-		engine_prediction.end_prediction();
-		movement.edge_jump_post_prediction(user_cmd);
+	engine_prediction.end_prediction();
+	movement.edge_jump_post_prediction(user_cmd);
 
-		night_mode.run();
+	night_mode.run();
 
-		//clamping movement
-		auto forward = user_cmd->forwardmove;
-		auto right = user_cmd->sidemove;
-		auto up = user_cmd->upmove;
+	//clamping movement
+	user_cmd->forwardmove = std::clamp(user_cmd->forwardmove, -450.0f, 450.0f);
+	user_cmd->sidemove = std::clamp(user_cmd->sidemove, -450.0f, 450.0f);
+	user_cmd->upmove = std::clamp(user_cmd->upmove, -450.0f, 450.0f);
 
-		if (forward > 450)
-			forward = 450;
-
-		if (right > 450)
-			right = 450;
-
-		if (up > 450)
-			up = 450;
-
-		if (forward < -450)
-			forward = -450;
-
-		if (right < -450)
-			right = -450;
-
-		if (up < -450)
-			up = -450;
-
-		// clamping angles
-		user_cmd->viewangles.x = std::clamp(user_cmd->viewangles.x, -89.0f, 89.0f);
-		user_cmd->viewangles.y = std::clamp(user_cmd->viewangles.y, -180.0f, 180.0f);
-		user_cmd->viewangles.z = 0.0f;
-	}
+	// clamping angles
+	user_cmd->viewangles.x = std::clamp(user_cmd->viewangles.x, -89.0f, 89.0f);
+	user_cmd->viewangles.y = std::clamp(user_cmd->viewangles.y, -180.0f, 180.0f);
+	user_cmd->viewangles.z = 0.0f;
 
 	return false;
 }
