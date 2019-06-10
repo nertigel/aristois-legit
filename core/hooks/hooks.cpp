@@ -71,7 +71,7 @@ void hooks::initialize() {
 	**reinterpret_cast<void***>(reset_address) = reinterpret_cast<void*>(&reset);
 
 	window = FindWindowW(L"Valve001", NULL);
-	wndproc_original = (WNDPROC)SetWindowLongW(window, GWL_WNDPROC, (LONG)wndproc);
+	wndproc_original = reinterpret_cast<WNDPROC>(SetWindowLongW(window, GWL_WNDPROC, reinterpret_cast<LONG>(wndproc)));
 
 	interfaces::console->get_convar("crosshair")->set_value(1);
 	interfaces::console->get_convar("viewmodel_fov")->callbacks.set_size(false);
@@ -99,7 +99,7 @@ void hooks::shutdown() {
 	**reinterpret_cast<void***>(present_address) = reinterpret_cast<void*>(original_present);
 	**reinterpret_cast<void***>(reset_address) = reinterpret_cast<void*>(original_reset);
 
-	SetWindowLongPtrA(FindWindow("Valve001", NULL), GWL_WNDPROC, (LONG)wndproc_original);
+	SetWindowLongW(FindWindowW(L"Valve001", NULL), GWL_WNDPROC, reinterpret_cast<LONG>(wndproc_original));
 }
 
 float __stdcall hooks::viewmodel_fov() {
