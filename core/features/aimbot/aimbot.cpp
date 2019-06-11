@@ -272,7 +272,7 @@ void c_aimbot::run(c_usercmd* user_cmd) noexcept {
 			if (!local_player->can_see_player_pos(entity, entity->get_eye_pos()))
 				return;
 
-			if (!config_system.item.aim_team_check && entity->is_in_local_team())
+			if (!config_system.item.aim_team_check && entity->team() == local_player->team())
 				return;
 
 			if (!config_system.item.smoke_check && utilities::is_behind_smoke(local_player->get_eye_pos(), entity->get_hitbox_position(entity, hitbox_head)))
