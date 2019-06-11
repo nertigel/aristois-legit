@@ -281,6 +281,11 @@ void c_menu::run() {
 
 				ImGui::BeginChild("effects", ImVec2(279, 267), true); {
 					ImGui::Checkbox("force crosshair", &config_system.item.force_crosshair);
+					ImGui::Checkbox("modulate crosshair color", &config_system.item.crosshair_color);
+					ImGui::ColorEdit4("##crosshair color", config_system.item.clr_crosshair, ImGuiColorEditFlags_NoInputs);
+					ImGui::Checkbox("modulate crosshair outline color", &config_system.item.crosshair_outline_color);
+					ImGui::ColorEdit4("##crosshair outline color", config_system.item.clr_crosshair_outline, ImGuiColorEditFlags_NoInputs);
+
 					ImGui::PushStyleColor(ImGuiCol_Text, config_system.item.visuals_enabled ? ImVec4(1.f, 1.f, 1.f, 1) : ImVec4(.6f, .6f, .6f, 1));
 					ImGui::SliderInt("viewmodel field of view", &config_system.item.viewmodel_fov, 0, 135);
 					ImGui::SliderInt("field of view", &config_system.item.fov, 0, 60);

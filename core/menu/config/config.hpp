@@ -200,6 +200,10 @@ public:
 		bool visuals_visible_only{ false };
 		bool visuals_on_key{ false };
 		int visuals_key{ 0 };
+		bool crosshair_color{ false };
+		bool crosshair_outline_color{ false };
+		float clr_crosshair[4]{ 1.0f,1.0f,1.0f,1.0f };
+		float clr_crosshair_outline[4]{ 1.0f,1.0f,1.0f,1.0f };
 	} item;
 
 private:
