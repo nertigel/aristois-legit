@@ -396,24 +396,16 @@ void c_visuals::bomb_esp(player_t* entity) noexcept {
 	auto c4_timer = interfaces::console->get_convar("mp_c4timer")->get_int();
 	auto value = (explode_time * height) / c4_timer;
 
-	//bomb damage indicator calculations, credits casual_hacker
 	float damage;
 	auto distance = local_player->get_eye_pos().distance_to(entity->get_eye_pos());
-	auto a = 450.7f;
-	auto b = 75.68f;
-	auto c = 789.2f;
-	auto d = ((distance - b) / c);
-	auto fl_damage = a * exp(-d * d);
+	auto a = 450.7f, b = 75.68f, c = 789.2f, d = ((distance - b) / c), fl_damage = a * exp(-d * d);
 	damage = float((std::max)((int)ceilf(utilities::csgo_armor(fl_damage, local_player->armor())), 0));
 
-	//convert damage to string
 	std::string damage_text;
 	damage_text += "-";
 	damage_text += std::to_string((int)(damage));
 	damage_text += "HP";
 
-
-	//render on screen bomb bar
 	if (explode_time <= 10) {
 		render.draw_filled_rect(0, 0, 10, value, color(255, 0, 0, 180));
 	}
@@ -421,15 +413,12 @@ void c_visuals::bomb_esp(player_t* entity) noexcept {
 		render.draw_filled_rect(0, 0, 10, value, color(0, 255, 0, 180));
 	}
 
-	//render bomb timer
 	render.draw_text(12, value - 11, render.name_font, buffer, false, color(255, 255, 255));
 
-	//render bomb damage
 	if (local_player->is_alive()) {
 		render.draw_text(12, value - 21, render.name_font, damage_text, false, color(255, 255, 255));
 	}
 
-	//render fatal check
 	if (local_player->is_alive() && damage >= local_player->health()) {
 		render.draw_text(12, value - 31, render.name_font, "FATAL", false, color(255, 255, 255));
 	}
@@ -437,9 +426,8 @@ void c_visuals::bomb_esp(player_t* entity) noexcept {
 	if (!math.world_to_screen(bomb_origin, bomb_position))
 		return;
 
-	//render classic world timer + bar
 	render.draw_text(bomb_position.x, bomb_position.y, render.name_font, buffer, true, color(255, 255, 255));
-	render.draw_filled_rect(bomb_position.x - c4_timer / 2, bomb_position.y + 13, c4_timer, 3, color(10, 10, 10, 180)); //c4_timer / 2 so it always will be centered
+	render.draw_filled_rect(bomb_position.x - c4_timer / 2, bomb_position.y + 13, c4_timer, 3, color(10, 10, 10, 180));
 	render.draw_filled_rect(bomb_position.x - c4_timer / 2, bomb_position.y + 13, explode_time, 3, color(167, 24, 71, 255));
 }
 
