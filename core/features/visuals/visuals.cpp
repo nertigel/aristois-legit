@@ -132,14 +132,11 @@ void c_visuals::player_rendering(player_t* entity) noexcept {
 		box temp(bbox.x - 5, bbox.y + (bbox.h - bbox.h * (utilities::math::clamp_value<int>(entity->health(), 0, 100.f) / 100.f)), 1, bbox.h * (utilities::math::clamp_value<int>(entity->health(), 0, 100) / 100.f) - (entity->health() >= 100 ? 0 : -1));
 		box temp_bg(bbox.x - 5, bbox.y, 1, bbox.h);
 
-		// change the color depending on the entity health
-		auto health_color = color( ( 255 - entity->health() * 2.55 ), ( entity->health() * 2.55 ), 0, alpha[entity->index()] );
+		auto health_color = color((255 - entity->health() * 2.55), (entity->health() * 2.55), 0, alpha[entity->index()]);
 
-		// clamp health (custom maps, danger zone, etc)
-		if ( entity->health() > 100 )
-		    	health_color = color( 0, 255, 0 );
+		if (entity->health() > 100)
+			health_color = color(0, 255, 0);
 
-		//draw actual dynamic hp bar
 		render.draw_filled_rect(temp_bg.x - 1, temp_bg.y - 1, temp_bg.w + 2, temp_bg.h + 2, color(0, 0, 0, 25 + alpha[entity->index()]));
 		render.draw_filled_rect(temp.x, temp.y, temp.w, temp.h, color(health_color));
 	}
@@ -625,36 +622,6 @@ void c_visuals::backtrack_chams(IMatRenderContext* ctx, const draw_model_state_t
 
 	if (!interfaces::engine->is_connected() && !interfaces::engine->is_in_game())
 		return;
-
-	auto model_name = interfaces::model_info->get_model_name((model_t*)info.model);
-	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
-
-	if (!local_player)
-		return;
-
-	auto entity = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(info.entity_index));
-
-	if (!entity)
-		return;
-
-	static auto draw_model_execute_fn = reinterpret_cast<hooks::draw_model_execute_fn>(hooks::modelrender_hook->get_original(21));
-
-	if (strstr(model_name, "models/player")) {
-		if (entity && entity->is_alive() && !entity->dormant()) {
-			int i = entity->index();
-
-			if (local_player && local_player->is_alive() && entity->team() != local_player->team()) {
-				auto record = &records[info.entity_index];
-
-				if (!record)
-					return;
-
-				if (record && record->size() && backtrack.valid_tick(record->front().simulation_time)) {
-					draw_model_execute_fn(interfaces::model_render, ctx, state, info, record->back().matrix);
-				}
-			}
-		}
-	}
 }
 
 void c_visuals::viewmodel_modulate(const model_render_info_t& info) {
