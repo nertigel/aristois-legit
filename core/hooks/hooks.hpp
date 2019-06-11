@@ -29,8 +29,8 @@ namespace hooks {
 	extern WNDPROC wndproc_original;
 	extern HWND window;
 
-	void initialize();
-	void shutdown();
+	void initialize() noexcept;
+	void shutdown() noexcept;
 
 	using create_move_fn = bool(__thiscall*)(i_client_mode*, float, c_usercmd*);
 	using frame_stage_notify_fn = void(__thiscall*)(i_base_client_dll*, int);
@@ -43,18 +43,20 @@ namespace hooks {
 	using reset_fn = long(__stdcall*)(IDirect3DDevice9*, D3DPRESENT_PARAMETERS*);
 	using draw_model_execute_fn = void(__thiscall*)(iv_model_render*, IMatRenderContext*, const draw_model_state_t&, const model_render_info_t&, matrix_t*);
 	using on_screen_size_changed_fn = void(__thiscall*)(i_surface*, int, int);
+	using draw_set_color_fn = void(__thiscall*)(i_surface*, int, int, int, int);
 
-	int __stdcall do_post_screen_effects(int value);
-	bool __stdcall create_move(float frame_time, c_usercmd* user_cmd);
-	void __stdcall frame_stage_notify(int frame_stage);
-	void __stdcall paint_traverse(unsigned int panel, bool force_repaint, bool allow_force);
-	void __stdcall scene_end();
-	void __fastcall override_view(void* _this, void* _edx, c_viewsetup* setup);
-	void __stdcall lock_cursor();
-	LRESULT __stdcall wndproc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);
-	long __stdcall present(IDirect3DDevice9* device, RECT* source_rect, RECT* dest_rect, HWND dest_window_override, RGNDATA* dirty_region);
-	long __stdcall reset(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* present_parameters);
-	void __stdcall draw_model_execute(IMatRenderContext * ctx, const draw_model_state_t & state, const model_render_info_t & info, matrix_t * bone_to_world);
-	float __stdcall viewmodel_fov();
-	void __stdcall on_screen_size_changed(int old_width, int old_height);
+	int __stdcall do_post_screen_effects(int value) noexcept;
+	bool __stdcall create_move(float frame_time, c_usercmd* user_cmd) noexcept;
+	void __stdcall frame_stage_notify(int frame_stage) noexcept;
+	void __stdcall paint_traverse(unsigned int panel, bool force_repaint, bool allow_force) noexcept;
+	void __stdcall scene_end() noexcept;
+	void __fastcall override_view(void* _this, void* _edx, c_viewsetup* setup) noexcept;
+	void __stdcall lock_cursor() noexcept;
+	LRESULT __stdcall wndproc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam) noexcept;
+	long __stdcall present(IDirect3DDevice9* device, RECT* source_rect, RECT* dest_rect, HWND dest_window_override, RGNDATA* dirty_region) noexcept;
+	long __stdcall reset(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* present_parameters) noexcept;
+	void __stdcall draw_model_execute(IMatRenderContext * ctx, const draw_model_state_t & state, const model_render_info_t & info, matrix_t * bone_to_world)noexcept;
+	float __stdcall viewmodel_fov()noexcept;
+	void __stdcall draw_set_color(int r, int g, int b, int a) noexcept;
+	void __stdcall on_screen_size_changed(int old_width, int old_height) noexcept;
 }
