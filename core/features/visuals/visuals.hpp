@@ -41,11 +41,11 @@ private:
 		}
 	};
 
-	bool get_playerbox(entity_t* ent, box& in) {
+	bool get_playerbox(player_t* ent, box& in) {
 		vec3_t origin, min, max, flb, brt, blb, frt, frb, brb, blt, flt;
 		float left, top, right, bottom;
 
-		origin = ent->get_absolute_origin();
+		origin = ent->abs_origin();
 		min = ent->collideable()->mins() + origin;
 		max = ent->collideable()->maxs() + origin;
 
