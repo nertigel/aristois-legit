@@ -164,13 +164,6 @@ public:
 		using original_fn = bool(__thiscall*)(entity_t*);
 		return (*(original_fn**)this)[163](this);
 	}
-	vec3_t get_absolute_origin() {
-		__asm {
-			MOV ECX, this
-			MOV EAX, DWORD PTR DS : [ECX]
-			CALL DWORD PTR DS : [EAX + 0x28]
-		}
-	}
 	bool setup_bones(matrix_t* out, int max_bones, int mask, float time) {
 		if (!this) {
 			return false;
@@ -201,18 +194,7 @@ public:
 		static original_fn set_position_fn = (original_fn)((DWORD)utilities::pattern_scan(GetModuleHandleA("client_panorama.dll"), "55 8B EC 83 E4 F8 51 53 56 57 8B F1 E8"));
 		set_position_fn(this, position);
 	}
-	vec3_t &get_world_space_center() {
-		vec3_t vec_origin = origin();
 
-		vec3_t min = this->collideable()->mins() + vec_origin;
-		vec3_t max = this->collideable()->maxs() + vec_origin;
-
-		vec3_t size = max - min;
-		size /= 2.f;
-		size += min;
-
-		return size;
-	}
 	NETVAR("DT_CSPlayer", "m_fFlags", flags, int);
 	OFFSET(bool, dormant, 0xED);
 	NETVAR("DT_BaseEntity", "m_hOwnerEntity", owner_handle, unsigned long);
@@ -252,11 +234,7 @@ public:
 	NETVAR("DT_BaseAttributableItem", "m_flFallbackWear", fallback_wear, float);
 	NETVAR("DT_BaseCombatWeapon", "m_hWeaponWorldModel", world_model_handle, unsigned long);
 	NETVAR("DT_BaseAttributableItem", "m_iItemDefinitionIndex", item_definition_index, short);
-	NETVAR("DT_BaseAttributableItem", "m_iItemIDHigh", item_id_high, int); //jakby crash to wez offset z hazedumpera
-
-	econ_view_item_t& item() {
-		return *(econ_view_item_t*)this;
-	}
+	NETVAR("DT_BaseAttributableItem", "m_iItemIDHigh", item_id_high, int);
 };
 
 class weapon_t : public entity_t {
@@ -285,6 +263,7 @@ public:
 		using original_fn = void(__thiscall*)(void*);
 		(*(original_fn**)this)[477](this);
 	}
+
 	weapon_info_t* get_weapon_data() {
 		using original_fn = weapon_info_t * (__thiscall*)(void*);
 		return (*(original_fn**)this)[454](this); //skinchanger crash
@@ -448,11 +427,6 @@ public:
 	}
 	int	move_type() {
 		return *reinterpret_cast<int*> (reinterpret_cast<uintptr_t>(this) + 0x25C); //hazedumper
-	}
-	vec3_t eye_pos() {
-		vec3_t ret;
-		utilities::call_virtual<void(__thiscall*)(void*, vec3_t&)>(this, 281)(this, ret); // this is the real eye pos
-		return ret;
 	}
 
 	int* weapons() { //tu jesli skinchanger
