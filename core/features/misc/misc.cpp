@@ -139,12 +139,8 @@ void c_misc::watermark() noexcept {
 
 	auto net_channel = interfaces::engine->get_net_channel_info();
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
-
-	if (!local_player)
-		return;
-
-	std::string incoming = local_player ? std::to_string((int)(net_channel->get_latency(FLOW_INCOMING) * 1000)) : "0";
-	std::string outgoing = local_player ? std::to_string((int)(net_channel->get_latency(FLOW_OUTGOING) * 1000)) : "0";
+	std::string incoming = local_player ? std::to_string(static_cast<int>(net_channel->get_latency(FLOW_INCOMING) * 1000)) : "0";
+	std::string outgoing = local_player ? std::to_string(static_cast<int>(net_channel->get_latency(FLOW_OUTGOING) * 1000)) : "0";
 
 	ss << "aristois.me | fps: " << fps << " | incoming: " << incoming.c_str() << "ms" << " | outgoing: " << outgoing.c_str() << "ms";
 

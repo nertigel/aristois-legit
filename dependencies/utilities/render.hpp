@@ -29,8 +29,6 @@ public:
 
 		interfaces::surface->set_font_glyph(watermark_font, "Tahoma", 12, 500, 0, 0, font_flags::fontflag_dropshadow);
 		interfaces::surface->set_font_glyph(name_font, "Verdana", 12, 500, 0, 0, font_flags::fontflag_antialias | font_flags::fontflag_dropshadow);
-
-		printf("Render initialized!\n");
 	}
 	void draw_line(int x1, int y1, int x2, int y2, color colour) {
 		interfaces::surface->set_drawing_color(colour.r, colour.g, colour.b, colour.a);
@@ -43,11 +41,10 @@ public:
 		interfaces::surface->draw_render_text(string, wcslen(string));
 	}
 	void draw_text(int x, int y, unsigned long font, std::string string, bool text_centered, color colour) {
-		std::wstring text = std::wstring(string.begin(), string.end());
-		const wchar_t* converted_text = text.c_str();
+		const auto converted_text = std::wstring(string.begin(), string.end());
 
 		int width, height;
-		interfaces::surface->get_text_size(font, converted_text, width, height);
+		interfaces::surface->get_text_size(font, converted_text.c_str(), width, height);
 
 		interfaces::surface->set_text_color(colour.r, colour.g, colour.b, colour.a);
 		interfaces::surface->draw_text_font(font);
@@ -55,7 +52,7 @@ public:
 			interfaces::surface->draw_text_pos(x - (width / 2), y);
 		else
 			interfaces::surface->draw_text_pos(x, y);
-		interfaces::surface->draw_render_text(converted_text, wcslen(converted_text));
+		interfaces::surface->draw_render_text(converted_text.c_str(), wcslen(converted_text.c_str()));
 	}
 	void draw_rect(int x, int y, int w, int h, color color) {
 		interfaces::surface->set_drawing_color(color.r, color.g, color.b, color.a);

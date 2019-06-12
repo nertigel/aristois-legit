@@ -80,6 +80,4 @@ void c_kit_parser::setup() noexcept {
 		std::sort(parser_skins.begin(), parser_skins.end());
 		std::sort(parser_gloves.begin(), parser_gloves.end());
 	}
-
-	printf("Kit Parser initialized!\n");
 }

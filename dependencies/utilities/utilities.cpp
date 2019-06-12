@@ -202,7 +202,7 @@ void* utilities::game::capture_interface(const char* mod, const char* iface) {
 	auto fn_addr = reinterpret_cast<fn_capture_iface_t>(GetProcAddress(GetModuleHandleA(mod), "CreateInterface"));
 
 	auto iface_addr = fn_addr(iface, nullptr);
-	printf("found %s at 0x%p\n", iface, fn_addr(iface, nullptr));
+	printf("[interfaces] found %s at 0x%p\n", iface, fn_addr(iface, nullptr));
 
 	return iface_addr;
 }
@@ -237,6 +237,4 @@ void utilities::material_setup() {
 			"$znearer" "0"
 			"$flat" "1"
 		})#";
-
-	printf("Materials initialized!\n");
 }

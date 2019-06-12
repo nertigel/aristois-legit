@@ -40,8 +40,6 @@ void c_hooked_events::setup() noexcept {
 	interfaces::event_manager->add_listener(this, "item_purchase", false);
 	interfaces::event_manager->add_listener(this, "player_footstep", false);
 	interfaces::event_manager->add_listener(this, "player_death", false);
-
-	printf("Events initialized!\n");
 }
 
 void c_hooked_events::release() noexcept {

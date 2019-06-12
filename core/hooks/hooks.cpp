@@ -37,8 +37,6 @@ void hooks::initialize() noexcept {
 	surface_hook = std::make_unique<vmt_hook>();
 	modelrender_hook = std::make_unique<vmt_hook>();
 
-	render.setup_fonts();
-
 	client_hook->setup(interfaces::client);
 	client_hook->hook_index(37, reinterpret_cast<void*>(frame_stage_notify));
 
@@ -79,11 +77,6 @@ void hooks::initialize() noexcept {
 	interfaces::console->get_convar("viewmodel_offset_x")->callbacks.set_size(false);
 	interfaces::console->get_convar("viewmodel_offset_y")->callbacks.set_size(false);
 	interfaces::console->get_convar("viewmodel_offset_z")->callbacks.set_size(false);
-
-	events.setup();
-	kit_parser.setup();
-
-	printf("Hooks initialized!\n");
 }
 
 

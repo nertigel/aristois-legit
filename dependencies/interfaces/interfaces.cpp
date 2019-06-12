@@ -58,6 +58,4 @@ void interfaces::initialize() {
 	render_beams = *reinterpret_cast<i_view_render_beams**>((utilities::pattern_scan(GetModuleHandleA("client_panorama.dll"), "B9 ? ? ? ? A1 ? ? ? ? FF 10 A1 ? ? ? ? B9") + 1));
 	glow_manager = (glow_manager_t *)(*(uintptr_t *)(utilities::pattern_scan(GetModuleHandleA("client_panorama.dll"), "0F 11 05 ? ? ? ? 83 C8 01 C7 05 ? ? ? ? 00 00 00 00") + 3));
 	move_helper = **(player_move_helper***)(utilities::pattern_scan(GetModuleHandleA("client_panorama.dll"), "8B 0D ? ? ? ? 8B 46 08 68") + 2); //test
-
-	printf("Interfaces initialized!\n");
 }
