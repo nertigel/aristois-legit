@@ -204,6 +204,12 @@ public:
 		bool crosshair_outline_color{ false };
 		float clr_crosshair[4]{ 1.0f,1.0f,1.0f,1.0f };
 		float clr_crosshair_outline[4]{ 1.0f,1.0f,1.0f,1.0f };
+		bool glovechanger_enable{ false };
+		int glove_model{ 0 };
+		int glove_skin{ 0 };
+		int paint_kit_vector_index_glove{ 0 };
+		int paint_kit_index_glove{ 0 };
+		int glove_wear{ 0 };
 	} item;
 
 private:
