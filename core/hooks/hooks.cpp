@@ -14,6 +14,7 @@
 #include "../features/visuals/sound.hpp"
 #include "../features/skinchanger/parser.hpp"
 #include "../features/visuals/nightmode.hpp"
+#include "../features/skinchanger/glovechanger.hpp"
 
 std::unique_ptr<vmt_hook> hooks::client_hook;
 std::unique_ptr<vmt_hook> hooks::clientmode_hook;
@@ -229,6 +230,7 @@ void __stdcall hooks::frame_stage_notify(int frame_stage) noexcept {
 
 	else if (frame_stage == FRAME_NET_UPDATE_POSTDATAUPDATE_START) {
 		skin_changer.run();
+		glove_changer.run();
 	}
 
 	else if (frame_stage == FRAME_NET_UPDATE_START && interfaces::engine->is_in_game()) {
