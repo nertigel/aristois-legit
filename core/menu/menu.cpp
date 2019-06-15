@@ -478,6 +478,11 @@ void c_menu::run() {
 					config_system.item.paint_kit_index_knife = parser_skins[config_system.item.paint_kit_vector_index_knife].id;
 					ImGui::PopStyleColor();
 
+					ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 18);
+					if (ImGui::Button("force update", ImVec2(84, 18))) {
+						utilities::force_update();
+					}
+
 				}
 				ImGui::EndChild(true);
 
@@ -486,11 +491,21 @@ void c_menu::run() {
 				ImGui::Dummy(ImVec2(0, 0)); ImGui::SameLine();
 				ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(16, 16));
 
-				ImGui::BeginChild("settings", ImVec2(279, 267), true); {
+				ImGui::BeginChild("gloves", ImVec2(279, 267), true); {
+					ImGui::Checkbox("enable", &config_system.item.glovechanger_enable);
+					ImGui::PushStyleColor(ImGuiCol_Text, config_system.item.glovechanger_enable ? ImVec4(1.f, 1.f, 1.f, 1) : ImVec4(.6f, .6f, .6f, 1));
+					ImGui::Combo("type", &config_system.item.glove_model, "default\0blood\0sport\0slick\0leather\0moto\0specin\0hydra");
+					ImGui::Combo(("skin"), &config_system.item.paint_kit_vector_index_glove, [](void* data, int idx, const char** out_text) {
+						*out_text = parser_gloves[idx].name.c_str();
+						return true;
+						}, nullptr, parser_gloves.size(), 10);
+					config_system.item.paint_kit_index_glove = parser_gloves[config_system.item.paint_kit_vector_index_glove].id;
+					ImGui::Combo("condition", &config_system.item.glove_wear, "factory new\0minimal wear\0field-tested\0well-worn\0battle-scarred");
 					ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 18);
 					if (ImGui::Button("force update", ImVec2(84, 18))) {
 						utilities::force_update();
 					}
+					ImGui::PopStyleColor();
 
 				}
 				ImGui::EndChild(true);
