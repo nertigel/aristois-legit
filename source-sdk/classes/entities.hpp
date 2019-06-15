@@ -5,6 +5,12 @@
 #include "client_class.hpp"
 #include "../../dependencies/utilities/netvar_manager.hpp"
 
+enum data_update_type_t {
+	DATA_UPDATE_CREATED = 0,
+	DATA_UPDATE_DATATABLE_CHANGED,
+};
+
+
 enum move_type {
 	movetype_none = 0,
 	movetype_isometric,
@@ -132,7 +138,16 @@ enum item_definition_indexes {
 	WEAPON_KNIFE_URSUS = 519,
 	WEAPON_KNIFE_GYPSY_JACKKNIFE,
 	WEAPON_KNIFE_STILETTO = 522,
-	WEAPON_KNIFE_WIDOWMAKER
+	WEAPON_KNIFE_WIDOWMAKER,
+	GLOVE_STUDDED_BLOODHOUND = 5027,
+	GLOVE_T_SIDE = 5028,
+	GLOVE_CT_SIDE = 5029,
+	GLOVE_SPORTY = 5030,
+	GLOVE_SLICK = 5031,
+	GLOVE_LEATHER_WRAP = 5032,
+	GLOVE_MOTORCYCLE = 5033,
+	GLOVE_SPECIALIST = 5034,
+	GLOVE_HYDRA = 5035
 };
 
 class entity_t {
@@ -193,6 +208,27 @@ public:
 		using original_fn = void(__thiscall*)(void*, const vec3_t&);
 		static original_fn set_position_fn = (original_fn)((DWORD)utilities::pattern_scan(GetModuleHandleA("client_panorama.dll"), "55 8B EC 83 E4 F8 51 53 56 57 8B F1 E8"));
 		set_position_fn(this, position);
+	}
+
+	void set_model_index(int index) {
+		using original_fn = void(__thiscall*)(void*, int);
+		return (*(original_fn * *)this)[75](this, index);
+	}
+
+	void net_pre_data_update(int update_type)
+	{
+		using original_fn = void(__thiscall*)(void*, int);
+		return (*(original_fn * *)networkable())[6](networkable(), update_type);
+	}
+
+	void net_release() {
+		using original_fn = void(__thiscall*)(void*);
+		return (*(original_fn * *)networkable())[1](networkable());
+	}
+
+	int net_set_destroyed_on_recreate_entities() {
+		using original_fn = int(__thiscall*)(void*);
+		return (*(original_fn * *)networkable())[13](networkable());
 	}
 
 	NETVAR("DT_CSPlayer", "m_fFlags", flags, int);
@@ -318,6 +354,10 @@ public:
 	weapon_t* active_weapon() {
 		auto active_weapon = read<DWORD>(netvar_manager::get_net_var(netvar_manager::fnv::hash("DT_CSPlayer"), netvar_manager::fnv::hash("m_hActiveWeapon"))) & 0xFFF;
 		return reinterpret_cast<weapon_t*>(interfaces::entity_list->get_client_entity(active_weapon));
+	}
+
+	UINT* get_wearables() {
+		return (UINT*)((DWORD)this + (netvar_manager::get_net_var(netvar_manager::fnv::hash("DT_CSPlayer"), netvar_manager::fnv::hash("m_hMyWearables"))));
 	}
 
 	bool has_c4() {
