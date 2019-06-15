@@ -94,6 +94,7 @@
     <ClCompile Include="core\features\misc\misc.cpp" />
     <ClCompile Include="core\features\misc\prediction.cpp" />
     <ClCompile Include="core\features\misc\movement.cpp" />
+    <ClCompile Include="core\features\skinchanger\glovechanger.cpp" />
     <ClCompile Include="core\features\skinchanger\parser.cpp" />
     <ClCompile Include="core\features\skinchanger\skinchanger.cpp" />
     <ClCompile Include="core\features\visuals\nightmode.cpp" />
@@ -133,6 +134,7 @@
     <ClInclude Include="core\features\misc\misc.hpp" />
     <ClInclude Include="core\features\misc\prediction.hpp" />
     <ClInclude Include="core\features\misc\movement.hpp" />
+    <ClInclude Include="core\features\skinchanger\glovechanger.hpp" />
     <ClInclude Include="core\features\skinchanger\parser.hpp" />
     <ClInclude Include="core\features\skinchanger\skinchanger.hpp" />
     <ClInclude Include="core\features\visuals\nightmode.hpp" />
