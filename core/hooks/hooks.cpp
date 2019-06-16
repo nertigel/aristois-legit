@@ -100,12 +100,10 @@ void hooks::shutdown() noexcept {
 float __stdcall hooks::viewmodel_fov() noexcept {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 
-	if (local_player && local_player->is_alive()) {
+	if (local_player && local_player->is_alive()) 
 		return 68.f + config_system.item.viewmodel_fov;
-	}
-	else {
+	else
 		return 68.f;
-	}
 }
 
 void __stdcall hooks::draw_set_color(int r, int g, int b, int a) noexcept {
