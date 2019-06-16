@@ -249,6 +249,24 @@ void c_aimbot::auto_pistol(c_usercmd* user_cmd) {
 	}
 }
 
+void c_aimbot::rcs_standalone(c_usercmd* user_cmd) noexcept {
+	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
+	if (!local_player)
+		return;
+
+	static vec3_t old_punch = { 0.0f, 0.0f, 0.0f };
+	auto recoil_scale = interfaces::console->get_convar("weapon_recoil_scale");
+	auto aim_punch = local_player->aim_punch_angle() * recoil_scale->get_float();
+
+	aim_punch.x *= rcs_x;
+	aim_punch.y *= rcs_y;
+
+	auto rcs = user_cmd->viewangles += (old_punch - aim_punch);
+	interfaces::engine->set_view_angles(rcs);
+
+	old_punch = aim_punch;
+}
+
 void c_aimbot::run(c_usercmd* user_cmd) noexcept {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 
@@ -261,6 +279,7 @@ void c_aimbot::run(c_usercmd* user_cmd) noexcept {
 	auto weapon = local_player->active_weapon();
 	weapon_settings(weapon);
 	auto_pistol(user_cmd);
+	rcs_standalone(user_cmd);
 
 	if (config_system.item.aim_enabled && user_cmd->buttons & in_attack || GetAsyncKeyState(config_system.item.aim_key)) {
 		if (auto target = find_target(user_cmd)) {
@@ -284,17 +303,12 @@ void c_aimbot::run(c_usercmd* user_cmd) noexcept {
 			if (is_sniper(weapon) && !local_player->is_scoped() && !config_system.item.scope_aim)
 				return;
 
-			auto recoil_scale = interfaces::console->get_convar("weapon_recoil_scale");
-			auto aim_punch = local_player->aim_punch_angle() * recoil_scale->get_float();
-			aim_punch.x *= rcs_x;
-			aim_punch.y *= rcs_y;
-
 			switch (config_system.item.aim_mode) {
 			case 0:
-				angle = math.calculate_angle(local_player->get_eye_pos(), entity->get_hitbox_position(entity, hitbox_id), user_cmd->viewangles + aim_punch);
+				angle = math.calculate_angle(local_player->get_eye_pos(), entity->get_hitbox_position(entity, hitbox_id), user_cmd->viewangles);
 				break;
 			case 1:
-				angle = math.calculate_angle(local_player->get_eye_pos(), entity->get_bone_position(get_nearest_bone(entity, user_cmd)), user_cmd->viewangles + aim_punch);
+				angle = math.calculate_angle(local_player->get_eye_pos(), entity->get_bone_position(get_nearest_bone(entity, user_cmd)), user_cmd->viewangles);
 				break;
 			}
 			
