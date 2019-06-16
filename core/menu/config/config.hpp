@@ -210,6 +210,8 @@ public:
 		int paint_kit_vector_index_glove{ 0 };
 		int paint_kit_index_glove{ 0 };
 		int glove_wear{ 0 };
+		float rcs_standalone_x{ 0.0f };
+		float rcs_standalone_y{ 0.0f };
 	} item;
 
 private:
