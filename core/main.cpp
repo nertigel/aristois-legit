@@ -9,42 +9,37 @@ unsigned long __stdcall initial_thread(void* reserved) {
 #ifdef debug_build
 	AllocConsole();
 	SetConsoleTitleW(L"Counter-Strike: Global Offensive");
-	freopen_s(reinterpret_cast<FILE**>stdin, "CONIN$", "r", stdin);
-	freopen_s(reinterpret_cast<FILE**>stdout, "CONOUT$", "w", stdout);
+	freopen_s(reinterpret_cast<FILE * *>stdin, "CONIN$", "r", stdin);
+	freopen_s(reinterpret_cast<FILE * *>stdout, "CONOUT$", "w", stdout);
 #endif
 
-	try {
-		interfaces::initialize();
+	interfaces::initialize();
 
-		printf("[setup] interfaces initialized!\n");
+	printf("[setup] interfaces initialized!\n");
 
-		hooks::initialize();
+	hooks::initialize();
 
-		printf("[setup] hooks initialized!\n");
+	printf("[setup] hooks initialized!\n");
 
-		render.setup_fonts();
+	render.setup_fonts();
 
-		printf("[setup] render initialized!\n");
+	printf("[setup] render initialized!\n");
 
-		utilities::material_setup();
+	utilities::material_setup();
 
-		printf("[setup] materials initialized!\n");
+	printf("[setup] materials initialized!\n");
 
-		config_system.run("aristois");
+	config_system.run("aristois");
 
-		printf("[setup] config initialized!\n");
+	printf("[setup] config initialized!\n");
 
-		events.setup();
+	events.setup();
 
-		printf("[setup] events initialized!\n");
+	printf("[setup] events initialized!\n");
 
-		kit_parser.setup();
+	kit_parser.setup();
 
-		printf("[setup] kit parser initialized!\n");
-	}
-	catch (const std::runtime_error & err) {
-		printf(err.what());
-	}
+	printf("[setup] kit parser initialized!\n");
 
 	while (!GetAsyncKeyState(VK_END))
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
