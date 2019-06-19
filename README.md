@@ -19,6 +19,9 @@ Press `INSERT` key.
 ### How can I unload the cheat?
 Press `END` key.
 
+### Known scam/pasted p2c projects (don't use)
+[purves](https://i.imgur.com/wqslXxQ.png)
+
 ## Media
 ![image](https://i.imgur.com/v6PVR1g.png)
 ![image](https://i.imgur.com/ehQE2vj.png)
