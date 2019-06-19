@@ -352,17 +352,21 @@ public:
 	NETVAR("DT_CSPlayer", "m_nTickBase", get_tick_base, int);
 
 	weapon_t* active_weapon() {
-		auto active_weapon = read<DWORD>(netvar_manager::get_net_var(netvar_manager::fnv::hash("DT_CSPlayer"), netvar_manager::fnv::hash("m_hActiveWeapon"))) & 0xFFF;
+		auto active_weapon = read<uintptr_t>(netvar_manager::get_net_var(netvar_manager::fnv::hash("DT_CSPlayer"), netvar_manager::fnv::hash("m_hActiveWeapon"))) & 0xFFF;
 		return reinterpret_cast<weapon_t*>(interfaces::entity_list->get_client_entity(active_weapon));
 	}
 
 	UINT* get_wearables() {
-		return (UINT*)((DWORD)this + (netvar_manager::get_net_var(netvar_manager::fnv::hash("DT_CSPlayer"), netvar_manager::fnv::hash("m_hMyWearables"))));
+		return (UINT*)((uintptr_t)this + (netvar_manager::get_net_var(netvar_manager::fnv::hash("DT_CSPlayer"), netvar_manager::fnv::hash("m_hMyWearables"))));
+	}
+
+	UINT* get_weapons() {
+		return (UINT*)((uintptr_t)this + (netvar_manager::get_net_var(netvar_manager::fnv::hash("DT_CSPlayer"), netvar_manager::fnv::hash("m_hMyWeapons"))));
 	}
 
 	bool has_c4() {
-		static auto ret = reinterpret_cast<bool(__thiscall*)(void*)>(utilities::pattern_scan(GetModuleHandleA("client_panorama.dll"), "56 8B F1 85 F6 74 31"));
-		return ret(this);
+		static auto fn = reinterpret_cast<bool(__thiscall*)(void*)>(utilities::pattern_scan(GetModuleHandleA("client_panorama.dll"), "56 8B F1 85 F6 74 31"));
+		return fn(this);
 	}
 
 	vec3_t get_eye_pos() {
@@ -468,8 +472,4 @@ public:
 	int	move_type() {
 		return *reinterpret_cast<int*> (reinterpret_cast<uintptr_t>(this) + 0x25C); //hazedumper
 	}
-
-	int* weapons() { //tu jesli skinchanger
-		return reinterpret_cast<int*> (uintptr_t(this) + 0x2DF8);
-	} 
 };
