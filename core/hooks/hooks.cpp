@@ -294,7 +294,7 @@ LRESULT __stdcall hooks::wndproc(HWND hwnd, UINT message, WPARAM wparam, LPARAM 
 	if (menu.opened && ImGui_ImplDX9_WndProcHandler(hwnd, message, wparam, lparam))
 		return true;
 
-	return CallWindowProcA(wndproc_original, hwnd, message, wparam, lparam);
+	return CallWindowProcW(wndproc_original, hwnd, message, wparam, lparam);
 }
 
 void __stdcall hooks::lock_cursor() noexcept {
