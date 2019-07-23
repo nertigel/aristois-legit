@@ -446,7 +446,7 @@ void c_menu::run() {
 						ImGui::SliderInt("maximum hops", &config_system.item.bunny_hop_maximum_value, 0, 20);
 					}
 
-
+					//ImGui::Checkbox("slide walk", &config_system.item.slidewalk);
 					ImGui::Checkbox("edge jump", &config_system.item.edge_jump);
 					if (config_system.item.edge_jump) {
 						ImGui::Checkbox("duck in air", &config_system.item.edge_jump_duck_in_air);
@@ -656,9 +656,85 @@ void c_menu::run() {
 
 						break;
 					case 3:
-						break;
-					case 4:
-						break;
+						ImGui::Combo(("mac-10"), &config_system.item.paint_kit_vector_index_mac10, [](void* data, int idx, const char** out_text) {
+							*out_text = parser_skins[idx].name.c_str();
+							return true;
+						}, nullptr, parser_skins.size(), 10);
+						config_system.item.paint_kit_index_mac10 = parser_skins[config_system.item.paint_kit_vector_index_mac10].id;
+
+						ImGui::Combo(("mp5-sd"), &config_system.item.paint_kit_vector_index_mp5sd, [](void* data, int idx, const char** out_text) {
+							*out_text = parser_skins[idx].name.c_str();
+							return true;
+						}, nullptr, parser_skins.size(), 10);
+						config_system.item.paint_kit_index_mp5sd = parser_skins[config_system.item.paint_kit_vector_index_mp5sd].id;
+
+						ImGui::Combo(("mp7"), &config_system.item.paint_kit_vector_index_mp7, [](void* data, int idx, const char** out_text) {
+							*out_text = parser_skins[idx].name.c_str();
+							return true;
+						}, nullptr, parser_skins.size(), 10);
+						config_system.item.paint_kit_index_mp9 = parser_skins[config_system.item.paint_kit_vector_index_mp7].id;
+
+						ImGui::Combo(("mp9"), &config_system.item.paint_kit_vector_index_mp9, [](void* data, int idx, const char** out_text) {
+							*out_text = parser_skins[idx].name.c_str();
+							return true;
+						}, nullptr, parser_skins.size(), 10);
+						config_system.item.paint_kit_index_mp9 = parser_skins[config_system.item.paint_kit_vector_index_mp9].id;
+
+						ImGui::Combo(("pp-bizon"), &config_system.item.paint_kit_vector_index_ppbizon, [](void* data, int idx, const char** out_text) {
+							*out_text = parser_skins[idx].name.c_str();
+							return true;
+						}, nullptr, parser_skins.size(), 10);
+						config_system.item.paint_kit_index_ppbizon = parser_skins[config_system.item.paint_kit_vector_index_ppbizon].id;
+
+						ImGui::Combo(("p90"), &config_system.item.paint_kit_vector_index_p90, [](void* data, int idx, const char** out_text) {
+							*out_text = parser_skins[idx].name.c_str();
+							return true;
+						}, nullptr, parser_skins.size(), 10);
+						config_system.item.paint_kit_index_p90 = parser_skins[config_system.item.paint_kit_vector_index_p90].id;
+
+						ImGui::Combo(("ump-45"), &config_system.item.paint_kit_vector_index_ump45, [](void* data, int idx, const char** out_text) {
+							*out_text = parser_skins[idx].name.c_str();
+							return true;
+						}, nullptr, parser_skins.size(), 10);
+						config_system.item.paint_kit_index_ump45 = parser_skins[config_system.item.paint_kit_vector_index_ump45].id;
+					break;
+			case 4:
+				ImGui::Combo(("mag-7"), &config_system.item.paint_kit_vector_index_mag7, [](void* data, int idx, const char** out_text) {
+					*out_text = parser_skins[idx].name.c_str();
+					return true;
+				}, nullptr, parser_skins.size(), 10);
+				config_system.item.paint_kit_index_mag7 = parser_skins[config_system.item.paint_kit_vector_index_mag7].id;
+
+				ImGui::Combo(("nova"), &config_system.item.paint_kit_vector_index_nova, [](void* data, int idx, const char** out_text) {
+					*out_text = parser_skins[idx].name.c_str();
+					return true;
+				}, nullptr, parser_skins.size(), 10);
+				config_system.item.paint_kit_index_nova = parser_skins[config_system.item.paint_kit_vector_index_nova].id;
+
+				ImGui::Combo(("sawed-off"), &config_system.item.paint_kit_vector_index_sawedoff, [](void* data, int idx, const char** out_text) {
+					*out_text = parser_skins[idx].name.c_str();
+					return true;
+				}, nullptr, parser_skins.size(), 10);
+				config_system.item.paint_kit_index_sawedoff = parser_skins[config_system.item.paint_kit_vector_index_sawedoff].id;
+
+				ImGui::Combo(("xm1014"), &config_system.item.paint_kit_vector_index_xm1014, [](void* data, int idx, const char** out_text) {
+					*out_text = parser_skins[idx].name.c_str();
+					return true;
+				}, nullptr, parser_skins.size(), 10);
+				config_system.item.paint_kit_index_xm1014 = parser_skins[config_system.item.paint_kit_vector_index_xm1014].id;
+
+				ImGui::Combo(("m249"), &config_system.item.paint_kit_vector_index_m249, [](void* data, int idx, const char** out_text) {
+					*out_text = parser_skins[idx].name.c_str();
+					return true;
+				}, nullptr, parser_skins.size(), 10);
+				config_system.item.paint_kit_index_m249 = parser_skins[config_system.item.paint_kit_vector_index_m249].id;
+
+				ImGui::Combo(("negev"), &config_system.item.paint_kit_vector_index_negev, [](void* data, int idx, const char** out_text) {
+					*out_text = parser_skins[idx].name.c_str();
+					return true;
+				}, nullptr, parser_skins.size(), 10);
+				config_system.item.paint_kit_index_negev = parser_skins[config_system.item.paint_kit_vector_index_negev].id;
+					break;
 
 					}
 					ImGui::PopStyleColor();
