@@ -210,6 +210,7 @@ void c_skinchanger::run() noexcept {
 			case 14:
 				apply_knife_skin(weapon, WEAPON_KNIFE_URSUS, config_system.item.paint_kit_index_knife, index_ursus, 3, wear);
 				break;
+
 			}
 		}
 
@@ -277,6 +278,45 @@ void c_skinchanger::run() noexcept {
 			break;
 		case WEAPON_G3SG1:
 			weapon->fallback_paint_kit() = config_system.item.paint_kit_index_g3sg1;
+			break;
+		case WEAPON_MAC10:
+			weapon->fallback_paint_kit() = config_system.item.paint_kit_index_mac10;
+			break;
+		case WEAPON_MP5SD:
+			weapon->fallback_paint_kit() = config_system.item.paint_kit_index_mp5sd;
+			break;
+		case WEAPON_MP7:
+			weapon->fallback_paint_kit() = config_system.item.paint_kit_index_mp7;
+			break;
+		case WEAPON_MP9:
+			weapon->fallback_paint_kit() = config_system.item.paint_kit_index_mp9;
+			break;
+		case WEAPON_BIZON:
+			weapon->fallback_paint_kit() = config_system.item.paint_kit_index_ppbizon;
+			break;
+		case WEAPON_P90:
+			weapon->fallback_paint_kit() = config_system.item.paint_kit_index_p90;
+			break;
+		case WEAPON_UMP45:
+			weapon->fallback_paint_kit() = config_system.item.paint_kit_index_ump45;
+			break;
+		case WEAPON_MAG7:
+			weapon->fallback_paint_kit() = config_system.item.paint_kit_index_mag7;
+			break;
+		case WEAPON_NOVA:
+			weapon->fallback_paint_kit() = config_system.item.paint_kit_index_nova;
+			break;
+		case WEAPON_SAWEDOFF:
+			weapon->fallback_paint_kit() = config_system.item.paint_kit_index_sawedoff;
+			break;
+		case WEAPON_XM1014:
+			weapon->fallback_paint_kit() = config_system.item.paint_kit_index_xm1014;
+			break;
+		case WEAPON_M249:
+			weapon->fallback_paint_kit() = config_system.item.paint_kit_index_m249;
+			break;
+		case WEAPON_NEGEV:
+			weapon->fallback_paint_kit() = config_system.item.paint_kit_index_negev;
 			break;
 		}
 
