@@ -135,6 +135,7 @@ void c_menu::run() {
 					ImGui::Checkbox("scope aim", &config_system.item.scope_aim);
 					ImGui::Checkbox("smoke aim", &config_system.item.smoke_check);
 					ImGui::Checkbox("friendly fire", &config_system.item.aim_team_check);
+					ImGui::Checkbox("jump check", &config_system.item.aim_jump_check);
 					ImGui::Checkbox("auto pistol", &config_system.item.aimbot_auto_pistol);
 					ImGui::PushStyleColor(ImGuiCol_Text, config_system.item.aim_enabled ? ImVec4(1.f, 1.f, 1.f, 1) : ImVec4(.6f, .6f, .6f, 1));
 					ImGui::SliderInt("kill delay", &config_system.item.aimbot_delay_after_kill, 0, 350);
