@@ -302,6 +302,10 @@ void c_aimbot::run(c_usercmd* user_cmd) noexcept {
 
 			if (is_sniper(weapon) && !local_player->is_scoped() && !config_system.item.scope_aim)
 				return;
+			
+			//jump check (both local player and the entity) #MrClue
+			if (!(local_player->flags() & fl_onground) || (!(entity->flags() & fl_onground)) && config_system.item.aim_jump_check)
+				return;
 
 			switch (config_system.item.aim_mode) {
 			case 0:
