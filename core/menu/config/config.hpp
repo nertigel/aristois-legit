@@ -240,6 +240,7 @@ public:
 		int glove_wear{ 0 };
 		float rcs_standalone_x{ 0.0f };
 		float rcs_standalone_y{ 0.0f };
+		bool aim_jump_check{ false };
 	} item;
 
 private:
