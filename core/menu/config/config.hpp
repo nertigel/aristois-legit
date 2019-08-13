@@ -76,7 +76,7 @@ public:
 		bool player_flags_scoped{ false };
 		bool player_flags_c4{ false };
 		bool player_flags_flashed{ false };
-		bool player_box{ false };
+		int player_box{ 0 };
 		bool player_health{ false };
 		bool player_weapon{ false };
 		bool player_armor{ false };
@@ -240,6 +240,7 @@ public:
 		int glove_wear{ 0 };
 		float rcs_standalone_x{ 0.0f };
 		float rcs_standalone_y{ 0.0f };
+		bool aim_jump_check{ false };
 	} item;
 
 private:

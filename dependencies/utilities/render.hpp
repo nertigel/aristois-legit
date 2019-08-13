@@ -68,6 +68,17 @@ public:
 		interfaces::surface->set_drawing_color(colour.r, colour.g, colour.b, colour.a);
 		interfaces::surface->draw_outlined_rect(x, y, w, h);
 	}
+	void draw_corner_box(int x, int y, int w, int h, color colour) {
+		interfaces::surface->set_drawing_color(colour.r, colour.g, colour.b, colour.a);
+		interfaces::surface->draw_line(x, y, x, y + (h / 5));
+		interfaces::surface->draw_line(x, y, x + (w / 5), y);
+		interfaces::surface->draw_line(x + w, y, x + w - (w / 5), y);
+		interfaces::surface->draw_line(x + w, y, x + w, y + (h / 5));
+		interfaces::surface->draw_line(x, y + h, x + (w / 5), y + h);
+		interfaces::surface->draw_line(x, y + h, x, y + h - (h / 5));
+		interfaces::surface->draw_line(x + w, y + h, x + w - (w / 5), y + h);
+		interfaces::surface->draw_line(x + w, y + h, x + w, y + h - (h / 5)); 
+	}
 	void draw_textured_polygon(int n, vertex_t* vertice, color col) {
 		static int texture_id = interfaces::surface->create_new_texture_id(true);
 		static unsigned char buf[4] = { 255, 255, 255, 255 };

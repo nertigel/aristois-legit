@@ -135,6 +135,7 @@ void c_menu::run() {
 					ImGui::Checkbox("scope aim", &config_system.item.scope_aim);
 					ImGui::Checkbox("smoke aim", &config_system.item.smoke_check);
 					ImGui::Checkbox("friendly fire", &config_system.item.aim_team_check);
+					ImGui::Checkbox("jump check", &config_system.item.aim_jump_check);
 					ImGui::Checkbox("auto pistol", &config_system.item.aimbot_auto_pistol);
 					ImGui::PushStyleColor(ImGuiCol_Text, config_system.item.aim_enabled ? ImVec4(1.f, 1.f, 1.f, 1) : ImVec4(.6f, .6f, .6f, 1));
 					ImGui::SliderInt("kill delay", &config_system.item.aimbot_delay_after_kill, 0, 350);
@@ -243,8 +244,8 @@ void c_menu::run() {
 						ImGui::Checkbox("on key", &config_system.item.visuals_on_key);
 					}
 					ImGui::Checkbox("name", &config_system.item.player_name);
-					ImGui::ColorEdit4("name color", config_system.item.clr_name, ImGuiColorEditFlags_NoInputs);
-					ImGui::Checkbox("box", &config_system.item.player_box);
+					ImGui::ColorEdit4("name color", config_system.item.clr_name, ImGuiColorEditFlags_NoInputs);					
+					ImGui::Combo("box type", &config_system.item.player_box, "off\0normal\0edges");
 					ImGui::ColorEdit4("box color", config_system.item.clr_box, ImGuiColorEditFlags_NoInputs);
 					ImGui::Checkbox("health", &config_system.item.player_health);
 					ImGui::Checkbox("weapon", &config_system.item.player_weapon);
