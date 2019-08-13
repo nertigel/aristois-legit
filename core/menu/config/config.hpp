@@ -76,7 +76,7 @@ public:
 		bool player_flags_scoped{ false };
 		bool player_flags_c4{ false };
 		bool player_flags_flashed{ false };
-		bool player_box{ false };
+		int player_box{ 0 };
 		bool player_health{ false };
 		bool player_weapon{ false };
 		bool player_armor{ false };

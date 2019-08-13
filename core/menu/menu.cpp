@@ -244,8 +244,8 @@ void c_menu::run() {
 						ImGui::Checkbox("on key", &config_system.item.visuals_on_key);
 					}
 					ImGui::Checkbox("name", &config_system.item.player_name);
-					ImGui::ColorEdit4("name color", config_system.item.clr_name, ImGuiColorEditFlags_NoInputs);
-					ImGui::Checkbox("box", &config_system.item.player_box);
+					ImGui::ColorEdit4("name color", config_system.item.clr_name, ImGuiColorEditFlags_NoInputs);					
+					ImGui::Combo("box type", &config_system.item.player_box, "off\0normal\0edges");
 					ImGui::ColorEdit4("box color", config_system.item.clr_box, ImGuiColorEditFlags_NoInputs);
 					ImGui::Checkbox("health", &config_system.item.player_health);
 					ImGui::Checkbox("weapon", &config_system.item.player_weapon);
