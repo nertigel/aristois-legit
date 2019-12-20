@@ -36,14 +36,25 @@ namespace utilities {
 	void change_name(const char* name);
 	void dump_steam_id();
 	void force_update();
-	void console_warning(const char * msg, ...);
-	const char * hitgroup_name(int hitgroup);
+	void console_warning(const char* msg, ...);
+	const char* hitgroup_name(int hitgroup);
 	float csgo_armor(float damage, int armor_value);
 	std::uint8_t* pattern_scan(void* module, const char* signature);
 	int epoch_time();
-	void apply_clan_tag(const char * name);
+	void apply_clan_tag(const char* name);
 	bool is_behind_smoke(vec3_t start_pos, vec3_t end_pos);
 	void material_setup();
 	template<class T>
-	static T * find_hud_element(const char * name);
+	static T* find_hud_element(const char* name);
+
+	namespace weaponchecks {
+		bool is_pistol(void* weapon);
+		bool is_smg(void* weapon);
+		bool is_rifle(void* weapon);
+		bool is_heavy(void* weapon);
+		bool is_sniper(void* weapon);
+		bool is_knife(void* weapon);
+		bool is_grenade(void* weapon);
+		bool is_bomb(void* weapon);
+	}
 }
