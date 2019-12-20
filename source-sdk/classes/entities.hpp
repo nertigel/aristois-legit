@@ -5,6 +5,21 @@
 #include "client_class.hpp"
 #include "../../dependencies/utilities/netvar_manager.hpp"
 
+enum weapon_type : int
+{
+	WT_Invalid,
+	WT_Grenade,
+	WT_Knife,
+	WT_Misc,
+	WT_Pistol,
+	WT_Submg,
+	WT_Rifle,
+	WT_Sniper,
+	WT_Shotgun,
+	WT_Machinegun,
+	WT_Max
+};
+
 enum data_update_type_t {
 	DATA_UPDATE_CREATED = 0,
 	DATA_UPDATE_DATATABLE_CHANGED,
@@ -287,7 +302,7 @@ public:
 
 	float get_innacuracy() {
 		using original_fn = float(__thiscall*)(void*);
-		return (*(original_fn**)this)[476](this);
+		return (*(original_fn**)this)[478](this);
 	}
 
 	float get_spread() {
@@ -302,7 +317,109 @@ public:
 
 	weapon_info_t* get_weapon_data() {
 		using original_fn = weapon_info_t * (__thiscall*)(void*);
-		return (*(original_fn**)this)[454](this); //skinchanger crash
+		return (*(original_fn**)this)[457](this);
+	}
+
+	int get_type() {
+		if (!this) return WT_Invalid;
+		int ID = this->item_definition_index();
+		switch (ID) {
+		case WEAPON_DEAGLE:
+		case WEAPON_P250:
+		case WEAPON_USP_SILENCER:
+		case WEAPON_HKP2000:
+		case WEAPON_GLOCK:
+		case WEAPON_FIVESEVEN:
+		case WEAPON_TEC9:
+		case WEAPON_ELITE:
+		case WEAPON_REVOLVER:
+		case WEAPON_CZ75A:
+			return WT_Pistol;
+			break;
+		case WEAPON_MP9:
+		case WEAPON_MP7:
+		case WEAPON_UMP45:
+		case WEAPON_BIZON:
+		case WEAPON_P90:
+		case WEAPON_MAC10:
+			return WT_Submg;
+			break;
+		case WEAPON_BAYONET:
+		case WEAPON_KNIFE_SURVIVAL_BOWIE:
+		case WEAPON_KNIFE_BUTTERFLY:
+		case WEAPON_KNIFE:
+		case WEAPON_KNIFE_FALCHION:
+		case WEAPON_KNIFE_FLIP:
+		case WEAPON_KNIFE_GUT:
+		case WEAPON_KNIFE_KARAMBIT:
+		case WEAPON_KNIFE_M9_BAYONET:
+		case WEAPON_KNIFE_PUSH:
+		case WEAPON_KNIFE_TACTICAL:
+		case WEAPON_KNIFE_T:
+			return WT_Knife;
+			break;
+		case WEAPON_SAWEDOFF:
+		case WEAPON_XM1014:
+		case WEAPON_MAG7:
+		case WEAPON_NOVA:
+			return WT_Shotgun;
+		case WEAPON_M249:
+		case WEAPON_NEGEV:
+			return WT_Machinegun;
+		case WEAPON_TASER:
+		case WEAPON_C4:
+			return WT_Misc;
+			break;
+		case WEAPON_HEGRENADE:
+		case WEAPON_FLASHBANG:
+		case WEAPON_DECOY:
+		case WEAPON_SMOKEGRENADE:
+		case WEAPON_INCGRENADE:
+		case WEAPON_MOLOTOV:
+			return WT_Grenade;
+			break;
+		case WEAPON_AK47:
+		case WEAPON_M4A1:
+		case WEAPON_M4A1_SILENCER:
+		case WEAPON_GALILAR:
+		case WEAPON_FAMAS:
+		case WEAPON_AUG:
+		case WEAPON_SG556:
+			return WT_Rifle;
+			break;
+		case WEAPON_SCAR20:
+		case WEAPON_G3SG1:
+		case WEAPON_SSG08:
+		case WEAPON_AWP:
+			return WT_Sniper;
+			break;
+		default:
+			return WT_Knife;
+		}
+		return WT_Invalid;
+	}
+
+	bool is_empty()
+	{
+		int clip = *(int*)((DWORD)this + (netvar_manager::get_net_var(netvar_manager::fnv::hash("DT_BaseCombatWeapon"), netvar_manager::fnv::hash("m_iClip1"))));
+
+		return clip == 0;
+	}
+
+	bool is_reloading()
+	{
+		if (!this)
+			return false;
+
+		auto type = get_type();
+
+		if (type == WT_Invalid || type == WT_Misc || type == WT_Grenade || type == WT_Knife)
+			return false;
+
+		if (!is_empty())
+			return false;
+
+		return true;
 	}
 };
 
@@ -471,5 +588,10 @@ public:
 	}
 	int	move_type() {
 		return *reinterpret_cast<int*> (reinterpret_cast<uintptr_t>(this) + 0x25C); //hazedumper
+	}
+
+	char* get_callout()
+	{
+		return (char*)((uintptr_t)this + (netvar_manager::get_net_var(netvar_manager::fnv::hash("DT_BasePlayer"), netvar_manager::fnv::hash("m_szLastPlaceName"))));
 	}
 };
