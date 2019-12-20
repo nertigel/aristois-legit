@@ -64,7 +64,7 @@ void c_movement::bunnyhop(c_usercmd* user_cmd) noexcept {
 	}
 }
 
-void c_movement::auto_strafe(c_usercmd* user_cmd) {
+void c_movement::auto_strafe(c_usercmd* user_cmd) noexcept {
 	if (!config_system.item.auto_strafe)
 		return;
 

@@ -165,6 +165,7 @@ bool __stdcall hooks::create_move(float frame_time, c_usercmd* user_cmd) noexcep
 
 	//misc
 	movement.bunnyhop(user_cmd);
+	movement.auto_strafe(user_cmd);
 	misc.clantag_spammer();
 	misc.viewmodel_offset();
 	misc.disable_post_processing();
