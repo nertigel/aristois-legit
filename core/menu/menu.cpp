@@ -450,6 +450,13 @@ void c_menu::run() {
 					ImGui::Checkbox("teammate (behind wall)", &config_system.item.visuals.vis_chams_invis_teammate);
 					ImGui::ColorEdit4("teammate (behind wall) color", config_system.item.visuals.clr_chams_invis_teammate, ImGuiColorEditFlags_NoInputs);
 
+					ImGui::Checkbox("weapon##chams", &config_system.item.visuals.chams_weapon);
+					ImGui::ColorEdit4("weapon color##chams", config_system.item.visuals.clr_chams_weapon, ImGuiColorEditFlags_NoInputs);
+					ImGui::Checkbox("arms##chams", &config_system.item.visuals.chams_arms);
+					ImGui::ColorEdit4("arms color##chams", config_system.item.visuals.clr_chams_arms, ImGuiColorEditFlags_NoInputs);
+					ImGui::Checkbox("sleeve##chams", &config_system.item.visuals.chams_sleeve);
+					ImGui::ColorEdit4("sleeve color##chams", config_system.item.visuals.clr_chams_sleeve, ImGuiColorEditFlags_NoInputs);
+
 					ImGui::Checkbox("backtrack (!)##chams", &config_system.item.visuals.backtrack_visualize);
 					ImGui::Checkbox("smoke check", &config_system.item.visuals.vis_chams_smoke_check);
 				}
@@ -556,6 +563,11 @@ void c_menu::run() {
 							ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 7);
 							ImGui::SliderInt("maximum hops", &config_system.item.bunny_hop_maximum_value, 0, 20);
 						}
+					}
+
+					ImGui::Checkbox("auto strafe", &config_system.item.auto_strafe);
+					if (config_system.item.auto_strafe) {
+
 					}
 
 					ImGui::Checkbox("edge jump", &config_system.item.edge_jump);

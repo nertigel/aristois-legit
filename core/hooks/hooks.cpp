@@ -213,6 +213,7 @@ void __stdcall hooks::draw_model_execute(IMatRenderContext * ctx, const draw_mod
 
 	visuals.backtrack_chams(ctx, state, info);
 	visuals.viewmodel_modulate(info);
+	visuals.misc_chams(info);
 
 	original_fn(interfaces::model_render, ctx, state, info, bone_to_world);
 }

@@ -590,6 +590,77 @@ void c_visuals::chams() noexcept {
 	}
 }
 
+void c_visuals::misc_chams(const model_render_info_t& info) noexcept {
+	if (!config_system.item.visuals.active)
+		return;
+
+	auto model_name = interfaces::model_info->get_model_name((model_t*)info.model);
+	if (!model_name)
+		return;
+
+	for (int i = 1; i <= interfaces::globals->max_clients; i++) {
+		auto entity = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(i));
+		auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
+
+		if (!entity || !entity->is_alive() || entity->dormant() || !local_player)
+			continue;
+
+		bool is_teammate = entity->team() == local_player->team();
+		bool is_enemy = entity->team() != local_player->team();
+
+		static i_material * mat = nullptr;
+		auto textured = interfaces::material_system->find_material("dopamine_material", TEXTURE_GROUP_MODEL, true, nullptr);
+		auto metalic = interfaces::material_system->find_material("dopamine_reflective", TEXTURE_GROUP_MODEL, true, nullptr);
+		auto dogtag = interfaces::material_system->find_material("models/inventory_items/dogtags/dogtags_outline", TEXTURE_GROUP_MODEL, true, nullptr);
+		auto flat = interfaces::material_system->find_material("debug/debugdrawflat", TEXTURE_GROUP_MODEL, true, nullptr);
+		textured->increment_reference_count();  //we need increment_reference_count cuz without it our materialsystem.dll will crash after  map change - designer
+		metalic->increment_reference_count();
+		dogtag->increment_reference_count();
+		flat->increment_reference_count();
+
+		switch (config_system.item.visuals.vis_chams_type) {
+		case 0:
+			mat = textured;
+			break;
+		case 1:
+			mat = flat;
+			break;
+		case 2:
+			mat = metalic;
+			break;
+		case 3:
+			mat = dogtag;
+			break;
+		}
+
+		if (config_system.item.visuals.chams_sleeve && strstr(model_name, "sleeve")) {
+
+			interfaces::render_view->set_blend(config_system.item.visuals.clr_chams_sleeve[3]);
+			interfaces::render_view->modulate_color(config_system.item.visuals.clr_chams_sleeve);
+			mat->set_material_var_flag(MATERIAL_VAR_IGNOREZ, false);
+			interfaces::model_render->override_material(mat);
+		}
+		if (config_system.item.visuals.chams_arms && strstr(model_name, "arms")
+			&& !strstr(model_name, "sleeve")) {
+
+			interfaces::render_view->set_blend(config_system.item.visuals.clr_chams_arms[3]);
+			interfaces::render_view->modulate_color(config_system.item.visuals.clr_chams_arms);
+			mat->set_material_var_flag(MATERIAL_VAR_IGNOREZ, false);
+			interfaces::model_render->override_material(mat);
+		}
+		if (config_system.item.visuals.chams_weapon && strstr(model_name, "models/weapons/v_")
+			&& !strstr(model_name, "arms") && !strstr(model_name, "sleeve")) {
+
+			interfaces::render_view->set_blend(config_system.item.visuals.clr_chams_weapon[3]);
+			interfaces::render_view->modulate_color(config_system.item.visuals.clr_chams_weapon);
+			mat->set_material_var_flag(MATERIAL_VAR_IGNOREZ, false);
+			interfaces::model_render->override_material(mat);
+		}
+
+		interfaces::model_render->override_material(nullptr);
+	}
+}
+
 void c_visuals::glow() noexcept {
 	if (!config_system.item.visuals.active || !config_system.item.visuals.glow)
 		return;

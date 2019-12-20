@@ -187,6 +187,14 @@ public:
 			float clr_chams_invis[4]{ 0.0f,1.0f,0.39f,0.5f };
 			float clr_chams_vis_teammate[4]{ 1.0f,0.0f,1.0f,0.5f };
 			float clr_chams_invis_teammate[4]{ 0.68f,0.0f,1.0f,0.5f };
+
+			bool chams_sleeve{ false };
+			float clr_chams_sleeve[4]{ 115.f / 255.f, 15.f / 255.f, 185.0f / 255.f,0.5f };
+			bool chams_weapon{ false };
+			float clr_chams_weapon[4]{ 115.f / 255.f, 15.f / 255.f, 185.0f / 255.f,0.5f };
+			bool chams_arms{ false };
+			float clr_chams_arms[4]{ 115.f / 255.f, 15.f / 255.f, 185.0f / 255.f,0.5f };
+
 			bool backtrack_visualize{ false };
 
 			bool remove_smoke{ false };
@@ -227,6 +235,7 @@ public:
 		int bunny_hop_minimum_value{ 0 };
 		int bunny_hop_maximum_value{ 0 };
 		int bunny_hop_hitchance{ 0 };
+		bool auto_strafe{ false };
 		bool clan_tag{ false };
 		bool radar{ false };
 		bool hitmarker{ false };

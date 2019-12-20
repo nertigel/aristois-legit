@@ -9,6 +9,7 @@ public:
 	void backtrack_chams(IMatRenderContext* ctx, const draw_model_state_t& state, const model_render_info_t& info);
 	void viewmodel_modulate(const model_render_info_t& info);
 	void chams() noexcept;
+	void misc_chams(const model_render_info_t& info) noexcept;
 	void glow() noexcept;
 	void draw_aim_fov();
 private:
