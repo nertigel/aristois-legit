@@ -29,7 +29,7 @@ unsigned long __stdcall initial_thread(void* reserved) {
 
 	printf("[setup] materials initialized!\n");
 
-	config_system.run("aristois");
+	config_system.run("dopamine");
 
 	printf("[setup] config initialized!\n");
 

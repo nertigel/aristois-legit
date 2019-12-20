@@ -23,18 +23,44 @@ void c_movement::bunnyhop(c_usercmd* user_cmd) noexcept {
 	if (local_player->move_type() == movetype_ladder || local_player->move_type() == movetype_noclip)
 		return;
 
-	if (user_cmd->buttons & in_jump && !(local_player->flags() & fl_onground)) {
-		user_cmd->buttons &= ~in_jump;
-		hops_restricted = 0;
-	}
+	if (config_system.item.bunny_hop_humanize) {
+		if (user_cmd->buttons & in_jump && !(local_player->flags() & fl_onground)) {
+			user_cmd->buttons &= ~in_jump;
+			hops_restricted = 0;
+		}
 
-	else if ((rand() % 100 > hitchance && hops_restricted < restrict_limit) || (hop_limit > 0 && hops_hit > hop_limit && min_hop > 0 && hops_hit > min_hop)) {
-		user_cmd->buttons &= ~in_jump;
-		hops_restricted++;
-		hops_hit = 0;
+		else if ((rand() % 100 > hitchance && hops_restricted < restrict_limit) || (hop_limit > 0 && hops_hit > hop_limit && min_hop > 0 && hops_hit > min_hop)) {
+			user_cmd->buttons &= ~in_jump;
+			hops_restricted++;
+			hops_hit = 0;
+		}
+		else {
+			hops_hit++;
+		}
 	}
-	else {
-		hops_hit++;
+	else
+	{
+		static bool bLastJumped = false;
+		static bool bShouldFake = false;
+
+		if (!bLastJumped && bShouldFake) {
+			bShouldFake = false;
+			user_cmd->buttons |= in_jump;
+		}
+		else if (user_cmd->buttons & in_jump) {
+			if (local_player->flags() & fl_onground) {
+				bLastJumped = true;
+				bShouldFake = true;
+			}
+			else {
+				user_cmd->buttons &= ~in_jump;
+				bLastJumped = false;
+			}
+		}
+		else {
+			bLastJumped = false;
+			bShouldFake = false;
+		}
 	}
 }
 
@@ -54,37 +80,6 @@ void c_movement::edge_jump_pre_prediction(c_usercmd* user_cmd) noexcept {
 		return;
 
 	flags_backup = local_player->flags();
-}
-
-void c_movement::slidewalk(c_usercmd* user_cmd) noexcept {
-	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player())); // lol
-
-	if (!config_system.item.slidewalk)
-		return;
-
-	if (!local_player)
-		return;
-
-	if (!local_player->is_alive())
-		return;
-
-	if (local_player->is_alive()) {
-		if (user_cmd->forwardmove > 0)
-			user_cmd->buttons |= in_back;
-			user_cmd->buttons &= ~in_forward;
-
-		if (user_cmd->forwardmove < 0)
-			user_cmd->buttons |= in_forward;
-			user_cmd->buttons &= ~in_back;
-
-		if (user_cmd->sidemove < 0)
-			user_cmd->buttons |= in_moveright;
-			user_cmd->buttons &= ~in_moveleft;
-
-		if (user_cmd->sidemove > 0)
-			user_cmd->buttons |= in_moveleft;
-			user_cmd->buttons &= ~in_moveright;
-	} 
 }
 
 void c_movement::edge_jump_post_prediction(c_usercmd* user_cmd) noexcept {

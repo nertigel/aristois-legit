@@ -1,5 +1,6 @@
 #pragma once
 #include "../../dependencies/common_includes.hpp"
+#include "font.hpp"
 
 extern IDirect3DStateBlock9 *state_block;
 
@@ -63,44 +64,44 @@ public:
 		style.CurveTessellationTol = 1.f;
 
 		ImVec4* colors = ImGui::GetStyle().Colors;
-		colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
-		colors[ImGuiCol_TextDisabled] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
-		colors[ImGuiCol_WindowBg] = ImVec4(33 / 255.f, 35 / 255.f, 47 / 255.f, 1.0f);
-		colors[ImGuiCol_PopupBg] = ImVec4(0.08f, 0.08f, 0.08f, 0.94f);
-		colors[ImGuiCol_Border] = ImVec4(30 / 255.f, 30 / 255.f, 41 / 255.f, 1.0f);
-		colors[ImGuiCol_BorderShadow] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
-		colors[ImGuiCol_ChildWindowBg] = ImVec4(33 / 255.f, 35 / 255.f, 47 / 255.f, 1.0f);
-		colors[ImGuiCol_FrameBg] = ImVec4(33 / 255.f, 35 / 255.f, 47 / 255.f, 1.0f);
-		colors[ImGuiCol_FrameBgHovered] = ImVec4(0.15f, 0.15f, 0.15f, 1.0f);
-		colors[ImGuiCol_FrameBgActive] = ImVec4(0.08f, 0.08f, 0.08f, 1.00f);
-		colors[ImGuiCol_TitleBgActive] = ImVec4(35 / 255.f, 35 / 255.f, 35 / 255.f, 1.0f);
-		colors[ImGuiCol_TitleBg] = ImVec4(35 / 255.f, 35 / 255.f, 35 / 255.f, 1.0f);
-		colors[ImGuiCol_TitleBgCollapsed] = ImVec4(35 / 255.f, 35 / 255.f, 35 / 255.f, 1.0f);
-		colors[ImGuiCol_MenuBarBg] = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
-		colors[ImGuiCol_ScrollbarBg] = ImVec4(0.17f, 0.17f, 0.17f, 1.00f);
-		colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
+		colors[ImGuiCol_Text] =					ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
+		colors[ImGuiCol_TextDisabled] =			ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
+		colors[ImGuiCol_WindowBg] =				ImVec4(40 / 255.f, 40 / 255.f, 40 / 255.f, 1.0f);
+		colors[ImGuiCol_PopupBg] =				ImVec4(0.08f, 0.08f, 0.08f, 0.94f);
+		colors[ImGuiCol_Border] =				ImVec4(30 / 255.f, 30 / 255.f, 30 / 255.f, 1.0f);
+		colors[ImGuiCol_BorderShadow] =			ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+		colors[ImGuiCol_ChildWindowBg] =		ImVec4(35 / 255.f, 35 / 255.f, 35 / 255.f, 1.0f);
+		colors[ImGuiCol_FrameBg] =				ImVec4(40 / 255.f, 40 / 255.f, 40 / 255.f, 1.0f);
+		colors[ImGuiCol_FrameBgHovered] =		ImVec4(0.15f, 0.15f, 0.15f, 1.0f);
+		colors[ImGuiCol_FrameBgActive] =		ImVec4(0.08f, 0.08f, 0.08f, 1.00f);
+		colors[ImGuiCol_TitleBgActive] =		ImVec4(35 / 255.f, 35 / 255.f, 35 / 255.f, 1.0f);
+		colors[ImGuiCol_TitleBg] =				ImVec4(35 / 255.f, 35 / 255.f, 35 / 255.f, 1.0f);
+		colors[ImGuiCol_TitleBgCollapsed] =		ImVec4(35 / 255.f, 35 / 255.f, 35 / 255.f, 1.0f);
+		colors[ImGuiCol_MenuBarBg] =			ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
+		colors[ImGuiCol_ScrollbarBg] =			ImVec4(0.17f, 0.17f, 0.17f, 1.00f);
+		colors[ImGuiCol_ScrollbarGrab] =		ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
 		colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
-		colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
-		colors[ImGuiCol_Button] = ImVec4(33 / 255.f, 35 / 255.f, 47 / 255.f, 1.0f);
-		colors[ImGuiCol_ButtonHovered] = ImVec4(35 / 255.f, 35 / 255.f, 35 / 255.f, 1.0f); //
-		colors[ImGuiCol_ButtonActive] = ImVec4(135 / 255.f, 135 / 255.f, 135 / 255.f, 1.0f); //
-		colors[ImGuiCol_Header] = ImVec4(167 / 255.f, 24 / 255.f, 71 / 255.f, 1.0f); //multicombo, combo selected item color.
-		colors[ImGuiCol_HeaderHovered] = ImVec4(35 / 255.f, 35 / 255.f, 35 / 255.f, 1.0f);
-		colors[ImGuiCol_HeaderActive] = ImVec4(35 / 255.f, 35 / 255.f, 35 / 255.f, 1.0f);
-		colors[ImGuiCol_Separator] = ImVec4(0, 0, 0, 1);
-		colors[ImGuiCol_SeparatorHovered] = ImVec4(0, 0, 0, 1);
-		colors[ImGuiCol_SeparatorActive] = ImVec4(0, 0, 0, 1);
-		colors[ImGuiCol_ResizeGrip] = ImVec4(0.26f, 0.59f, 0.98f, 0.25f);
-		colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.26f, 0.59f, 0.98f, 0.67f);
-		colors[ImGuiCol_ResizeGripActive] = ImVec4(0.26f, 0.59f, 0.98f, 0.95f);
-		colors[ImGuiCol_PlotLines] = ImVec4(0.61f, 0.61f, 0.61f, 1.00f);
-		colors[ImGuiCol_PlotLinesHovered] = ImVec4(1.00f, 0.43f, 0.35f, 1.00f);
-		colors[ImGuiCol_PlotHistogram] = ImVec4(0.90f, 0.70f, 0.00f, 1.00f);
+		colors[ImGuiCol_ScrollbarGrabActive] =	ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
+		colors[ImGuiCol_Button] =				ImVec4(30 / 255.f, 30 / 255.f, 30 / 255.f, 1.0f);
+		colors[ImGuiCol_ButtonHovered] =		ImVec4(35 / 255.f, 35 / 255.f, 35 / 255.f, 1.0f); //
+		colors[ImGuiCol_ButtonActive] =			ImVec4(135 / 255.f, 135 / 255.f, 135 / 255.f, 1.0f); //
+		colors[ImGuiCol_Header] =				ImVec4(115 / 255.f, 15 / 255.f, 185 / 255.f, 1.0f); //multicombo, combo selected item color.
+		colors[ImGuiCol_HeaderHovered] =		ImVec4(35 / 255.f, 35 / 255.f, 35 / 255.f, 1.0f);
+		colors[ImGuiCol_HeaderActive] =			ImVec4(35 / 255.f, 35 / 255.f, 35 / 255.f, 1.0f);
+		colors[ImGuiCol_Separator] =			ImVec4(40 / 255.f, 40 / 255.f, 40 / 255.f, 1);
+		colors[ImGuiCol_SeparatorHovered] =		ImVec4(50 / 255.f, 50 / 255.f, 50 / 255.f, 1);
+		colors[ImGuiCol_SeparatorActive] =		ImVec4(45 / 255.f, 45 / 255.f, 45 / 255.f, 1);
+		colors[ImGuiCol_ResizeGrip] =			ImVec4(0.26f, 0.59f, 0.98f, 0.25f);
+		colors[ImGuiCol_ResizeGripHovered] =	ImVec4(0.26f, 0.59f, 0.98f, 0.67f);
+		colors[ImGuiCol_ResizeGripActive] =		ImVec4(0.26f, 0.59f, 0.98f, 0.95f);
+		colors[ImGuiCol_PlotLines] =			ImVec4(0.61f, 0.61f, 0.61f, 1.00f);
+		colors[ImGuiCol_PlotLinesHovered] =		ImVec4(1.00f, 0.43f, 0.35f, 1.00f);
+		colors[ImGuiCol_PlotHistogram] =		ImVec4(0.90f, 0.70f, 0.00f, 1.00f);
 		colors[ImGuiCol_PlotHistogramHovered] = ImVec4(1.00f, 0.60f, 0.00f, 1.00f);
-		colors[ImGuiCol_TextSelectedBg] = ImVec4(0.26f, 0.59f, 0.98f, 0.35f);
-		colors[ImGuiCol_CloseButton] = ImVec4(0, 0, 0, 0);
-		colors[ImGuiCol_CloseButtonHovered] = ImVec4(0, 0, 0, 0);
-		colors[ImGuiCol_HotkeyOutline] = ImVec4(0, 0, 0, 0);
+		colors[ImGuiCol_TextSelectedBg] =		ImVec4(0.26f, 0.59f, 0.98f, 0.35f);
+		colors[ImGuiCol_CloseButton] =			ImVec4(0, 0, 0, 0);
+		colors[ImGuiCol_CloseButtonHovered] =	ImVec4(0, 0, 0, 0);
+		colors[ImGuiCol_HotkeyOutline] =		ImVec4(0, 0, 0, 0);
 
 		create_objects(device);
 	}
@@ -110,6 +111,7 @@ public:
 
 		font_main = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Tahoma.ttf", 18);
 		font_menu = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Verdana.ttf", 12);
+		font_menu_icons = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(undefeated_compressed_data, undefeated_compressed_size, 15);
 	}
 
 	void __stdcall end_present(IDirect3DDevice9* device) {
@@ -167,6 +169,7 @@ public:
 	}
 	ImFont* font_main;
 	ImFont* font_menu;
+	ImFont* font_menu_icons;
 	ImFont* font_main_caps;
 	bool opened = false;
 private:

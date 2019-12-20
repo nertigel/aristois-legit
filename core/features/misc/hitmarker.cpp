@@ -9,7 +9,7 @@ void c_hitmarker::run() noexcept {
 	if (!interfaces::engine->is_connected() && !interfaces::engine->is_in_game())
 		return;
 
-	if (config_system.item.hitmarker || config_system.item.hitmarker_sound) {
+	if (config_system.item.hitmarker) {
 		hitmarker.draw();
 	}
 }

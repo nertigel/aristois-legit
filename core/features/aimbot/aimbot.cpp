@@ -33,7 +33,7 @@ int c_aimbot::get_nearest_bone(player_t* entity, c_usercmd* user_cmd) noexcept {
 		if (i >= hitbox_max)
 			continue;
 
-		studio_box_t* hitbox = set->hitbox(i);
+		studio_box_t * hitbox = set->hitbox(i);
 
 		if (!hitbox)
 			continue;
@@ -54,8 +54,8 @@ void c_aimbot::weapon_settings(weapon_t* weapon) noexcept {
 	if (!weapon)
 		return;
 
-	if (is_pistol(weapon)) {
-		switch (config_system.item.aim_bone_pistol) {
+	if (utilities::weaponchecks::is_pistol(weapon)) {
+		switch (config_system.item.legitbot.aim_bone_pistol) {
 		case 0:
 			hitbox_id = hitbox_head;
 			break;
@@ -73,13 +73,15 @@ void c_aimbot::weapon_settings(weapon_t* weapon) noexcept {
 			break;
 		}
 
-		aim_smooth = config_system.item.aim_smooth_pistol;
-		aim_fov = config_system.item.aim_fov_pistol;
-		rcs_x = config_system.item.rcs_x_pistol;
-		rcs_y = config_system.item.rcs_y_pistol;
+		aim_auto_fire = config_system.item.legitbot.aim_auto_fire_pistol;
+		aim_mode = config_system.item.legitbot.aim_mode_pistol;
+		aim_smooth = config_system.item.legitbot.aim_smooth_pistol;
+		aim_fov = config_system.item.legitbot.aim_fov_pistol;
+		rcs_x = config_system.item.legitbot.rcs_x_pistol;
+		rcs_y = config_system.item.legitbot.rcs_y_pistol;
 	}
-	else if (is_rifle(weapon)) {
-		switch (config_system.item.aim_bone_rifle) {
+	else if (utilities::weaponchecks::is_rifle(weapon)) {
+		switch (config_system.item.legitbot.aim_bone_rifle) {
 		case 0:
 			hitbox_id = hitbox_head;
 			break;
@@ -97,13 +99,15 @@ void c_aimbot::weapon_settings(weapon_t* weapon) noexcept {
 			break;
 		}
 
-		aim_smooth = config_system.item.aim_smooth_rifle;
-		aim_fov = config_system.item.aim_fov_rifle;
-		rcs_x = config_system.item.rcs_x_rifle;
-		rcs_y = config_system.item.rcs_y_rifle;
+		aim_auto_fire = config_system.item.legitbot.aim_auto_fire_rifle;
+		aim_mode = config_system.item.legitbot.aim_mode_rifle;
+		aim_smooth = config_system.item.legitbot.aim_smooth_rifle;
+		aim_fov = config_system.item.legitbot.aim_fov_rifle;
+		rcs_x = config_system.item.legitbot.rcs_x_rifle;
+		rcs_y = config_system.item.legitbot.rcs_y_rifle;
 	}
-	else if (is_sniper(weapon)) {
-		switch (config_system.item.aim_bone_sniper) {
+	else if (utilities::weaponchecks::is_sniper(weapon)) {
+		switch (config_system.item.legitbot.aim_bone_sniper) {
 		case 0:
 			hitbox_id = hitbox_head;
 			break;
@@ -121,13 +125,15 @@ void c_aimbot::weapon_settings(weapon_t* weapon) noexcept {
 			break;
 		}
 
-		aim_smooth = config_system.item.aim_smooth_sniper;
-		aim_fov = config_system.item.aim_fov_sniper;
-		rcs_x = config_system.item.rcs_x_sniper;
-		rcs_y = config_system.item.rcs_y_sniper;
+		aim_auto_fire = config_system.item.legitbot.aim_auto_fire_sniper;
+		aim_mode = config_system.item.legitbot.aim_mode_sniper;
+		aim_smooth = config_system.item.legitbot.aim_smooth_sniper;
+		aim_fov = config_system.item.legitbot.aim_fov_sniper;
+		rcs_x = config_system.item.legitbot.rcs_x_sniper;
+		rcs_y = config_system.item.legitbot.rcs_y_sniper;
 	}
-	else if (is_heavy(weapon)) {
-		switch (config_system.item.aim_bone_heavy) {
+	else if (utilities::weaponchecks::is_heavy(weapon)) {
+		switch (config_system.item.legitbot.aim_bone_heavy) {
 		case 0:
 			hitbox_id = hitbox_head;
 			break;
@@ -145,13 +151,15 @@ void c_aimbot::weapon_settings(weapon_t* weapon) noexcept {
 			break;
 		}
 
-		aim_smooth = config_system.item.aim_smooth_heavy;
-		aim_fov = config_system.item.aim_fov_heavy;
-		rcs_x = config_system.item.rcs_x_heavy;
-		rcs_y = config_system.item.rcs_y_heavy;
+		aim_auto_fire = config_system.item.legitbot.aim_auto_fire_heavy;
+		aim_mode = config_system.item.legitbot.aim_mode_heavy;
+		aim_smooth = config_system.item.legitbot.aim_smooth_heavy;
+		aim_fov = config_system.item.legitbot.aim_fov_heavy;
+		rcs_x = config_system.item.legitbot.rcs_x_heavy;
+		rcs_y = config_system.item.legitbot.rcs_y_heavy;
 	}
-	else if (is_smg(weapon)) {
-		switch (config_system.item.aim_bone_smg) {
+	else if (utilities::weaponchecks::is_smg(weapon)) {
+		switch (config_system.item.legitbot.aim_bone_smg) {
 		case 0:
 			hitbox_id = hitbox_head;
 			break;
@@ -169,10 +177,12 @@ void c_aimbot::weapon_settings(weapon_t* weapon) noexcept {
 			break;
 		}
 
-		aim_smooth = config_system.item.aim_smooth_smg;
-		aim_fov = config_system.item.aim_fov_smg;
-		rcs_x = config_system.item.rcs_x_smg;
-		rcs_y = config_system.item.rcs_y_smg;
+		aim_auto_fire = config_system.item.legitbot.aim_auto_fire_smg;
+		aim_mode = config_system.item.legitbot.aim_mode_smg;
+		aim_smooth = config_system.item.legitbot.aim_smooth_smg;
+		aim_fov = config_system.item.legitbot.aim_fov_smg;
+		rcs_x = config_system.item.legitbot.rcs_x_smg;
+		rcs_y = config_system.item.legitbot.rcs_y_smg;
 	}
 }
 
@@ -195,7 +205,7 @@ int c_aimbot::find_target(c_usercmd* user_cmd) noexcept {
 			continue;
 
 		angle = math.calculate_angle(local_eye_pos, entity_bone_pos, user_cmd->viewangles);
-		auto fov = config_system.item.aim_distance_based_fov ? math.distance_based_fov(distance, math.calculate_angle_alternative(local_eye_pos, entity_bone_pos), user_cmd) : std::hypotf(angle.x, angle.y);
+		auto fov = config_system.item.legitbot.aim_distance_based_fov ? math.distance_based_fov(distance, math.calculate_angle_alternative(local_eye_pos, entity_bone_pos), user_cmd) : std::hypotf(angle.x, angle.y);
 		if (fov < best_fov) {
 			best_fov = fov;
 			best_target = i;
@@ -219,11 +229,11 @@ void c_aimbot::event_player_death(i_game_event* event) noexcept {
 		return;
 
 	if (attacker == local_player)
-		kill_delay = interfaces::globals->tick_count + config_system.item.aimbot_delay_after_kill;
+		kill_delay = interfaces::globals->tick_count + config_system.item.legitbot.aimbot_delay_after_kill;
 }
 
-void c_aimbot::auto_pistol(c_usercmd* user_cmd) {
-	if (!config_system.item.aimbot_auto_pistol)
+void c_aimbot::auto_pistol(c_usercmd * user_cmd) {
+	if (!config_system.item.legitbot.aimbot_auto_pistol)
 		return;
 
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
@@ -238,8 +248,8 @@ void c_aimbot::auto_pistol(c_usercmd* user_cmd) {
 
 	static bool was_firing = false;
 
-	if (aimbot.is_pistol(weapon) && weapon->item_definition_index() != WEAPON_REVOLVER) {
-		if (user_cmd->buttons & in_attack && !aimbot.is_knife(weapon) && !aimbot.is_grenade(weapon)) {
+	if (utilities::weaponchecks::is_pistol(weapon) && weapon->item_definition_index() != WEAPON_REVOLVER) {
+		if (user_cmd->buttons & in_attack && !utilities::weaponchecks::is_knife(weapon) && !utilities::weaponchecks::is_grenade(weapon)) {
 			if (was_firing) {
 				user_cmd->buttons &= ~in_attack;
 			}
@@ -249,7 +259,7 @@ void c_aimbot::auto_pistol(c_usercmd* user_cmd) {
 	}
 }
 
-void c_aimbot::rcs_standalone(c_usercmd* user_cmd) noexcept {
+void c_aimbot::rcs_standalone(c_usercmd * user_cmd) noexcept {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 	if (!local_player)
 		return;
@@ -262,12 +272,13 @@ void c_aimbot::rcs_standalone(c_usercmd* user_cmd) noexcept {
 	aim_punch.y *= rcs_y;
 
 	auto rcs = user_cmd->viewangles += (old_punch - aim_punch);
-	interfaces::engine->set_view_angles(rcs);
+	//interfaces::engine->set_view_angles(rcs);
 
 	old_punch = aim_punch;
 }
 
-void c_aimbot::run(c_usercmd* user_cmd) noexcept {
+
+void c_aimbot::run(c_usercmd * user_cmd) noexcept {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 
 	if (!local_player)
@@ -281,48 +292,77 @@ void c_aimbot::run(c_usercmd* user_cmd) noexcept {
 	auto_pistol(user_cmd);
 	rcs_standalone(user_cmd);
 
-	if (config_system.item.aim_enabled && user_cmd->buttons & in_attack || GetAsyncKeyState(config_system.item.aim_key)) {
+	if (config_system.item.legitbot.aim_enabled/* && GetAsyncKeyState(config_system.item.legitbot.aim_key)*/) {
+
+		if (config_system.item.legitbot.activation_type == 1 && !GetAsyncKeyState(config_system.item.legitbot.aim_key)) // key press
+			return;
+
+		if (config_system.item.legitbot.activation_type == 2 && !(user_cmd->buttons & in_attack)) // while shooting
+			return;
+
+		if (config_system.item.legitbot.jump_check && config_system.item.legitbot.jump_check_client && (!(local_player->flags() & fl_onground))) // client jump check
+			return;
+
 		if (auto target = find_target(user_cmd)) {
 			auto entity = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(target));
 
+			if (config_system.item.legitbot.jump_check && config_system.item.legitbot.jump_check_target && (!(entity->flags() & fl_onground))) // target jump check
+				return;
+
 			if (!weapon || !weapon->clip1_count())
+				return;
+
+			if (utilities::weaponchecks::is_knife(weapon) || utilities::weaponchecks::is_grenade(weapon) || utilities::weaponchecks::is_bomb(weapon))
+				return;
+
+			if (!config_system.item.legitbot.scope_aim && utilities::weaponchecks::is_sniper(weapon) && !local_player->is_scoped())
 				return;
 
 			if (!local_player->can_see_player_pos(entity, entity->get_eye_pos()))
 				return;
 
-			if (!config_system.item.aim_team_check && entity->team() == local_player->team())
+			if (!config_system.item.legitbot.aim_team_check && entity->team() == local_player->team())
 				return;
 
-			if (!config_system.item.smoke_check && utilities::is_behind_smoke(local_player->get_eye_pos(), entity->get_hitbox_position(entity, hitbox_head)))
+			if (!config_system.item.legitbot.smoke_check && utilities::is_behind_smoke(local_player->get_eye_pos(), entity->get_hitbox_position(entity, hitbox_head)))
 				return;
 
-			if (is_knife(weapon) || is_grenade(weapon)|| is_bomb(weapon))
-				return;
-
-			if (is_sniper(weapon) && !local_player->is_scoped() && !config_system.item.scope_aim)
-				return;
-			
-			//jump check (both local player and the entity) #MrClue
-			if (!(local_player->flags() & fl_onground) || (!(entity->flags() & fl_onground)) && config_system.item.aim_jump_check)
-				return;
-
-			switch (config_system.item.aim_mode) {
-			case 0:
-				angle = math.calculate_angle(local_player->get_eye_pos(), entity->get_hitbox_position(entity, hitbox_id), user_cmd->viewangles);
-				break;
-			case 1:
-				angle = math.calculate_angle(local_player->get_eye_pos(), entity->get_bone_position(get_nearest_bone(entity, user_cmd)), user_cmd->viewangles);
-				break;
+			if (config_system.item.legitbot.aim_at_backtrack) {
+				auto record = &records[entity->index()];
+				if (record && record->size() && backtrack.valid_tick(record->front().simulation_time)) {
+					angle = math.calculate_angle(local_player->get_eye_pos(), record->back().head, user_cmd->viewangles);
+				}
 			}
-			
+			else
+			{
+				switch (aim_mode) {
+				case 0:
+					angle = math.calculate_angle(local_player->get_eye_pos(), entity->get_hitbox_position(entity, hitbox_id), user_cmd->viewangles);
+					break;
+				case 1:
+					angle = math.calculate_angle(local_player->get_eye_pos(), entity->get_bone_position(get_nearest_bone(entity, user_cmd)), user_cmd->viewangles);
+					break;
+				}
+			}
 
-			angle /= aim_smooth;
-			user_cmd->viewangles += angle;
+			if (aim_fov > 0)
+			{
+				angle /= aim_smooth;
+				user_cmd->viewangles += angle;
+			}
+			else
+			{
+				user_cmd->viewangles = angle;
+			}
 
-			if (!config_system.item.aim_silent) {
+			if (!config_system.item.legitbot.aim_silent) {
 				interfaces::engine->set_view_angles(user_cmd->viewangles);
+			}
+
+			if (aim_auto_fire && target && !(user_cmd->buttons & in_attack))
+			{
+				user_cmd->buttons |= in_attack;
 			}
 		}
 	}
-} 
+}

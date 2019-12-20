@@ -101,7 +101,7 @@ float __stdcall hooks::viewmodel_fov() noexcept {
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 
 	if (local_player && local_player->is_alive()) 
-		return 68.f + config_system.item.viewmodel_fov;
+		return 68.f + config_system.item.visuals.viewmodel_field_of_view;
 	else
 		return 68.f;
 }
@@ -109,23 +109,23 @@ float __stdcall hooks::viewmodel_fov() noexcept {
 void __stdcall hooks::draw_set_color(int r, int g, int b, int a) noexcept {
 	static auto original_fn = reinterpret_cast<draw_set_color_fn>(surface_hook->get_original(15));
 
-	auto color_red = config_system.item.clr_crosshair[0] * 255;
-	auto color_green = config_system.item.clr_crosshair[1] * 255;
-	auto color_blue = config_system.item.clr_crosshair[2] * 255;
-	auto color_alpha = config_system.item.clr_crosshair[3] * 255;
+	auto color_red = config_system.item.visuals.clr_crosshair[0] * 255;
+	auto color_green = config_system.item.visuals.clr_crosshair[1] * 255;
+	auto color_blue = config_system.item.visuals.clr_crosshair[2] * 255;
+	auto color_alpha = config_system.item.visuals.clr_crosshair[3] * 255;
 
-	auto outline_red = config_system.item.clr_crosshair_outline[0] * 255;
-	auto outline_green = config_system.item.clr_crosshair_outline[1] * 255;
-	auto outline_blue = config_system.item.clr_crosshair_outline[2] * 255;
-	auto outline_alpha = config_system.item.clr_crosshair_outline[3] * 255;
+	auto outline_red = config_system.item.visuals.clr_crosshair_outline[0] * 255;
+	auto outline_green = config_system.item.visuals.clr_crosshair_outline[1] * 255;
+	auto outline_blue = config_system.item.visuals.clr_crosshair_outline[2] * 255;
+	auto outline_alpha = config_system.item.visuals.clr_crosshair_outline[3] * 255;
 
-	if (config_system.item.crosshair_color) {
+	if (config_system.item.visuals.crosshair_color) {
 		static const auto crosshair_color_fn = utilities::pattern_scan(GetModuleHandleA("client_panorama.dll"), "FF 50 3C 80 7D 20 00") + 3;
 		if (_ReturnAddress() == reinterpret_cast<void*>(crosshair_color_fn))
 			return original_fn(interfaces::surface, color_red, color_green, color_blue, color_alpha);
 	}
 
-	if (config_system.item.crosshair_outline_color) {
+	if (config_system.item.visuals.crosshair_outline_color) {
 		static const auto crosshair_outline_color_fn = utilities::pattern_scan(GetModuleHandleA("client_panorama.dll"), "FF 50 3C F3 0F 10 4D ? 66 0F 6E C6") + 3;
 		if (_ReturnAddress() == reinterpret_cast<void*>(crosshair_outline_color_fn))
 			return original_fn(interfaces::surface, outline_red, outline_green, outline_blue, outline_alpha);
@@ -201,8 +201,8 @@ void __fastcall hooks::override_view(void* _this, void* _edx, c_viewsetup* setup
 	static auto original_fn = reinterpret_cast<override_view_fn>(clientmode_hook->get_original(18));
 	auto local_player = reinterpret_cast<player_t*>(interfaces::entity_list->get_client_entity(interfaces::engine->get_local_player()));
 
-	if (local_player && !local_player->is_scoped() && config_system.item.fov > 0 && config_system.item.visuals_enabled) {
-		setup->fov = 90 + config_system.item.fov;
+	if (local_player && !local_player->is_scoped() && config_system.item.visuals.field_of_view > 0 && config_system.item.visuals.active) {
+		setup->fov = 90 + config_system.item.visuals.field_of_view;
 	}
 
 	original_fn(interfaces::clientmode, _this, setup);
@@ -244,7 +244,7 @@ void __stdcall hooks::frame_stage_notify(int frame_stage) noexcept {
 void __stdcall hooks::paint_traverse(unsigned int panel, bool force_repaint, bool allow_force) noexcept {
 	if (strstr(interfaces::panel->get_panel_name(panel), "HudZoom")) {
 		if (interfaces::engine->is_connected() && interfaces::engine->is_in_game()) {
-			if (config_system.item.remove_scope)
+			if (config_system.item.visuals.remove_scope)
 				return;
 		}
 	}
