@@ -3,6 +3,7 @@
 #include "menu/config/config.hpp"
 #include "features/misc/events.hpp"
 #include "features/skinchanger/parser.hpp"
+#include "features/skinchanger/knifehook.hpp"
 
 unsigned long __stdcall initial_thread(void* reserved) {
 
@@ -13,33 +14,21 @@ unsigned long __stdcall initial_thread(void* reserved) {
 	freopen_s(reinterpret_cast<FILE * *>stdout, "CONOUT$", "w", stdout);
 #endif
 
-	interfaces::initialize();
+	interfaces::initialize(); printf("[setup] interfaces initialized!\n");
 
-	printf("[setup] interfaces initialized!\n");
+	hooks::initialize(); printf("[setup] hooks initialized!\n");
 
-	hooks::initialize();
+	render.setup_fonts(); printf("[setup] render initialized!\n");
 
-	printf("[setup] hooks initialized!\n");
+	utilities::material_setup(); printf("[setup] materials initialized!\n");
 
-	render.setup_fonts();
+	config_system.run("dopamine"); printf("[setup] config initialized!\n");
 
-	printf("[setup] render initialized!\n");
+	events.setup(); printf("[setup] events initialized!\n");
 
-	utilities::material_setup();
+	kit_parser.setup(); printf("[setup] kit parser initialized!\n");
 
-	printf("[setup] materials initialized!\n");
-
-	config_system.run("dopamine");
-
-	printf("[setup] config initialized!\n");
-
-	events.setup();
-
-	printf("[setup] events initialized!\n");
-
-	kit_parser.setup();
-
-	printf("[setup] kit parser initialized!\n");
+	knife_hook.knife_animation(); printf("[setup] knife animation initialized!\n");
 
 	while (!GetAsyncKeyState(VK_END))
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));

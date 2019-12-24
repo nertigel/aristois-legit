@@ -15,6 +15,7 @@
 #include "../features/skinchanger/parser.hpp"
 #include "../features/visuals/nightmode.hpp"
 #include "../features/skinchanger/glovechanger.hpp"
+#include "../features/skinchanger/knifehook.hpp"
 
 std::unique_ptr<vmt_hook> hooks::client_hook;
 std::unique_ptr<vmt_hook> hooks::clientmode_hook;

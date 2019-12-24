@@ -70,6 +70,10 @@ void c_skinchanger::run() noexcept {
 	auto model_stiletto = "models/weapons/v_knife_stiletto.mdl";
 	auto model_talon = "models/weapons/v_knife_widowmaker.mdl";
 	auto model_ursus = "models/weapons/v_knife_ursus.mdl";
+	auto model_paracord = "models/weapons/v_knife_cord.mdl";
+	auto model_canis = "models/weapons/v_knife_canis.mdl";
+	auto model_outdoor = "models/weapons/v_knife_outdoor.mdl";
+	auto model_skeleton = "models/weapons/v_knife_skeleton.mdl";
 
 	auto index_bayonet = interfaces::model_info->get_model_index("models/weapons/v_knife_bayonet.mdl");
 	auto index_m9 = interfaces::model_info->get_model_index("models/weapons/v_knife_m9_bay.mdl");
@@ -85,6 +89,10 @@ void c_skinchanger::run() noexcept {
 	auto index_stiletto = interfaces::model_info->get_model_index("models/weapons/v_knife_stiletto.mdl");
 	auto index_talon = interfaces::model_info->get_model_index("models/weapons/v_knife_widowmaker.mdl");
 	auto index_ursus = interfaces::model_info->get_model_index("models/weapons/v_knife_ursus.mdl");
+	auto index_paracord = interfaces::model_info->get_model_index("models/weapons/v_knife_cord.mdl");
+	auto index_canis = interfaces::model_info->get_model_index("models/weapons/v_knife_canis.mdl");
+	auto index_outdoor = interfaces::model_info->get_model_index("models/weapons/v_knife_outdoor.mdl");
+	auto index_skeleton = interfaces::model_info->get_model_index("models/weapons/v_knife_skeleton.mdl");
 
 	auto my_weapons = local_player->get_weapons();
 	for (int i = 0; my_weapons[i] != INVALID_EHANDLE_INDEX; i++) {
@@ -160,6 +168,18 @@ void c_skinchanger::run() noexcept {
 			case 14:
 				apply_knife_model(weapon, model_ursus);
 				break;
+			case 15:
+				apply_knife_model(weapon, model_paracord);
+				break;
+			case 16:
+				apply_knife_model(weapon, model_canis);
+				break;
+			case 17:
+				apply_knife_model(weapon, model_outdoor);
+				break;
+			case 18:
+				apply_knife_model(weapon, model_skeleton);
+				break;
 			}
 		}
 
@@ -209,6 +229,18 @@ void c_skinchanger::run() noexcept {
 				break;
 			case 14:
 				apply_knife_skin(weapon, WEAPON_KNIFE_URSUS, config_system.item.paint_kit_index_knife, index_ursus, 3, wear);
+				break;
+			case 15:
+				apply_knife_skin(weapon, WEAPON_KNIFE_CORD, config_system.item.paint_kit_index_knife, index_paracord, 3, wear);
+				break;
+			case 16:
+				apply_knife_skin(weapon, WEAPON_KNIFE_CANIS, config_system.item.paint_kit_index_knife, index_canis, 3, wear);
+				break;
+			case 17:
+				apply_knife_skin(weapon, WEAPON_KNIFE_OUTDOOR, config_system.item.paint_kit_index_knife, index_outdoor, 3, wear);
+				break;
+			case 18:
+				apply_knife_skin(weapon, WEAPON_KNIFE_SKELETON, config_system.item.paint_kit_index_knife, index_skeleton, 3, wear);
 				break;
 			}
 		}

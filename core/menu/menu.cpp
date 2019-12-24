@@ -596,7 +596,7 @@ void c_menu::run() {
 				ImGui::BeginChild("knife", ImVec2(279, 268), true); {
 					ImGui::Checkbox("enable", &config_system.item.skinchanger_enable);
 					ImGui::PushStyleColor(ImGuiCol_Text, config_system.item.skinchanger_enable ? ImVec4(1.f, 1.f, 1.f, 1) : ImVec4(.6f, .6f, .6f, 1));
-					ImGui::Combo("knife", &config_system.item.knife_model, "default\0bayonet\0m9\0karambit\0bowie\0butterfly\0falchion\0flip\0gut\0huntsman\0shaddow daggers\0navaja\0stiletto\0talon\0ursus");
+					ImGui::Combo("knife", &config_system.item.knife_model, "default\0bayonet\0m9\0karambit\0bowie\0butterfly\0falchion\0flip\0gut\0huntsman\0shaddow daggers\0navaja\0stiletto\0talon\0ursus\0paracord\0survival\0nomad\0skeleton");
 					ImGui::Combo("condition", &config_system.item.knife_wear, "factory new\0minimal wear\0field-tested\0well-worn\0battle-scarred");
 
 					ImGui::Combo(("skin"), &config_system.item.paint_kit_vector_index_knife, [](void* data, int idx, const char** out_text) {

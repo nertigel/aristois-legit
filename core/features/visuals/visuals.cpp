@@ -594,7 +594,7 @@ void c_visuals::misc_chams(const model_render_info_t& info) noexcept {
 	if (!config_system.item.visuals.active)
 		return;
 
-	auto model_name = interfaces::model_info->get_model_name((model_t*)info.model);
+	/*auto model_name = interfaces::model_info->get_model_name((model_t*)info.model);
 	if (!model_name)
 		return;
 
@@ -658,7 +658,7 @@ void c_visuals::misc_chams(const model_render_info_t& info) noexcept {
 		}
 
 		interfaces::model_render->override_material(nullptr);
-	}
+	}*/
 }
 
 void c_visuals::glow() noexcept {
